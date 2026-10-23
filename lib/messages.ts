@@ -21,6 +21,11 @@ export const CONSENT = {
     version: 'quote-2026-10-21',
     text: 'By tapping Text me a quote, you agree to get texts from Fernhouse about your quote. Msg & data rates may apply. Reply STOP to opt out, HELP for help.',
   },
+  // Recorded when the owner adds a pro who has agreed to job texts.
+  pro: {
+    version: 'pro-2026-10-23',
+    text: 'I agree to get job texts from Fernhouse about visits assigned to me. Message frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to opt out.',
+  },
   waitlist: {
     version: 'waitlist-2026-10-21',
     text: 'We’ll send one text when we reach your area. Msg & data rates may apply. Reply STOP to opt out.',
@@ -77,6 +82,8 @@ export const TEXTS = {
   // The one reminder, 24 hours later (build step 8).
   paymentFailedReminder: (v: { card: string; date: string; deadline: string; link: string }) =>
     `Fernhouse: Reminder — we still couldn’t charge ${v.card} for your ${v.date} visit. Please update your card by ${v.deadline} to keep your plan: ${v.link}`,
+  // Reply to NO on the cleanup-upgrade question.
+  upgradeDeclined: () => 'Fernhouse: No problem — today’s visit is skipped with no fee. Your regular price applies next time.',
   stop: () => 'Fernhouse: You’re unsubscribed and won’t get more texts. Reply START to resubscribe.',
   help: () =>
     `Fernhouse: For help with your booking call ${BRAND.phone} or email ${BRAND.email}. Msg frequency varies. Msg & data rates may apply. Reply STOP to opt out.`,
@@ -100,6 +107,8 @@ export const TEXTS = {
     `Low rating: ${v.name} gave their ${v.what} ${v.score} out of 5. ${v.link}`,
   ownerPlanPaused: (v: { name: string; amount: string; what: string; link: string }) =>
     `Plan paused: ${v.name} hasn’t updated their card in ${AUTOMATIONS.cardUpdateDeadlineHours} hours (${v.amount} for the ${v.what}). ${v.link}`,
+  ownerUpgradeDeclined: (v: { name: string; date: string; link: string }) =>
+    `Upgrade declined: ${v.name} said NO to the ${v.date} yard cleanup price, so it isn’t charged. ${v.link}`,
   ownerQuote: (v: { dogs: number; overHalfAcre: boolean; phone: string; link: string }) =>
     `Quote request: ${v.dogs} dog${v.dogs === 1 ? '' : 's'}${v.overHalfAcre ? ', yard over ½ acre' : ''}. Text a price to ${v.phone}. ${v.link}`,
 
@@ -110,6 +119,8 @@ export const TEXTS = {
     `Fernhouse: Today — ${v.service}, ${v.window}, ${v.street}, ${v.city}. Access and notes: ${v.link}`,
   proDayOfRoute: (v: { count: number; first: string; link: string }) =>
     `Fernhouse: Today — ${v.count} yard${v.count === 1 ? '' : 's'}, starting ${v.first}. Gate codes and notes: ${v.link}`,
+  proDocsLink: (v: { link: string }) =>
+    `Fernhouse: Upload your insurance, bond and background check here: ${v.link}`,
   docExpiring: (v: { pro: string; doc: string; date: string; link: string }) =>
     `Fernhouse: ${v.pro}’s ${v.doc} expires ${v.date}. Upload a new one to keep getting jobs: ${v.link}`,
 } as const;

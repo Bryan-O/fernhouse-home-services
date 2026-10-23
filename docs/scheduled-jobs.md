@@ -9,16 +9,16 @@ and messages use send-once keys. If a run is missed, the next one catches up.
 | `extendSchedules` | every run | Keeps each recurring plan's visits filled in 60 days ahead |
 | `releaseStaleBookings` | every run | Releases bookings whose checkout never finished after 2 hours. If Stripe says the booking was paid, it confirms it instead |
 | `chargeRecurringCleans` | from 7 AM | Charges recurring cleans on the visit day. A run missed for up to 2 days catches up |
+| `proDayOfTexts` | from 6 AM | Texts each cleaning pro their visit, and each yard pro one text linking to the day's route |
 | `eveningReminders` | from 6 PM | Sends the evening-before text for tomorrow's cleans |
 | `unassignedReminders` | 12 h after booking; from 8 AM daily | Texts the owner about bookings that still need a pro |
 | `followUpDeclines` | 24 h / 48 h after a decline | Sends one reminder text, then pauses a recurring plan (once) and tells the customer and owner |
 | `ratingEmails` | from 10 AM, the day after a first visit | Emails the private 1–5 rating, once per customer |
-| `cleanUp` | every run | Deletes access notes and gate codes after service ends, plus expired links and holds |
+| `docExpiryWarnings` | every run | Texts the pro and the owner once, 30 days before insurance or a bond expires |
+| `cleanUp` | every run | Deletes access notes and gate codes after service ends, plus expired customer and pro links, and old holds |
 
 When a customer saves a new card, any declined visit charges are retried straight away
 (Stripe webhook).
-
-The pro's 6 AM day-of text comes with the pro job page in build step 9.
 
 ## Setup
 

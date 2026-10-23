@@ -3,6 +3,7 @@ import { createServiceClient } from './supabase/admin';
 import { TEXTS } from './messages';
 import { keywordOf, type Keyword } from './keywords';
 import { inBackground, notifyInbound } from './notify';
+import { answerUpgrade } from './visit-ops';
 
 /**
  * A text to our number. Logs it, applies STOP / START to consent, and returns the reply to send
@@ -43,14 +44,21 @@ export async function handleInbound(params: Record<string, string>): Promise<str
   } else if (kw === 'help') {
     reply = TEXTS.help();
   } else {
-    // Anything else is a person writing to us: it goes to the owner's inbox.
-    inBackground('inbound forward', () => notifyInbound({ id: inboundId, from, body }));
-    return null;
+    // YES / NO answers the yard cleanup-upgrade question, when one is waiting.
+    const word = body.trim().toUpperCase().replace(/[^A-Z]/g, '');
+    const answer = cust && ['YES', 'Y', 'NO', 'N'].includes(word) ? await answerUpgrade(cust.id, word.startsWith('Y')) : null;
+    if (!answer?.handled) {
+      // Anything else is a person writing to us: it goes to the owner's inbox.
+      inBackground('inbound forward', () => notifyInbound({ id: inboundId, from, body }));
+      return null;
+    }
+    if (!answer.reply) return null;
+    reply = TEXTS.upgradeDeclined();
   }
 
   const answeredByTwilio = !!twilioOptOut;
   await db.from('messages').insert({
-    customer_id: cust?.id ?? null, pro_id: pro?.id ?? null, to_address: from, channel: 'sms', template: `keyword_${kw}`,
+    customer_id: cust?.id ?? null, pro_id: pro?.id ?? null, to_address: from, channel: 'sms', template: kw ? `keyword_${kw}` : 'upgradeDeclined',
     // Sent as the TwiML reply (or already by Twilio's opt-out handling) — logged either way.
     body: reply, status: 'sent', inbound_of: inboundId, sent_at: new Date().toISOString(),
   });

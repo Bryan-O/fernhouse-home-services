@@ -6,8 +6,9 @@ import { confirmCheckout } from './checkout';
 import { EMAILS, PLAN_NAME, TEXTS, VISIT_WORD } from './messages';
 import { AUTOMATIONS, BOOKING, type ArrivalWindowId } from './config';
 import { addDays, todayIso } from './booking';
-import { atlantaParts, cardText, money, monthDay, ownerWhen, petFreqLabel, shortName, untilText, windowShort } from './format';
+import { atlantaParts, cardText, cleanServiceText, displayUrl, money, monthDay, ownerWhen, petFreqLabel, shortName, untilText, windowShort } from './format';
 import { manageLink, publicOrigin, sendEmail, sendText } from './notify';
+import { createProLink } from './pro-links';
 
 // Scheduled jobs (Vercel Cron calls /api/cron every hour). Each job decides from the Atlanta
 // clock whether it's due, and is safe to run again: charges use Stripe idempotency keys and
@@ -207,12 +208,75 @@ export const cleanUp: Job = async (now) => {
   if (error) throw new Error(`clear_ended_access: ${error.message}`);
   const day = new Date(now.getTime() - 86400_000).toISOString();
   const { count: tokens } = await db.from('manage_tokens').delete({ count: 'exact' }).lt('expires_at', day);
+  const { count: proLinks } = await db.from('pro_links').delete({ count: 'exact' }).lt('expires_at', day);
   const { count: holds } = await db.from('slot_holds').delete({ count: 'exact' }).lt('expires_at', new Date(now.getTime() - 3600_000).toISOString());
-  return { accessCleared: Number(cleared ?? 0), tokensDeleted: tokens ?? 0, holdsDeleted: holds ?? 0 };
+  return { accessCleared: Number(cleared ?? 0), tokensDeleted: (tokens ?? 0) + (proLinks ?? 0), holdsDeleted: holds ?? 0 };
+};
+
+/** 6 AM on the visit day: each cleaning pro gets their visit; each yard pro one text for the day's route. */
+export const proDayOfTexts: Job = async (now) => {
+  if (atlantaParts(now).hour < AUTOMATIONS.proDayOfReminderHour) return { skipped: 'before 6 AM' };
+  const today = todayIso(now);
+  const { data: visits } = await createServiceClient().from('visits')
+    .select('id, window, pro:pros!inner(id, mobile), plan:plans!inner(service, address:addresses(street, city))')
+    .eq('date', today).eq('status', 'confirmed').not('pro_id', 'is', null).order('window')
+    .returns<{ id: string; window: ArrivalWindowId | null; pro: { id: string; mobile: string }; plan: { service: string; address: { street: string; city: string } } }[]>();
+  const origin = publicOrigin();
+  const routes = new Map<string, { mobile: string; cities: string[] }>();
+  let sent = 0;
+  for (const v of visits ?? []) {
+    if (v.plan.service === 'pet') {
+      const r = routes.get(v.pro.id) ?? { mobile: v.pro.mobile, cities: [] };
+      r.cities.push(v.plan.address.city);
+      routes.set(v.pro.id, r);
+      continue;
+    }
+    const link = displayUrl(`${origin}/job/${await createProLink('visit', v.pro.id, { visitId: v.id })}`);
+    const r = await sendText({
+      to: v.pro.mobile, proId: v.pro.id, audience: 'pro', template: 'proDayOf', dedupeKey: `dayof:${v.id}`,
+      body: TEXTS.proDayOf({ service: cleanServiceText(v.plan.service), window: windowShort(v.window), street: v.plan.address.street, city: v.plan.address.city, link }),
+    });
+    if (r.sent) sent++;
+  }
+  for (const [proId, r] of routes) {
+    const link = displayUrl(`${origin}/job/${await createProLink('route', proId, { date: today })}`);
+    const res = await sendText({
+      to: r.mobile, proId, audience: 'pro', template: 'proDayOfRoute', dedupeKey: `route:${proId}:${today}`,
+      body: TEXTS.proDayOfRoute({ count: r.cities.length, first: `in ${r.cities[0]}`, link }),
+    });
+    if (res.sent) sent++;
+  }
+  return { visits: visits?.length ?? 0, sent };
+};
+
+const DOC_NAME: Record<string, string> = { insurance: 'insurance certificate', bond: 'bond certificate', background_check: 'background check' };
+
+/** 30 days before a pro's insurance or bond expires: tell the pro and the owner (once). */
+export const docExpiryWarnings: Job = async (now) => {
+  const db = createServiceClient();
+  const today = todayIso(now);
+  const { data: docs } = await db.from('pro_documents')
+    .select('id, pro_id, kind, expires_on, pro:pros!inner(id, name, mobile, active)')
+    .not('verified_at', 'is', null).gte('expires_on', today).lte('expires_on', addDays(today, AUTOMATIONS.proDocExpiryWarningDays))
+    .returns<{ id: string; pro_id: string; kind: string; expires_on: string; pro: { id: string; name: string; mobile: string; active: boolean } }[]>();
+  let sent = 0;
+  for (const d of docs ?? []) {
+    if (!d.pro.active) continue;
+    // Skip it if a newer verified document of the same kind already runs longer.
+    const { count } = await db.from('pro_documents').select('id', { count: 'exact', head: true })
+      .eq('pro_id', d.pro_id).eq('kind', d.kind).not('verified_at', 'is', null).gt('expires_on', d.expires_on);
+    if (count) continue;
+    const link = displayUrl(`${publicOrigin()}/job/${await createProLink('docs', d.pro_id)}`);
+    const body = TEXTS.docExpiring({ pro: shortName(d.pro.name), doc: DOC_NAME[d.kind], date: monthDay(d.expires_on), link });
+    const a = await sendText({ to: d.pro.mobile, proId: d.pro_id, audience: 'pro', template: 'docExpiring', dedupeKey: `docexp:${d.id}`, body });
+    const b = await sendText({ to: ownerMobile(), audience: 'owner', template: 'docExpiring', dedupeKey: `docexp:${d.id}:owner`, body });
+    sent += Number(a.sent) + Number(b.sent);
+  }
+  return { expiring: docs?.length ?? 0, sent };
 };
 
 export const JOBS: Record<string, Job> = {
-  extendSchedules, releaseStaleBookings, chargeRecurringCleans, eveningReminders, unassignedReminders, followUpDeclines, ratingEmails, cleanUp,
+  extendSchedules, releaseStaleBookings, chargeRecurringCleans, proDayOfTexts, eveningReminders, unassignedReminders, followUpDeclines, ratingEmails, docExpiryWarnings, cleanUp,
 };
 
 /** Run every job (or the named ones). One job failing doesn't stop the rest. */

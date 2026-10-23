@@ -300,6 +300,7 @@ export const LINKS = {
   manageLinkDays: 7, // /b/[token] signed link expiry; re-sent on request
   jobLinkHoursAfterVisit: 24, // /job/[token] expires 24h after the visit
   jobAccessUnlockHour: 6, // full address + access codes unlock at 6 AM on the visit day
+  proDocsLinkDays: 14, // the link a pro uses to upload documents
 } as const;
 
 export const AUTOMATIONS = {
@@ -319,6 +320,7 @@ export const AUTOMATIONS = {
   unassignedLookaheadDays: 7, // the 8 AM reminder covers visits in the next week (and every new booking)
   pendingBookingCleanupHours: 2, // checkout never finished → release the booking
   failedChargeFollowUpDays: 14, // stop chasing a declined charge after this
+  onTheWayEtaMinutes: 30, // "I’m on my way" tells the customer: arriving by now + 30 minutes (rounded up to 5)
 } as const;
 
 // ───────── Pros ─────────

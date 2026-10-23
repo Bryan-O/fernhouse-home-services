@@ -2,14 +2,15 @@ import 'server-only';
 import { after } from 'next/server';
 import { createServiceClient } from './supabase/admin';
 import { createManageToken } from './manage';
+import { createProLink } from './pro-links';
 import { twilioConfigured, twilioSend, TwilioError, TWILIO_OPTED_OUT } from './twilio';
 import { resendConfigured, resendSend } from './resend';
 import { renderEmail } from './email-html';
 import { EMAILS, FIRST_CLEAN_ROW, PLAN_NAME, TEXTS, VISIT_WORD, type EmailContent } from './messages';
-import { AUTOMATIONS, BRAND, SITE_URL, dogsText, type ArrivalWindowId } from './config';
+import { AUTOMATIONS, BRAND, POLICIES, SITE_URL, YARD_CONDITIONS, dogsText, type ArrivalWindowId } from './config';
 import { fmtLong, formatPhone, todayIso } from './booking';
 import {
-  adminBookingPath, cardEmail, cardText, cleanServiceText, dayDate, displayUrl, firstName, freeUntil, money, monthDay,
+  adminBookingPath, cardEmail, cardText, clockText, cleanServiceText, dayDate, moneyExact, displayUrl, firstName, freeUntil, money, monthDay,
   ownerWhen, petFreqLabel, routeFull, shortName, untilText, visitWhen, windowShort, yardPlanText,
 } from './format';
 
@@ -151,14 +152,16 @@ interface PlanForMessage {
   route_day: string | null; window: ArrivalWindowId | null; price_per_visit_cents: number; status: string;
   customer: { id: string; name: string; mobile: string; email: string; card_brand: string | null; card_last4: string | null };
   address: { street: string; unit: string | null; city: string; zip: string };
-  visits: { id: string; date: string; window: ArrivalWindowId | null; status: string; price_cents: number; discount_cents: number; occurrence_date: string }[];
+  yard_condition: string | null;
+  visits: { id: string; date: string; window: ArrivalWindowId | null; status: string; price_cents: number; discount_cents: number; occurrence_date: string;
+    completed_at: string | null; gate_photo_url: string | null; upgrade_cents: number | null; pro_id: string | null }[];
 }
 
 async function loadPlan(planId: string): Promise<PlanForMessage | null> {
   const { data } = await createServiceClient().from('plans')
-    .select(`id, ref, service, frequency, beds, baths, dogs, route_day, window, price_per_visit_cents, status,
+    .select(`id, ref, service, frequency, beds, baths, dogs, route_day, window, price_per_visit_cents, status, yard_condition,
       customer:customers(id, name, mobile, email, card_brand, card_last4), address:addresses(street, unit, city, zip),
-      visits(id, date, window, status, price_cents, discount_cents, occurrence_date)`)
+      visits(id, date, window, status, price_cents, discount_cents, occurrence_date, completed_at, gate_photo_url, upgrade_cents, pro_id)`)
     .eq('id', planId).single<PlanForMessage>();
   if (data) data.visits.sort((a, b) => a.date.localeCompare(b.date));
   return data;
@@ -431,6 +434,89 @@ export async function notifyLowRating(visitId: string, score: number): Promise<v
   await sendText({
     to: ownerMobile(), audience: 'owner', template: 'ownerLowRating', dedupeKey: `rating-low:${v.id}`,
     body: TEXTS.ownerLowRating({ name: shortName(p.customer.name), score, what: `${monthDay(v.date)} ${p.service === 'pet' ? VISIT_WORD.pet : 'clean'}`, link: adminLink(adminBookingPath(p.ref)) }),
+  });
+}
+
+// ───────── Pros: assigned, on the way, done ─────────
+
+const proJobService = (p: PlanForMessage) => (p.service === 'pet' ? `Yard service (${dogsText(p.dogs ?? 1)})` : cleanServiceText(p.service));
+
+/** A pro was assigned: the job link to the pro, "team confirmed" to the customer (first visit). */
+export async function notifyAssigned(visitId: string, proId: string): Promise<void> {
+  const p = await visitPlan(visitId);
+  const v = p?.visits.find((x) => x.id === visitId);
+  const { data: pro } = await createServiceClient().from('pros').select('id, mobile').eq('id', proId).single();
+  if (!p || !v || !pro) return;
+  const pet = p.service === 'pet';
+  const job = displayUrl(`${publicOrigin()}/job/${await createProLink('visit', pro.id, { visitId: v.id })}`);
+  await sendText({
+    to: pro.mobile, proId: pro.id, audience: 'pro', template: 'proJobAssigned', dedupeKey: `assigned:${v.id}:${pro.id}`,
+    body: TEXTS.proJobAssigned({
+      service: proJobService(p), date: pet ? `${routeFull(p.route_day)}s from ${monthDay(v.date)}` : ownerWhen(v.date, null),
+      window: pet ? 'any time' : windowShort(v.window), city: p.address.city, link: job,
+    }),
+  });
+  const link = await manageLink(p.customer.id);
+  await sendText({
+    to: p.customer.mobile, customerId: p.customer.id, audience: 'customer', template: 'teamConfirmed', dedupeKey: `team:${v.id}`,
+    body: TEXTS.teamConfirmed({ when: visitWhen(v.date, v.window), freeUntil: freeUntil(v.date, v.window), link: link.text }),
+  });
+}
+
+export async function notifyOnTheWay(visitId: string, eta: Date): Promise<void> {
+  const p = await visitPlan(visitId);
+  if (!p) return;
+  await sendText({
+    to: p.customer.mobile, customerId: p.customer.id, audience: 'customer', template: 'onTheWay', dedupeKey: `onway:${visitId}`,
+    body: TEXTS.onTheWay({ eta: clockText(eta) }),
+  });
+}
+
+/** After a visit is done and charged: the "done" text (yards: with the gate photo) and the receipt. */
+export async function notifyVisitDone(visitId: string, charged: { amountCents: number }): Promise<void> {
+  const p = await visitPlan(visitId);
+  const v = p?.visits.find((x) => x.id === visitId);
+  if (!p || !v || !v.completed_at) return;
+  const c = p.customer;
+  const pet = p.service === 'pet';
+  const until = untilText(new Date(new Date(v.completed_at).getTime() + POLICIES.guaranteeHours * 3600_000), new Date(v.completed_at));
+  const link = await manageLink(c.id);
+  const t = cardText(c.card_brand, c.card_last4);
+  await sendText({
+    to: c.mobile, customerId: c.id, audience: 'customer', template: pet ? 'yardDone' : 'visitDone', dedupeKey: `done:${v.id}:sms`,
+    mediaPath: pet ? v.gate_photo_url : null,
+    body: pet ? TEXTS.yardDone({ amount: money(charged.amountCents), card: t, until }) : TEXTS.visitDone({ amount: money(charged.amountCents), card: t, until, link: link.text }),
+  });
+  const n = [...p.visits].sort((a, b) => a.occurrence_date.localeCompare(b.occurrence_date)).findIndex((x) => x.id === v.id) + 1;
+  await sendEmail({
+    to: c.email, customerId: c.id, template: 'receipt', dedupeKey: `done:${v.id}:receipt`,
+    content: EMAILS.receipt({
+      isPet: pet, dateShort: monthDay(v.date), amount: money(charged.amountCents), amountExact: moneyExact(charged.amountCents),
+      card: cardEmail(c.card_brand, c.card_last4), cardShort: t, line: `${pet ? 'Yard service' : cleanServiceText(p.service)} · ${monthDay(v.date)}`,
+      tax: moneyExact(0), total: moneyExact(charged.amountCents), until, receiptNo: `${p.ref}-${String(n).padStart(2, '0')}`, link: link.url,
+    }),
+  });
+}
+
+/** The yard was worse than booked: ask the customer to approve the higher cleanup price. */
+export async function notifyUpgradeAsked(visitId: string): Promise<void> {
+  const p = await visitPlan(visitId);
+  const v = p?.visits.find((x) => x.id === visitId);
+  if (!p || !v || !v.upgrade_cents) return;
+  const booked = YARD_CONDITIONS.find((y) => y.id === p.yard_condition)?.lower ?? YARD_CONDITIONS[0].lower;
+  await sendText({
+    to: p.customer.mobile, customerId: p.customer.id, audience: 'customer', template: 'cleanupUpgrade', dedupeKey: `upgrade:${v.id}`,
+    body: TEXTS.cleanupUpgrade({ booked, price: money(v.upgrade_cents), was: money(v.price_cents - v.discount_cents) }),
+  });
+}
+
+export async function notifyUpgradeDeclined(visitId: string): Promise<void> {
+  const p = await visitPlan(visitId);
+  const v = p?.visits.find((x) => x.id === visitId);
+  if (!p || !v) return;
+  await sendText({
+    to: ownerMobile(), audience: 'owner', template: 'ownerUpgradeDeclined', dedupeKey: `upgrade-no:${v.id}:owner`,
+    body: TEXTS.ownerUpgradeDeclined({ name: shortName(p.customer.name), date: monthDay(v.date), link: adminLink(adminBookingPath(p.ref)) }),
   });
 }
 
