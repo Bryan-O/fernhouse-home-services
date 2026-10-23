@@ -200,3 +200,21 @@ export async function loadManage(customerId: string): Promise<ManageView | null>
     plans,
   };
 }
+
+// ───────── Private rating (from the rating email) ─────────
+
+export interface RatingPrompt { visitId: string; what: string; score: number | null; already: boolean }
+
+/** The rating card for a done visit of this customer, with the score tapped in the email. */
+export async function loadRatingPrompt(customerId: string, visitId: string | undefined, score: string | undefined): Promise<RatingPrompt | null> {
+  if (!visitId || !/^[0-9a-f-]{36}$/i.test(visitId)) return null;
+  const db = createServiceClient();
+  const { data: v } = await db.from('visits').select('id, date, status, plan:plans!inner(customer_id, service)').eq('id', visitId)
+    .single<{ id: string; date: string; status: string; plan: { customer_id: string; service: string } }>();
+  if (!v || v.plan.customer_id !== customerId || v.status !== 'done') return null;
+  const { data: r } = await db.from('ratings').select('id').eq('visit_id', v.id).maybeSingle();
+  const n = Number(score);
+  const [, m, d] = v.date.split('-').map(Number);
+  const what = `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m - 1]} ${d} ${v.plan.service === 'pet' ? 'yard visit' : 'clean'}`;
+  return { visitId: v.id, what, score: Number.isInteger(n) && n >= 1 && n <= 5 ? n : null, already: !!r };
+}

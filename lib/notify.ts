@@ -422,6 +422,18 @@ export async function notifyRedoRequested(visitId: string, note: string): Promis
   });
 }
 
+// ───────── Private rating ─────────
+
+export async function notifyLowRating(visitId: string, score: number): Promise<void> {
+  const p = await visitPlan(visitId);
+  const v = p?.visits.find((x) => x.id === visitId);
+  if (!p || !v) return;
+  await sendText({
+    to: ownerMobile(), audience: 'owner', template: 'ownerLowRating', dedupeKey: `rating-low:${v.id}`,
+    body: TEXTS.ownerLowRating({ name: shortName(p.customer.name), score, what: `${monthDay(v.date)} ${p.service === 'pet' ? VISIT_WORD.pet : 'clean'}`, link: adminLink(adminBookingPath(p.ref)) }),
+  });
+}
+
 // ───────── Replies to our number ─────────
 
 /** A customer's (non-keyword) reply: forward it to the owner's inbox. */

@@ -313,6 +313,12 @@ export const AUTOMATIONS = {
   proDocExpiryWarningDays: 30,
   marketingTextsPerMonthMax: 2,
   ratingEmailDaysAfterFirstVisit: 1,
+  ratingEmailHour: 10, // the day after the first visit, from 10 AM
+  lowRatingAlertMax: 3, // a rating of 3 or less texts the owner
+  recurringChargeHour: 7, // recurring cleans are charged from 7 AM on the visit day
+  unassignedLookaheadDays: 7, // the 8 AM reminder covers visits in the next week (and every new booking)
+  pendingBookingCleanupHours: 2, // checkout never finished → release the booking
+  failedChargeFollowUpDays: 14, // stop chasing a declined charge after this
 } as const;
 
 // ───────── Pros ─────────

@@ -41,7 +41,7 @@ export function freeUntil(iso: string, w: ArrivalWindowId | string | null): stri
   return `${DAY_NAMES[weekday(atl.iso)].slice(0, 3)} ${hourText(atl.hour, atl.minute)}`;
 }
 
-function atlantaParts(d: Date): { iso: string; hour: number; minute: number } {
+export function atlantaParts(d: Date): { iso: string; hour: number; minute: number } {
   const p = new Intl.DateTimeFormat('en-US', { timeZone: TIMEZONE, hourCycle: 'h23', hour: 'numeric', minute: 'numeric' }).formatToParts(d);
   const get = (t: string) => Number(p.find((x) => x.type === t)?.value ?? 0);
   return { iso: todayIso(d), hour: get('hour'), minute: get('minute') };

@@ -96,6 +96,10 @@ export const TEXTS = {
     `No access: ${v.name}, ${v.date} (${v.reason}). Customer has been texted. ${v.link}`,
   ownerRedo: (v: { kind: 're-clean' | 're-scoop'; name: string; what: string; note: string; link: string }) =>
     `${v.kind === 're-clean' ? 'Re-clean' : 'Re-scoop'} request: ${v.name}, ${v.what}${v.note ? ` — “${v.note}”` : ''}. ${v.link}`,
+  ownerLowRating: (v: { name: string; score: number; what: string; link: string }) =>
+    `Low rating: ${v.name} gave their ${v.what} ${v.score} out of 5. ${v.link}`,
+  ownerPlanPaused: (v: { name: string; amount: string; what: string; link: string }) =>
+    `Plan paused: ${v.name} hasn’t updated their card in ${AUTOMATIONS.cardUpdateDeadlineHours} hours (${v.amount} for the ${v.what}). ${v.link}`,
   ownerQuote: (v: { dogs: number; overHalfAcre: boolean; phone: string; link: string }) =>
     `Quote request: ${v.dogs} dog${v.dogs === 1 ? '' : 's'}${v.overHalfAcre ? ', yard over ½ acre' : ''}. Text a price to ${v.phone}. ${v.link}`,
 
@@ -135,6 +139,8 @@ export interface EmailContent {
   button?: { label: string; url: string };
   note?: string;
   footer: string;
+  /** A row of 1–5 links (the private rating), shown instead of a button. */
+  scale?: { links: string[]; low: string; high: string };
   /** Show Privacy · Terms links after the footer. */
   legalLinks?: boolean;
 }
@@ -328,12 +334,25 @@ export const EMAILS = {
   }),
 
   // Day after the first visit (build step 8). Private — never published as a review.
-  rating: (v: { firstName: string; isPet: boolean; link: string }): EmailContent => ({
+  // Tapping a number opens the manage page with that score picked; the customer confirms it there.
+  rating: (v: { firstName: string; isPet: boolean; links: string[] }): EmailContent => ({
     subject: v.isPet ? 'How did your first yard visit go?' : 'How did your first clean go?',
     preview: 'One question, 1 to 5. Only we see your answer.',
     heading: `How did we do, ${v.firstName}?`,
-    intro: 'On a scale of 1 to 5, how was your first visit? Your answer goes only to us, so we can fix anything that wasn’t right.',
-    button: { label: v.isPet ? 'Rate your visit' : 'Rate your clean', url: v.link },
+    intro: `On a scale of 1 to 5, how was your first ${v.isPet ? 'yard visit' : 'clean'}? Your answer goes only to us, so we can fix anything that wasn’t right.`,
+    scale: { links: v.links, low: '1 = not good', high: '5 = great' },
+    footer: FOOTER,
+    legalLinks: true,
+  }),
+
+  // A declined card wasn't replaced within 48 hours.
+  planPausedPayment: (v: { plan: string; date: string; link: string }): EmailContent => ({
+    subject: 'Your plan is paused',
+    preview: 'We couldn’t charge your card, so no more visits are scheduled for now.',
+    heading: 'Your plan is paused.',
+    intro: `We still couldn’t charge your card for your ${v.date} visit, so we’ve paused your ${v.plan}. Add a new card and resume anytime from your manage link.`,
+    button: { label: 'Update card', url: v.link },
+    note: 'Once your card is updated, we’ll retry the charge. Nothing else is charged while your plan is paused.',
     footer: FOOTER,
     legalLinks: true,
   }),
@@ -374,3 +393,14 @@ export const FIRST_CLEAN_ROW = `First clean (${OFFER.firstCleanPct}% off)`;
 // How a visit is named inside messages ("your Oct 27 yard visit is skipped").
 export const VISIT_WORD = { pet: 'yard visit', clean: 'visit' } as const;
 export const PLAN_NAME = (isPet: boolean, freq: string) => (isPet ? `${freq.toLowerCase()} yard service` : `${freq.toLowerCase()} clean`);
+
+// The private rating card on the manage page (from the rating email).
+export const RATING = {
+  heading: (what: string) => `How was your ${what}?`,
+  sub: '1 is not good, 5 is great. Only we see your answer.',
+  send: 'Send rating',
+  thanks: 'Thanks — we’ve got your rating.',
+  thanksLow: 'Thanks for telling us. We’ll be in touch to make it right.',
+  done: 'Thanks — you’ve already rated this visit.',
+  scoreLabel: (n: number) => `${n} out of 5`,
+} as const;

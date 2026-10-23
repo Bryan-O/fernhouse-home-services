@@ -4,6 +4,7 @@ import { stripe, stripeConfigured, cardDetails } from '@/lib/stripe';
 import { confirmSession } from '@/lib/checkout';
 import { createServiceClient } from '@/lib/supabase/admin';
 import { inBackground, notifyPaymentFailed } from '@/lib/notify';
+import { retryDeclinedCharges } from '@/lib/jobs';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -59,7 +60,8 @@ async function handle(event: Stripe.Event) {
         }).eq('id', s.metadata.customer_id);
         const stripeCustomer = typeof full.customer === 'string' ? full.customer : full.customer?.id;
         if (stripeCustomer) await stripe().customers.update(stripeCustomer, { invoice_settings: { default_payment_method: card.payment_method_id } });
-        // TODO (build step 8): retry the customer's failed visit charges with the new card.
+        // Charge any declined visits again with the new card.
+        inBackground('retry declined charges', () => retryDeclinedCharges(s.metadata!.customer_id!));
       }
       return;
     }

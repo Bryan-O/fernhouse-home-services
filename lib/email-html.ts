@@ -35,6 +35,13 @@ export function renderEmail(e: EmailContent, origin: string): { html: string; te
     ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr><td style="border-radius:999px;background:${C.accent}"><a href="${esc(e.button.url)}" style="display:inline-block;padding:13px 22px;border-radius:999px;background:${C.accent};color:#FFFFFF;font-weight:600;font-size:15px;line-height:22px;text-decoration:none;font-family:${SANS}">${esc(e.button.label)}</a></td></tr></table>`
     : '';
 
+  // The rating row: five round number links, with what 1 and 5 mean underneath.
+  const scale = e.scale
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 8px"><tr>${e.scale.links
+        .map((url, i) => `<td style="padding:0 8px 0 0"><a href="${esc(url)}" aria-label="${i + 1} out of 5" style="display:inline-block;width:48px;height:48px;line-height:48px;border-radius:999px;background:${C.accentSoft};color:${C.accent};font-weight:700;font-size:18px;text-align:center;text-decoration:none;font-family:${SANS}">${i + 1}</a></td>`)
+        .join('')}</tr></table>${p(`${esc(e.scale.low)} · ${esc(e.scale.high)}`, 13, 20, C.muted)}`
+    : '';
+
   const legal = e.legalLinks
     ? ` · <a href="${origin}/privacy" style="color:${C.muted};text-decoration:underline">Privacy</a> · <a href="${origin}/terms" style="color:${C.muted};text-decoration:underline">Terms</a>`
     : '';
@@ -47,7 +54,7 @@ export function renderEmail(e: EmailContent, origin: string): { html: string; te
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:616px;background:#FFFFFF;border:1px solid ${C.line};border-radius:16px"><tr><td style="padding:28px;font-family:${SANS};color:${C.ink}">
 <div style="font-family:${DISPLAY};font-weight:800;font-size:18px;line-height:24px;color:${C.accent};margin:0 0 16px">Fernhouse</div>
 <h1 style="margin:0 0 16px;font-family:${DISPLAY};font-weight:800;font-size:26px;line-height:32px;letter-spacing:-0.02em;color:${C.ink}">${esc(e.heading)}</h1>
-${e.intro ? p(esc(e.intro)) : ''}${rows}${callout}${button}${e.note ? p(esc(e.note), 14, 21, C.muted) : ''}
+${e.intro ? p(esc(e.intro)) : ''}${rows}${callout}${button}${scale}${e.note ? p(esc(e.note), 14, 21, C.muted) : ''}
 <p style="margin:0;font-size:13px;line-height:20px;color:${C.muted};border-top:1px solid ${C.rowLine};padding-top:14px">${esc(e.footer)}${legal}</p>
 </td></tr></table>
 </td></tr></table>
@@ -59,6 +66,7 @@ ${e.intro ? p(esc(e.intro)) : ''}${rows}${callout}${button}${e.note ? p(esc(e.no
     e.rows?.map((r) => `${r.label}: ${r.value}`).join('\n'),
     e.callout ? `${e.callout.before}${e.callout.strong ?? ''}${e.callout.after ?? ''}` : '',
     e.button ? `${e.button.label}: ${e.button.url}` : '',
+    e.scale ? e.scale.links.map((u, i) => `${i + 1}: ${u}`).join('\n') + `\n(${e.scale.low} · ${e.scale.high})` : '',
     e.note,
     `${e.footer}${e.legalLinks ? `\nPrivacy: ${origin}/privacy · Terms: ${origin}/terms` : ''}`,
   ].filter(Boolean).join('\n\n');

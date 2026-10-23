@@ -13,11 +13,13 @@ import {
   setPlanPaused,
   skipVisit,
   startCardUpdate,
+  submitRating,
   undoSkip,
   updateNotes,
   type ActionResult,
 } from './actions';
-import type { ManageView, PlanView, VisitView } from '@/lib/manage';
+import type { ManageView, PlanView, RatingPrompt, VisitView } from '@/lib/manage';
+import { RATING } from '@/lib/messages';
 import {
   addDays,
   fmtLong,
@@ -71,7 +73,7 @@ function SectionHead({ id, title, action }: { id: string; title: string; action?
 const pill = (tone: 'ok' | 'neutral' | 'warn') =>
   tone === 'ok' ? { background: 'var(--accent-soft)', color: 'var(--accent)' } : tone === 'warn' ? { background: 'var(--warning-soft)', color: 'var(--warning)' } : { background: 'var(--paper-2)', color: 'var(--ink-2)' };
 
-export function ManageApp({ token, data, av, cardUpdated }: { token: string; data: ManageView; av: Availability; cardUpdated: boolean }) {
+export function ManageApp({ token, data, av, rating, cardUpdated }: { token: string; data: ManageView; av: Availability; rating: RatingPrompt | null; cardUpdated: boolean }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [planId, setPlanId] = useState(data.plans[0]?.id ?? '');
@@ -80,6 +82,7 @@ export function ManageApp({ token, data, av, cardUpdated }: { token: string; dat
   const [error, setError] = useState('');
   const [target, setTarget] = useState<VisitView | null>(null);
   const [cancelled, setCancelled] = useState<{ date: string; feeCents: number; refundedCents: number } | null>(null);
+  const [rated, setRated] = useState(false);
 
   const plan = data.plans.find((p) => p.id === planId) ?? data.plans[0];
   const card = data.card ? `${data.card.brand.charAt(0).toUpperCase()}${data.card.brand.slice(1)} •••• ${data.card.last4}` : 'your card';
@@ -162,6 +165,7 @@ export function ManageApp({ token, data, av, cardUpdated }: { token: string; dat
     <div className="step-in" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       {toast && <Toast text={toast} />}
       {error && <ErrorBox text={error} />}
+      {rating && !rated && <RatingCard prompt={rating} pending={pending} onSend={(score) => run(() => submitRating(token, rating.visitId, score), () => setRated(true))} />}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         <span className="small" style={{ color: 'var(--muted)', fontWeight: 600 }}>{plan.isPet ? 'Yard service' : 'Booking'} <span data-ref={plan.ref}>{plan.ref}</span></span>
         <h1 className="display mg-h1">Hi {data.firstName}, here’s your {plan.isPet ? 'yard plan' : 'plan'}</h1>
@@ -182,6 +186,29 @@ export function ManageApp({ token, data, av, cardUpdated }: { token: string; dat
 }
 
 // ───────── Shared cards ─────────
+
+function RatingCard({ prompt, pending, onSend }: { prompt: RatingPrompt; pending: boolean; onSend: (score: number) => void }) {
+  const [score, setScore] = useState<number | null>(prompt.score);
+  return (
+    <section className="mg-card" aria-labelledby="rate-h" style={{ gap: 12 }}>
+      <h2 className="display h3" id="rate-h">{RATING.heading(prompt.what)}</h2>
+      {prompt.already ? (
+        <p className="small" style={{ margin: 0, color: 'var(--ink-2)' }}>{RATING.done}</p>
+      ) : (
+        <>
+          <p className="small" id="rate-sub" style={{ margin: 0, color: 'var(--ink-2)' }}>{RATING.sub}</p>
+          <div role="group" aria-labelledby="rate-h" aria-describedby="rate-sub" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <button key={n} type="button" className="opt" aria-pressed={score === n} aria-label={RATING.scoreLabel(n)} onClick={() => setScore(n)}
+                style={{ width: 48, minHeight: 48, padding: 0, justifyContent: 'center', fontWeight: 700, fontSize: 17 }}>{n}</button>
+            ))}
+          </div>
+          <button type="button" className="btn btn-primary btn-sm" disabled={!score || pending} onClick={() => score && onSend(score)} style={{ alignSelf: 'flex-start' }}>{RATING.send}</button>
+        </>
+      )}
+    </section>
+  );
+}
 
 interface OverviewProps {
   token: string;

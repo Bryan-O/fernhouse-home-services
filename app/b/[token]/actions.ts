@@ -7,10 +7,11 @@ import { chargeVisit, createCardUpdateSession, refundVisit } from '@/lib/payment
 import { encryptField } from '@/lib/crypto';
 import { stripeConfigured } from '@/lib/stripe';
 import { firstRouteDate, fmtLong, fmtShort, todayIso } from '@/lib/booking';
-import { ARRIVAL_WINDOWS, POLICIES, ROUTE_DAYS, type ArrivalWindowId, type RouteDayId } from '@/lib/config';
+import { ARRIVAL_WINDOWS, AUTOMATIONS, POLICIES, ROUTE_DAYS, type ArrivalWindowId, type RouteDayId } from '@/lib/config';
 import {
-  inBackground, notifyPlanEnded, notifyPlanPaused, notifyRedoRequested, notifyRouteDayChanged, notifyVisitCancelled, notifyVisitMoved, notifyVisitSkipped,
+  inBackground, notifyLowRating, notifyPlanEnded, notifyPlanPaused, notifyRedoRequested, notifyRouteDayChanged, notifyVisitCancelled, notifyVisitMoved, notifyVisitSkipped,
 } from '@/lib/notify';
+import { RATING } from '@/lib/messages';
 
 // Every action re-checks the manage link and that the visit or plan belongs to its customer.
 // Each change sends its confirmation text or email after the response (lib/notify.ts).
@@ -201,6 +202,17 @@ export async function requestRedo(token: string, visitId: string, note: string):
   // The owner is alerted now; the customer is texted when the return visit is set (build step 9).
   inBackground('redo alert', () => notifyRedoRequested(v.id, note));
   return { ok: true, toast: kind === 'rescoop' ? 'Got it — we’ll be back to re-scoop, free. We’ll text you when.' : 'Got it — we’ll send a team back to re-clean, free. We’ll text you the time.' };
+}
+
+/** The private 1–5 rating. One per visit; a low score alerts the owner. */
+export async function submitRating(token: string, visitId: string, score: number): Promise<ActionResult> {
+  const v = await ownedVisit(token, visitId);
+  if (!v || v.status !== 'done' || !Number.isInteger(score) || score < 1 || score > 5) return fail('That visit can’t be rated here.');
+  const { error } = await createServiceClient().from('ratings').insert({ customer_id: v.plan.customer_id, visit_id: v.id, score });
+  if (error) return error.code === '23505' ? { ok: true, toast: RATING.done } : fail('We couldn’t save that just now. Please try again.');
+  const low = score <= AUTOMATIONS.lowRatingAlertMax;
+  if (low) inBackground('low rating alert', () => notifyLowRating(v.id, score));
+  return { ok: true, toast: low ? RATING.thanksLow : RATING.thanks };
 }
 
 export async function startCardUpdate(token: string): Promise<{ url: string } | { error: string }> {

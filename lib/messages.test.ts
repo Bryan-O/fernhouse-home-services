@@ -167,7 +167,7 @@ describe('emails', () => {
     expect(subjects).toContain(EMAILS.cancelled({ date: 'Oct 27', card: '', rebook: L }).subject);
     expect(subjects).toContain(EMAILS.cardDeclined({ card: '', date: '', amount: '', deadline: '', link: L }).subject);
     expect(subjects).toContain(EMAILS.planPaused({ plan: '', link: L }).subject);
-    expect(subjects).toContain(EMAILS.rating({ firstName: 'J', isPet: false, link: L }).subject);
+    expect(subjects).toContain(EMAILS.rating({ firstName: 'J', isPet: false, links: [L] }).subject);
   });
   it('renders escaped HTML and a plain-text copy', () => {
     const { html, text } = renderEmail({ ...booked, heading: 'Hi <Jordan> & co' }, 'https://fernhouseclean.com');
