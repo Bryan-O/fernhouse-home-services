@@ -7,7 +7,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
-// Vercel Cron calls this every hour (vercel.json) with "Authorization: Bearer <CRON_SECRET>".
+// Called every hour (.github/workflows/hourly-jobs.yml) with "Authorization: Bearer <CRON_SECRET>".
 // ?only=jobA,jobB runs just those jobs (for a manual run from the terminal).
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;

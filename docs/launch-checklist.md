@@ -15,7 +15,7 @@ Environment Variables), never into code or chat. `.env.example` lists each one.
 ## 2. Accounts and domain
 
 - [ ] Buy the domain. If it isn't fernhouseclean.com, change `BRAND.domain` in `lib/config.ts`.
-- [ ] **Vercel:** import the GitHub repo. Choose a plan for the hourly jobs (`docs/scheduled-jobs.md`: Pro, or a free external scheduler), and add the domain.
+- [ ] **Vercel:** import the GitHub repo (the free plan works) and add the domain. The hourly jobs run from a free GitHub Actions schedule: add the `CRON_URL` and `CRON_SECRET` repository secrets (`docs/scheduled-jobs.md`).
 - [ ] **Supabase:** create the project, push the schema and create the owner account (`supabase/README.md`).
 - [ ] **Field encryption:** generate `FIELD_ENCRYPTION_KEY` once and keep a copy somewhere safe. Losing it makes saved access notes unreadable.
 - [ ] `SITE_ORIGIN=https://<your-domain>` and `CRON_SECRET` (a long random string).
@@ -43,7 +43,7 @@ Environment Variables), never into code or chat. `.env.example` lists each one.
 - [ ] Book a real clean and a real yard plan with your own card, then refund them from Stripe.
 - [ ] Find my booking → the text arrives → reschedule and cancel work.
 - [ ] Assign a pro → their text and job link work. On the visit day: on my way, gate photo, mark done → the customer's text and receipt.
-- [ ] The next morning: the hourly jobs ran (Vercel → Cron Jobs shows the runs).
+- [ ] The next morning: the hourly jobs ran (GitHub → Actions → Hourly jobs shows the runs).
 - [ ] `/robots.txt` and `/sitemap.xml` load. Submit the sitemap in Google Search Console.
 
 ## What the site already does at launch

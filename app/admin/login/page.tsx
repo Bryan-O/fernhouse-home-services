@@ -25,7 +25,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             <SignInForm next={next} />
           ) : (
             <div className="notice small" role="status">
-              <strong>Sign-in isn’t connected yet.</strong> Add the Supabase project URL and keys to <code>.env.local</code>, then restart the site.
+              <strong>Sign-in isn’t connected yet.</strong> Add the Supabase project URL and keys in the hosting settings (Vercel → Settings → Environment Variables, or <code>.env.local</code> on your computer), then redeploy.
             </div>
           )}
         </div>

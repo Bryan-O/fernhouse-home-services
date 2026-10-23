@@ -1,6 +1,6 @@
 # Scheduled jobs
 
-Vercel Cron calls `/api/cron` once an hour (`vercel.json`). Each run checks the Atlanta time
+A free GitHub Actions schedule (`.github/workflows/hourly-jobs.yml`) calls `/api/cron` once an hour. Each run checks the Atlanta time
 and does whatever is due. Every job is safe to run twice: charges use Stripe idempotency keys
 and messages use send-once keys. If a run is missed, the next one catches up.
 
@@ -22,11 +22,16 @@ When a customer saves a new card, any declined visit charges are retried straigh
 
 ## Setup
 
-- Add `CRON_SECRET` (a long random string) to the Vercel project's environment variables.
-  Vercel sends it with every cron call, and the endpoint refuses calls without it.
-- An hourly schedule needs a Vercel plan that allows it. Vercel's free Hobby plan only runs a
-  cron job once a day, and won't deploy an hourly one. If you stay on Hobby, a free scheduler
-  (for example a GitHub Actions schedule) can call the same address every hour with the same
-  header, and `vercel.json` would drop its `crons` entry.
-- Run it by hand: `curl -H "Authorization: Bearer $CRON_SECRET" https://<your-domain>/api/cron`
+- Add `CRON_SECRET` (a long random string) to the Vercel project's environment variables. The
+  endpoint refuses any call without it.
+- In GitHub → the repository → Settings → Secrets and variables → Actions, add two secrets:
+  `CRON_URL` (`https://<your-site>/api/cron`) and `CRON_SECRET` (the same value). Until both are
+  set, each hourly run just skips.
+- GitHub runs schedules only from the repository's default branch, so the jobs start once this
+  branch is merged there. GitHub can start a scheduled run a few minutes late; the jobs don't mind.
+- Run it by hand: GitHub → Actions → **Hourly jobs** → Run workflow, or
+  `curl -H "Authorization: Bearer $CRON_SECRET" https://<your-site>/api/cron`
   (add `?only=eveningReminders` to run one job). The reply lists what each job did.
+- If you move to Vercel Pro later, Vercel Cron can replace this: add
+  `{"crons": [{"path": "/api/cron", "schedule": "0 * * * *"}]}` as `vercel.json`, and delete the
+  workflow so the jobs aren't called twice. Calling them twice does no harm, but it's wasted work.

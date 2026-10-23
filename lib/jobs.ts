@@ -10,7 +10,7 @@ import { atlantaParts, cardText, cleanServiceText, displayUrl, money, monthDay, 
 import { manageLink, publicOrigin, sendEmail, sendText } from './notify';
 import { createProLink } from './pro-links';
 
-// Scheduled jobs (Vercel Cron calls /api/cron every hour). Each job decides from the Atlanta
+// Scheduled jobs (/api/cron, called every hour). Each job decides from the Atlanta
 // clock whether it's due, and is safe to run again: charges use Stripe idempotency keys and
 // messages use send-once keys. A missed hour is caught up on the next run.
 
