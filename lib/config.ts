@@ -199,6 +199,17 @@ export const POLICIES = {
   noAccessCountsAsLateCancel: true,
 } as const;
 
+// Terms and Privacy Policy values. TODO (owner): Georgia attorney review before launch.
+export const LEGAL = {
+  privacyUpdated: 'October 21, 2026',
+  termsUpdated: 'October 21, 2026',
+  damageReportHours: 48,
+  directHireFee: 1000,
+  directHireMonths: 12,
+  minAge: 13,
+  governingState: 'Georgia',
+} as const;
+
 export const CANCELLATION_POLICY =
   `Reschedule or cancel free up to ${POLICIES.freeChangeHours} hours before your visit, right from your confirmation link. ` +
   `Changes inside ${POLICIES.freeChangeHours} hours carry a $${POLICIES.lateCancelFee} late-cancellation fee, because your team has already been scheduled.`;
