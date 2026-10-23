@@ -4,9 +4,23 @@
 // whenever the wording changes.
 
 export const CONSENT = {
+  // Booking Step 3 (both services). The page adds links to the Privacy Policy and Terms after it.
+  booking: {
+    version: 'booking-2026-10-21',
+    text: 'By giving your mobile number, you agree to get booking texts from Fernhouse — confirmations, reminders and visit updates. Message frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to opt out.',
+  },
+  // Separate, unchecked box — marketing only with this opt-in.
+  marketing: {
+    version: 'marketing-2026-10-21',
+    text: 'Also text me offers, up to 2 a month',
+  },
   quote: {
     version: 'quote-2026-10-21',
     text: 'By tapping Text me a quote, you agree to get texts from Fernhouse about your quote. Msg & data rates may apply. Reply STOP to opt out, HELP for help.',
+  },
+  waitlist: {
+    version: 'waitlist-2026-10-21',
+    text: 'We’ll send one text when we reach your area. Msg & data rates may apply. Reply STOP to opt out.',
   },
 } as const;
 

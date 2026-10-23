@@ -20,6 +20,9 @@ export const BRAND = {
 
 export const SITE_URL = `https://${BRAND.domain}`;
 
+// Every date and time in the business runs on Atlanta time.
+export const TIMEZONE = 'America/New_York';
+
 // ───────── Home cleaning ─────────
 
 export type CleanService = 'standard' | 'deep' | 'move';

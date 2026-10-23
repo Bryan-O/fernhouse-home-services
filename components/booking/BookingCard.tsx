@@ -25,6 +25,8 @@ import {
   type CleanService,
 } from '@/lib/config';
 import { CONSENT, QUOTE } from '@/lib/messages';
+import { toE164 } from '@/lib/booking';
+import { requestQuote } from '@/app/actions/booking';
 import { pickClean, type CleanStep1, type PetStep1, type ServiceTab } from '@/lib/booking-store';
 
 // ───────── Small parts ─────────
@@ -235,7 +237,8 @@ function PetPanel({ pet, setPet, locked }: { pet: PetStep1; setPet: (p: PetStep1
       </fieldset>
 
       {quote ? (
-        <QuoteBox title={pet.dogs > P.maxDogs ? QUOTE.titleDogs : QUOTE.titleYard} showBack={pet.yard === 'large'} onBack={() => set({ yard: 'std' })} />
+        <QuoteBox title={pet.dogs > P.maxDogs ? QUOTE.titleDogs : QUOTE.titleYard} showBack={pet.yard === 'large'} onBack={() => set({ yard: 'std' })}
+          dogs={pet.dogs} overHalfAcre={pet.yard === 'large'} />
       ) : (
         <div aria-live="polite" className="price-summary">
           <SummaryRow label={`${PET_FREQ_LABEL[pet.petFreq]} · ${dogsText(pet.dogs)}`} value={once ? 'Flat yard reset' : `$${visit} / visit`} />
@@ -276,17 +279,25 @@ function PetPanel({ pet, setPet, locked }: { pet: PetStep1; setPet: (p: PetStep1
   );
 }
 
-function QuoteBox({ title, showBack, onBack }: { title: string; showBack: boolean; onBack: () => void }) {
+function QuoteBox({ title, showBack, onBack, dogs, overHalfAcre }: { title: string; showBack: boolean; onBack: () => void; dogs: number; overHalfAcre: boolean }) {
   const [phone, setPhone] = useState('');
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState(false);
-  const send = () => {
-    // TODO (build step 4/7): save the quote request with UTM fields and consent, then text the confirmation.
-    if (phone.replace(/\D/g, '').length === 10) {
+  const [error, setError] = useState<'phone' | 'failed' | null>(null);
+  const [busy, setBusy] = useState(false);
+  const send = async () => {
+    if (!toE164(phone)) {
+      setError('phone');
+      return;
+    }
+    setBusy(true);
+    // The confirmation text goes out once texting is connected (build step 7).
+    const r = await requestQuote({ phone, dogs, overHalfAcre }).catch(() => ({ ok: false as const, reason: 'error' as const }));
+    setBusy(false);
+    if (r.ok) {
       setSent(true);
-      setError(false);
+      setError(null);
     } else {
-      setError(true);
+      setError(r.reason === 'invalid' ? 'phone' : 'failed');
     }
   };
   return (
@@ -301,10 +312,13 @@ function QuoteBox({ title, showBack, onBack }: { title: string; showBack: boolea
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             <label htmlFor="quote-phone" className="small" style={{ width: '100%', fontWeight: 600 }}>Mobile phone</label>
             <input id="quote-phone" className="input quote-input" type="tel" inputMode="tel" autoComplete="tel" placeholder="(404) 555-0123"
-              value={phone} onChange={(e) => setPhone(e.target.value)} aria-invalid={error || undefined} aria-describedby={error ? 'quote-phone-err' : undefined} />
-            <button type="button" className="btn btn-primary btn-sm" style={{ minHeight: 48 }} onClick={send}>Text me a quote</button>
+              value={phone} onChange={(e) => setPhone(e.target.value)} aria-invalid={error === 'phone' || undefined} aria-describedby={error ? 'quote-phone-err' : undefined} />
+            <button type="button" className="btn btn-primary btn-sm btn-busy" style={{ minHeight: 48 }} onClick={send} disabled={busy}>
+              {busy && <span className="spinner" aria-hidden="true" />}Text me a quote
+            </button>
           </div>
-          {error && <p className="err" id="quote-phone-err">Enter a 10-digit mobile number.</p>}
+          {error === 'phone' && <p className="err" id="quote-phone-err">Enter a 10-digit mobile number.</p>}
+          {error === 'failed' && <p className="err" id="quote-phone-err">We couldn’t send that just now. Please try again, or call {BRAND.phone}.</p>}
           <p className="consent-line">
             {CONSENT.quote.text} <Link className="link" href="/privacy">Privacy</Link>
           </p>

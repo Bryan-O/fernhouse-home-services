@@ -15,9 +15,15 @@ trap cleanup EXIT
 run "$PGBIN/initdb -D $DIR/data -A trust -U postgres" >/dev/null
 run "$PGBIN/pg_ctl -D $DIR/data -o '-p $PORT -k $DIR' -l $DIR/log -w start" >/dev/null
 PSQL="psql -h $DIR -p $PORT -U postgres -v ON_ERROR_STOP=1 -q"
-$PSQL -c 'create database fh'
-$PSQL -d fh -f supabase/tests/supabase-stub.sql
-for f in supabase/migrations/*.sql; do $PSQL -d fh -f "$f"; done
-OUT=$($PSQL -d fh -At -f supabase/tests/rules.sql | grep -v '^$')
-echo "$OUT"
-echo "$OUT" | tail -1 | grep -q '^0 failed'
+FAILED=0
+for t in supabase/tests/*.sql; do
+  [ "$(basename "$t")" = supabase-stub.sql ] && continue
+  echo "== $t"
+  $PSQL -c 'drop database if exists fh' -c 'create database fh'
+  $PSQL -d fh -f supabase/tests/supabase-stub.sql
+  for f in supabase/migrations/*.sql; do $PSQL -d fh -f "$f"; done
+  OUT=$($PSQL -d fh -At -f "$t" | grep -v '^$')
+  echo "$OUT"
+  echo "$OUT" | tail -1 | grep -q '^0 failed' || FAILED=1
+done
+exit $FAILED
