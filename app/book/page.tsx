@@ -32,7 +32,8 @@ export default function BookPage() {
           </div>
         </div>
       </header>
-      <main className="wrap bk-main" style={{ paddingTop: 32, paddingBottom: 64 }}>
+      {/* Fills the screen, so the footer starts below the fold and never jumps while the step loads. */}
+      <main className="wrap bk-main" style={{ paddingTop: 32, paddingBottom: 64, minHeight: 'calc(100vh - 65px)' }}>
         <BookingFlow />
       </main>
       <SiteFooter variant="minimal" />

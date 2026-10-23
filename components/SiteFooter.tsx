@@ -8,11 +8,11 @@ export function SiteFooter({ variant }: { variant: Variant }) {
   if (variant === 'minimal') {
     return (
       <footer style={{ background: '#FFFFFF', borderTop: '1px solid var(--line)' }}>
-        <div className="wrap" style={{ paddingTop: 20, paddingBottom: 20, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '8px 24px', fontSize: 14, color: 'var(--muted)' }}>
+        <div className="wrap" style={{ paddingTop: 12, paddingBottom: 12, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0 24px', fontSize: 14, color: 'var(--muted)' }}>
           <span>© {BRAND.copyrightYear} {BRAND.name} · Serving {BRAND.areaLine}</span>
           <span style={{ display: 'flex', gap: 20 }}>
-            <Link href="/privacy" style={{ color: 'var(--muted)', padding: '10px 0' }}>Privacy Policy</Link>
-            <Link href="/terms" style={{ color: 'var(--muted)', padding: '10px 0' }}>Terms</Link>
+            <Link href="/privacy" className="tap-link" style={{ color: 'var(--muted)' }}>Privacy Policy</Link>
+            <Link href="/terms" className="tap-link" style={{ color: 'var(--muted)' }}>Terms</Link>
           </span>
         </div>
       </footer>

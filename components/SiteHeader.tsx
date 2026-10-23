@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BrandMark } from './BrandMark';
 import { ChevronDown, MenuIcon, PhoneIcon } from './Icons';
 import { BRAND, type CleanService } from '@/lib/config';
@@ -29,6 +29,52 @@ export function SiteHeader({ variant }: { variant: Variant }) {
   const [ddOpen, setDdOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mSvcOpen, setMSvcOpen] = useState(false);
+  // Which Services item to focus once the desktop menu has rendered (arrow keys).
+  const [ddFocus, setDdFocus] = useState<number | null>(null);
+  const ddRef = useRef<HTMLDivElement>(null);
+  const menuBtn = useRef<HTMLButtonElement>(null);
+  const mMenu = useRef<HTMLElement>(null);
+  const hdr = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (ddFocus === null || !ddOpen) return;
+    ddRef.current?.querySelectorAll<HTMLElement>('.dd-item')[ddFocus]?.focus();
+    setDdFocus(null);
+  }, [ddFocus, ddOpen]);
+
+  // Tapping anywhere outside the header closes the phone menu.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const away = (e: PointerEvent) => {
+      if (!hdr.current?.contains(e.target as Node)) setMenuOpen(false);
+    };
+    document.addEventListener('pointerdown', away);
+    return () => document.removeEventListener('pointerdown', away);
+  }, [menuOpen]);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    menuBtn.current?.focus();
+  };
+  // Arrow keys move through the Services menu items; ArrowDown on the button opens it.
+  const ddKeys = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setDdOpen(false);
+      document.getElementById('svc-btn')?.focus();
+      return;
+    }
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Home' && e.key !== 'End') return;
+    const items = [...(ddRef.current?.querySelectorAll<HTMLElement>('.dd-item') ?? [])];
+    const at = items.indexOf(document.activeElement as HTMLElement);
+    if (at === -1 && e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    const last = CLEAN_ITEMS.length; // pet waste is the last item
+    const next = at === -1 ? (e.key === 'ArrowUp' ? last : 0)
+      : e.key === 'Home' ? 0 : e.key === 'End' ? last
+      : (at + (e.key === 'ArrowDown' ? 1 : -1) + last + 1) % (last + 1);
+    if (!ddOpen) setDdOpen(true);
+    setDdFocus(next);
+  };
 
   const onHome = variant === 'home';
   const onPet = variant === 'pet';
@@ -48,7 +94,7 @@ export function SiteHeader({ variant }: { variant: Variant }) {
     const minimal = variant === 'minimal';
     return (
       <header style={{ position: minimal ? 'static' : 'sticky', top: 0, zIndex: 20, background: minimal ? '#FFFFFF' : 'rgba(255,255,255,0.96)', borderBottom: '1px solid var(--line)' }}>
-        <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, minHeight: 68 }}>
+        <div className="wrap hdr-row">
           <Link href="/" aria-label={`${BRAND.name} home`} className="brand-link">
             <BrandMark />
           </Link>
@@ -60,7 +106,7 @@ export function SiteHeader({ variant }: { variant: Variant }) {
               <Link href="/#faq">FAQ</Link>
             </nav>
           )}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div className="hdr-actions">
             <CallButton />
             <Link className="btn btn-primary btn-sm hdr-book" href={minimal ? '/#booking' : '/book'}>Book now</Link>
           </div>
@@ -70,8 +116,8 @@ export function SiteHeader({ variant }: { variant: Variant }) {
   }
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 20, background: 'rgba(255,255,255,0.96)', borderBottom: '1px solid var(--line)' }}>
-      <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, minHeight: 68 }}>
+    <header ref={hdr} style={{ position: 'sticky', top: 0, zIndex: 20, background: 'rgba(255,255,255,0.96)', borderBottom: '1px solid var(--line)' }}>
+      <div className="wrap hdr-row">
         <Link href={onHome ? '#top' : '/'} aria-label={`${BRAND.name} home`} className="brand-link">
           <BrandMark />
         </Link>
@@ -81,12 +127,8 @@ export function SiteHeader({ variant }: { variant: Variant }) {
             className="dd"
             onMouseEnter={() => hoverable() && setDdOpen(true)}
             onMouseLeave={() => hoverable() && setDdOpen(false)}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') {
-                setDdOpen(false);
-                document.getElementById('svc-btn')?.focus();
-              }
-            }}
+            ref={ddRef}
+            onKeyDown={ddKeys}
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDdOpen(false);
             }}
@@ -116,14 +158,23 @@ export function SiteHeader({ variant }: { variant: Variant }) {
           <a href={localAnchor('faq')}>FAQ</a>
         </nav>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="hdr-actions">
           <button
             type="button"
             className="btn btn-secondary btn-sm menu-btn"
             aria-label="Menu"
             aria-expanded={menuOpen}
             aria-controls="m-menu"
+            ref={menuBtn}
             onClick={() => setMenuOpen(!menuOpen)}
+            onKeyDown={(e) => {
+              // The menu opens below the header, so Tab goes into it next rather than to Call / Book now.
+              if (e.key === 'Escape' && menuOpen) closeMenu();
+              if (e.key === 'Tab' && !e.shiftKey && menuOpen) {
+                e.preventDefault();
+                mMenu.current?.querySelector<HTMLElement>('.m-row')?.focus();
+              }
+            }}
             style={{ width: 44, padding: 0 }}
           >
             <MenuIcon size={20} width={1.8} />
@@ -138,7 +189,19 @@ export function SiteHeader({ variant }: { variant: Variant }) {
       </div>
 
       {menuOpen && (
-        <nav id="m-menu" className="mmenu" aria-label="Menu">
+        <nav
+          id="m-menu"
+          className="mmenu"
+          aria-label="Menu"
+          ref={mMenu}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') closeMenu();
+            if (e.key === 'Tab' && e.shiftKey && e.target === mMenu.current?.querySelector('.m-row')) {
+              e.preventDefault();
+              menuBtn.current?.focus();
+            }
+          }}
+        >
           <div className="wrap" style={{ paddingTop: 4, paddingBottom: 12 }}>
             <button type="button" className="m-row" aria-expanded={mSvcOpen} aria-controls="m-svc" onClick={() => setMSvcOpen(!mSvcOpen)}>
               Services

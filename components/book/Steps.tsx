@@ -107,12 +107,12 @@ function ContactFields({ d, set, e, prefix, phoneHelp, emailHelp }: StepProps & 
       </div>
       <div className="sms-consent" style={{ display: 'flex', flexDirection: 'column', gap: 10, background: 'var(--paper-2)', borderRadius: 12, padding: '12px 14px' }}>
         <p className="small" style={{ margin: 0, color: 'var(--ink-2)' }}>
-          {CONSENT.booking.text} See our <Link className="link" href="/privacy">Privacy Policy</Link> and <Link className="link" href="/terms#t-texts">Terms</Link>.
+          {CONSENT.booking.text} See our <Link className="link nowrap" href="/privacy">Privacy Policy</Link> and <Link className="link nowrap" href="/terms#t-texts">Terms</Link>.
         </p>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+        <div className="check-line">
           <input id={`${prefix}sms-promo`} className="check" type="checkbox" checked={d.smsPromo} onChange={() => set({ smsPromo: !d.smsPromo })} />
           <label htmlFor={`${prefix}sms-promo`} className="small" style={{ color: 'var(--ink)', cursor: 'pointer' }}>
-            {CONSENT.marketing.text} <span style={{ color: 'var(--muted)' }}>(optional)</span>
+            <span>{CONSENT.marketing.text} <span style={{ color: 'var(--muted)' }}>(optional)</span></span>
           </label>
         </div>
       </div>
@@ -123,9 +123,9 @@ function ContactFields({ d, set, e, prefix, phoneHelp, emailHelp }: StepProps & 
 function AgreeField({ id, checked, onToggle, disabled, error, children }: { id: string; checked: boolean; onToggle: () => void; disabled: boolean; error: boolean; children: React.ReactNode }) {
   return (
     <div className="field">
-      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+      <div className="check-line" style={{ gap: 12 }}>
         <input id={id} className="check" type="checkbox" checked={checked} onChange={onToggle} disabled={disabled} aria-invalid={error || undefined} aria-describedby={`${id}-msg`} />
-        <label htmlFor={id} className="small" style={{ color: 'var(--ink)', cursor: 'pointer' }}>{children}</label>
+        <label htmlFor={id} className="small" style={{ color: 'var(--ink)', cursor: 'pointer' }}><span>{children}</span></label>
       </div>
       <div id={`${id}-msg`}>{error && <FieldError alert>Please accept the Terms to continue.</FieldError>}</div>
     </div>
@@ -420,15 +420,15 @@ export function CleanStep4({ d, clean, agree, onAgree, agreeError, submitting, n
       {notice}
       <h2 id="s4-title" className="display h3">Review &amp; pay</h2>
       <div className="bk-review">
-        <ReviewRow label="Your clean" edit={<Link className="link small" href="/#booking" style={{ padding: '4px 0', alignSelf: 'flex-start' }}>Edit</Link>}>
+        <ReviewRow label="Your clean" edit={<Link className="link small rv-edit" href="/#booking">Edit</Link>}>
           <span style={{ fontWeight: 600 }}>{clean.line}</span>
         </ReviewRow>
-        <ReviewRow label="When & where" edit={<button type="button" className="linkbtn small" onClick={onEdit2} style={{ padding: '4px 0', alignSelf: 'flex-start' }}>Edit</button>}>
+        <ReviewRow label="When & where" edit={<button type="button" className="linkbtn small rv-edit" onClick={onEdit2}>Edit</button>}>
           <span style={{ fontWeight: 600 }}>{d.date ? fmtLong(d.date) : ''}</span>
           <span className="small" style={reviewLine}>{w ? `Arrival ${w.spoken}` : ''}</span>
           <span className="small" style={reviewLine}>{d.address.trim()}{d.unit.trim() ? `, ${d.unit.trim()}` : ''}, {city}, GA {d.zip}</span>
         </ReviewRow>
-        <ReviewRow label="Your details" edit={<button type="button" className="linkbtn small" onClick={onEdit3} style={{ padding: '4px 0', alignSelf: 'flex-start' }}>Edit</button>}>
+        <ReviewRow label="Your details" edit={<button type="button" className="linkbtn small rv-edit" onClick={onEdit3}>Edit</button>}>
           <span style={{ fontWeight: 600, overflowWrap: 'anywhere' }}>{d.name.trim()}</span>
           <span className="small" style={reviewLine}>{formatPhone(d.phone)} · {d.email.trim()}</span>
           <span className="small" style={reviewLine}>Access: {d.access.trim() || 'None given'}</span>
@@ -471,16 +471,16 @@ export function PetStep4({ d, av, pet, agree, onAgree, agreeError, submitting, n
       {notice}
       <h2 id="ps4-title" className="display h3">Review &amp; confirm</h2>
       <div className="bk-review">
-        <ReviewRow label="Your yard" edit={<Link className="link small" href="/pet-waste-removal#booking" style={{ padding: '4px 0', alignSelf: 'flex-start' }}>Edit</Link>}>
+        <ReviewRow label="Your yard" edit={<Link className="link small rv-edit" href="/pet-waste-removal#booking">Edit</Link>}>
           <span style={{ fontWeight: 600 }}>{pet.line}</span>
         </ReviewRow>
-        <ReviewRow label="Route day & access" edit={<button type="button" className="linkbtn small" onClick={onEdit2} style={{ padding: '4px 0', alignSelf: 'flex-start' }}>Edit</button>}>
+        <ReviewRow label="Route day & access" edit={<button type="button" className="linkbtn small rv-edit" onClick={onEdit2}>Edit</button>}>
           <span style={{ fontWeight: 600 }}>{d.routeDay ? routeLong(d.pet, d.routeDay) : ''}</span>
           <span className="small" style={reviewLine}>{d.routeDay ? `First visit: ${fmtLong(firstRouteDate(d.routeDay, av.today))}.` : ''}</span>
           <span className="small" style={reviewLine}>{d.address.trim()}{d.unit.trim() ? `, ${d.unit.trim()}` : ''}, {city}, GA {d.zip}</span>
           <span className="small" style={reviewLine}>Gate: {d.gate.trim() || 'None given'}</span>
         </ReviewRow>
-        <ReviewRow label="Your details" edit={<button type="button" className="linkbtn small" onClick={onEdit3} style={{ padding: '4px 0', alignSelf: 'flex-start' }}>Edit</button>}>
+        <ReviewRow label="Your details" edit={<button type="button" className="linkbtn small rv-edit" onClick={onEdit3}>Edit</button>}>
           <span style={{ fontWeight: 600, overflowWrap: 'anywhere' }}>{d.name.trim()}</span>
           <span className="small" style={reviewLine}>{formatPhone(d.phone)} · {d.email.trim()}</span>
           <span className="small" style={reviewLine}>Dogs: {d.dogNames.trim() ? `${d.dogNames.trim()} — ` : ''}{d.dogsFriendly ? 'friendly, can stay out' : 'kept inside on route day'}</span>

@@ -38,7 +38,7 @@ export function ChosenStrip({ line, href }: { line: string; href: string }) {
         <Check size={18} width={2} stroke="var(--accent)" />
         {line}
       </span>
-      <Link href={href} className="link" style={{ padding: 10 }}>Change</Link>
+      <Link href={href} className="link tap-link" style={{ padding: '0 10px' }}>Change</Link>
     </div>
   );
 }

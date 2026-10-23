@@ -61,7 +61,12 @@ export function HomeHero() {
       <div className="wrap sec hero-grid">
         <div className="a-copy hero-copy">
           <h1 className="display h1" style={{ maxWidth: 560 }}>Book a vetted pro online in 60 seconds.</h1>
-          <p className="body" style={{ margin: 0, color: 'var(--ink-2)', maxWidth: '65ch' }}>{HERO_SUB[tab]}</p>
+          {/* Both lines share one grid cell, so switching tabs never moves the booking card below on phones. */}
+          <div className="swap body" style={{ maxWidth: '65ch' }}>
+            {(['clean', 'pet'] as const).map((t) => (
+              <p key={t} className="body" aria-hidden={t !== tab || undefined} style={{ margin: 0, color: 'var(--ink-2)' }}>{HERO_SUB[t]}</p>
+            ))}
+          </div>
           <HeroActions />
           <HeroChips items={['No contracts', 'Re-clean guarantee', 'Background-checked pros', 'Bonded & insured']} />
         </div>

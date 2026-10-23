@@ -36,7 +36,8 @@ export function SummarySide(props: SummaryProps) {
       <div className="bk-card" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <h2 className="display" style={{ fontSize: 18, lineHeight: '24px' }}>Your booking</h2>
         {loading ? (
-          <div aria-busy="true" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          // Same height as the loaded summary, so the trust lines below don't jump down.
+          <div aria-busy="true" style={{ display: 'flex', flexDirection: 'column', gap: 12, minHeight: isPet ? 294 : 273 }}>
             <span className="skel" style={{ height: 18, width: '80%' }} />
             <span className="skel" style={{ height: 18, width: '60%' }} />
             <span className="skel" style={{ height: 18, width: '70%' }} />

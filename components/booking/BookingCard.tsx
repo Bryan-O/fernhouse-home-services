@@ -273,7 +273,7 @@ function PetPanel({ pet, setPet, locked }: { pet: PetStep1; setPet: (p: PetStep1
         {locked && (
           <div className="small card-footnote">
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Calendar size={16} />Route day, not an arrival window</span>
-            <a className="link" href="/#booking" onClick={() => pickClean({ service: 'standard' })}>Need a home clean instead?</a>
+            <a className="link tap-link tap-flush" href="/#booking" onClick={() => pickClean({ service: 'standard' })}>Need a home clean instead?</a>
           </div>
         )}
       </div>
@@ -306,7 +306,7 @@ function QuoteBox({ title, showBack, onBack, dogs, overHalfAcre }: { title: stri
   return (
     <div aria-live="polite" className="notice" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
       <span style={{ fontWeight: 600 }}>{title}</span>
-      {showBack && <button type="button" className="inline-link" style={{ alignSelf: 'flex-start', padding: '4px 0', fontSize: 14 }} onClick={onBack}>Back to standard pricing</button>}
+      {showBack && <button type="button" className="inline-link" style={{ alignSelf: 'flex-start', fontSize: 14 }} onClick={onBack}>Back to standard pricing</button>}
       <span className="small" style={{ color: 'var(--ink-2)' }}>{QUOTE.intro}</span>
       {sent ? (
         <span className="small" style={{ color: 'var(--accent)', fontWeight: 600 }}>{QUOTE.sent(phone)}</span>

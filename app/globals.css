@@ -49,6 +49,13 @@
 
 html {
   scroll-behavior: smooth;
+  /* Anchor jumps and focused fields land below the sticky header (68px + a little air). */
+  scroll-padding-top: 84px;
+}
+
+/* …and above the phone booking bar, on pages that have one. */
+@media (max-width: 767px) {
+  html:has(.mbar) { scroll-padding-bottom: 92px; }
 }
 
 body {
@@ -86,7 +93,7 @@ img {
 }
 
 .skip-link {
-  position: absolute;
+  position: fixed;
   left: 16px;
   top: -100px;
   z-index: 100;
@@ -151,6 +158,12 @@ img {
 }
 
 .linkbtn-danger { color: var(--error); }
+
+/* 44px tap targets for links that sit on their own (not inside a sentence). `tap-flush` keeps
+   the surrounding layout unchanged by taking the extra height back with negative margins. */
+.tap-link { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+.tap-flush { margin-top: -12px; margin-bottom: -12px; }
+.nowrap { white-space: nowrap; }
 
 /* ───────── Buttons ───────── */
 
@@ -259,19 +272,32 @@ img {
 .switch {
   position: relative;
   width: 52px;
-  height: 32px;
+  height: 44px;
+  margin: -6px 0;
+  padding: 0;
   border-radius: var(--radius-pill);
   border: 0;
-  background: #C3CDC9;
+  background: none;
   cursor: pointer;
   flex: none;
+}
+
+.switch::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 52px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: #C3CDC9;
   transition: background-color 160ms ease;
 }
 
 .switch::after {
   content: '';
   position: absolute;
-  top: 4px;
+  top: 10px;
   left: 4px;
   width: 24px;
   height: 24px;
@@ -281,8 +307,11 @@ img {
   transition: transform 160ms ease;
 }
 
-.switch[aria-checked='true'] { background: var(--accent); }
+.switch[aria-checked='true']::before { background: var(--accent); }
 .switch[aria-checked='true']::after { transform: translateX(20px); }
+
+.check-line { display: flex; gap: 10px; align-items: center; min-height: 44px; }
+.check-line label { flex: 1; min-height: 44px; display: flex; align-items: center; }
 
 .check {
   width: 22px;
@@ -442,13 +471,15 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 
 /* ═════════ Site chrome: header, menus, footer ═════════ */
 
+.hdr-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
+.hdr-actions { display: flex; align-items: center; gap: 8px; }
 .brand-link { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-height: 44px; }
 
 .nav-links { display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 600; }
-.nav-links > a { color: var(--ink-2); text-decoration: none; padding: 12px 0; }
+.nav-links > a { color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
 
 .dd { position: relative; }
-.dd-btn { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--ink-2); padding: 12px 0; cursor: pointer; }
+.dd-btn { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--ink-2); min-height: 44px; padding: 0; cursor: pointer; }
 .dd-menu { position: absolute; top: 100%; left: -16px; width: 300px; background: #FFFFFF; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 8px; display: flex; flex-direction: column; z-index: 40; }
 .dd-item { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 48px; padding: 8px 12px; border-radius: var(--radius-sm); text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 600; }
 .dd-item small { font-size: 13px; font-weight: 400; color: var(--muted); }
@@ -463,9 +494,9 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .m-sub-sep { border-top: 1px dashed var(--line); }
 .m-sub[aria-current='page'] { color: var(--accent); }
 
-.footer-contact { color: #FFFFFF; text-decoration: none; padding: 4px 0; }
+.footer-contact { color: #FFFFFF; text-decoration: none; display: flex; align-items: center; min-height: 44px; margin: -4px 0; overflow-wrap: anywhere; }
 .footer-nav { display: flex; flex-wrap: wrap; gap: 4px 24px; align-content: flex-start; font-size: 15px; }
-.footer-nav a { color: var(--footer-ink); text-decoration: none; padding: 12px 0; }
+.footer-nav a { color: var(--footer-ink); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
 
 @media (hover: hover) {
   .nav-links > a:hover, .dd-btn:hover { color: var(--ink); }
@@ -483,6 +514,9 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .a-widget { grid-area: widget; }
 .a-photo { grid-area: photo; }
 .hero-copy { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.swap { display: grid; }
+.swap > * { grid-area: 1 / 1; }
+.swap > [aria-hidden] { visibility: hidden; }
 .hero-photo { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); }
 .photo-placeholder { aspect-ratio: 3 / 2; border-radius: var(--radius); background: var(--placeholder); border: 1px dashed var(--placeholder-line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; text-align: center; }
 .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -494,7 +528,10 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .card-progress { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .card-progress span { height: 4px; border-radius: 4px; background: var(--line); }
 .card-progress span.on { background: var(--accent); }
-.tab-body { display: flex; flex-direction: column; gap: 24px; animation: tabIn 200ms ease both; min-height: 731px; }
+.tab-body { display: flex; flex-direction: column; gap: 24px; animation: tabIn 200ms ease both; }
+/* Home page card: each tab reserves the taller panel's height (Pet Waste, measured per width),
+   so switching tabs or changing options never moves anything. Breakpoints below. */
+.tab-body { min-height: 732px; }
 .tab-body > :last-child { margin-top: auto; }
 .tab-body-locked { min-height: 0; animation: none; }
 @keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -515,7 +552,7 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .price-summary { background: var(--paper-2); border-radius: var(--radius-sm); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .pay-line { margin: 0; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; }
 .card-footnote { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; border-top: 1px solid var(--line); padding-top: 12px; color: var(--ink-2); }
-.inline-link { background: none; border: 0; padding: 0; min-height: 24px; font: inherit; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.inline-link { background: none; border: 0; padding: 0; display: inline-flex; align-items: center; min-height: 44px; margin: -10px 0; font: inherit; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .quote-input { flex: 1 1 160px; width: auto; min-height: 48px; padding: 0 14px; }
 .consent-line { margin: 0; color: var(--muted); font-size: 12px; line-height: 18px; }
 
@@ -613,10 +650,6 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 
 /* ═════════ Breakpoints ═════════ */
 
-@media (max-width: 1199px) {
-  .tab-body { min-height: 731px; }
-}
-
 @media (max-width: 1023px) {
   .nav-links { display: none; }
   .menu-btn { display: inline-flex; }
@@ -624,7 +657,7 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
   .hero-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'copy' 'widget' 'photo'; }
   .a-widget { max-width: 560px; width: 100%; }
   .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tab-body { min-height: 689px; }
+  .tab-body { min-height: 690px; }
   .tab-body-locked { min-height: 0; }
 }
 
@@ -638,7 +671,7 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 
 @media (max-width: 767px) {
   .booking-card { padding: 16px; gap: 20px; }
-  .tab-body { min-height: 754px; }
+  .tab-body { min-height: 732px; }
   .tab-body-locked { min-height: 0; }
   .grid-4, .why-grid, .addons { grid-template-columns: minmax(0, 1fr); }
   .price-table { display: none; }
@@ -650,6 +683,10 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
   .doc p, .doc li { font-size: 16px; line-height: 26px; }
   .nf-title { font-size: 32px; line-height: 38px; }
 }
+
+@media (max-width: 399px) { .tab-body:not(.tab-body-locked) { min-height: 766px; } }
+@media (max-width: 379px) { .tab-body:not(.tab-body-locked) { min-height: 779px; } }
+@media (max-width: 359px) { .tab-body:not(.tab-body-locked) { min-height: 800px; } }
 
 @media (max-width: 479px) {
   .ql-grid { grid-template-columns: minmax(0, 1fr); }
@@ -694,6 +731,7 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .bk-review { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius); }
 .bk-review > div { padding: 16px; display: flex; justify-content: space-between; gap: 12px; }
 .bk-review > div + div { border-top: 1px solid var(--line); }
+.rv-edit { align-self: flex-start; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0; margin: -12px -10px -12px 0; }
 .bk-review-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .bk-total { background: var(--paper-2); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .bk-row { display: flex; justify-content: space-between; gap: 12px; }
@@ -703,6 +741,7 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .sum-dl dd { margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
 
 /* Calendar */
+.cal-box { border: 1px solid var(--line); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
 .dow { font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; padding: 4px 0; }
 .day { min-height: 48px; border-radius: var(--radius-sm); border: 1.5px solid var(--line); background: #FFFFFF; color: var(--ink); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; padding: 2px; transition: transform 120ms ease, border-color 120ms ease; }
@@ -731,6 +770,12 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
   .bk-actions { flex-direction: column-reverse; align-items: stretch; }
   .bk-actions .btn { width: 100%; }
   .hide-s { display: none; }
+}
+
+/* Phones: seven 44px-wide days need the calendar to use the card's padding. */
+@media (max-width: 479px) {
+  .cal-box { border: 0; padding: 0; margin: 0 -8px; }
+  .cal-box .cal { gap: 2px; }
 }
 
 /* ═════════ Manage booking (/manage, /b/[token]) and confirmation ═════════ */
@@ -829,6 +874,13 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 
 /* Very small phones (under 360px, narrower than any design frame): keep the header on one
    line with no sideways scrolling. The page's own booking buttons stay. */
+/* Small phones: logo, Menu, Call and Book now must fit on one line in 375px. */
+@media (max-width: 399px) {
+  .hdr-row { gap: 8px; }
+  .hdr-actions { gap: 6px; }
+  .hdr-actions .hdr-book { padding: 0 14px; }
+}
+
 @media (max-width: 359px) {
   .wrap { padding-left: 16px; padding-right: 16px; }
   .hdr-book { display: none; }
