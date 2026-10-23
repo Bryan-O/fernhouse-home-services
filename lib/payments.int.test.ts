@@ -46,7 +46,8 @@ async function bookedVisit(withCard: boolean): Promise<string> {
     p: withCard ? { stripe_customer_id: `cus_${planId.slice(0, 8)}`, payment_method_id: 'pm_test', card_brand: 'visa', card_last4: '4242' } : {},
   });
   if (confirmed.error || !(confirmed.data as { ok: boolean }).ok) throw new Error(`test confirm failed: ${confirmed.error?.message}`);
-  const { data: v } = await db.from('visits').select('id').eq('plan_id', planId).single();
+  // Confirming a recurring plan also creates its later visits; charges here use the first.
+  const { data: v } = await db.from('visits').select('id').eq('plan_id', planId).order('date').limit(1).single();
   return v!.id;
 }
 

@@ -258,10 +258,11 @@ export function cityForZip(zip: string): ServiceArea | null {
 
 export type ArrivalWindowId = 'morning' | 'midday' | 'afternoon';
 
-export const ARRIVAL_WINDOWS: readonly { id: ArrivalWindowId; label: string; time: string; short: string; spoken: string }[] = [
-  { id: 'morning', label: 'Morning', time: '8–11 am', short: '8–11 AM', spoken: 'between 8 and 11 am' },
-  { id: 'midday', label: 'Midday', time: '11 am–2 pm', short: '11 AM–2 PM', spoken: 'between 11 am and 2 pm' },
-  { id: 'afternoon', label: 'Afternoon', time: '2–5 pm', short: '2–5 PM', spoken: 'between 2 and 5 pm' },
+// startHour/endHour are Atlanta time; the 24-hour change rule counts from startHour.
+export const ARRIVAL_WINDOWS: readonly { id: ArrivalWindowId; label: string; time: string; short: string; spoken: string; startHour: number; endHour: number }[] = [
+  { id: 'morning', label: 'Morning', time: '8–11 am', short: '8–11 AM', spoken: 'between 8 and 11 am', startHour: 8, endHour: 11 },
+  { id: 'midday', label: 'Midday', time: '11 am–2 pm', short: '11 AM–2 PM', spoken: 'between 11 am and 2 pm', startHour: 11, endHour: 14 },
+  { id: 'afternoon', label: 'Afternoon', time: '2–5 pm', short: '2–5 PM', spoken: 'between 2 and 5 pm', startHour: 14, endHour: 17 },
 ];
 
 export type RouteDayId = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';

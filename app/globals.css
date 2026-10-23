@@ -732,3 +732,42 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
   .bk-actions .btn { width: 100%; }
   .hide-s { display: none; }
 }
+
+/* ═════════ Manage booking (/manage, /b/[token]) and confirmation ═════════ */
+
+.mg-h1 { font-size: 36px; line-height: 44px; }
+.mg-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.mg-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.mg-col { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.mg-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.mg-days { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.mg-wins { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.mg-reasons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.narrow { max-width: 640px; }
+.mg-toast { display: flex; gap: 10px; align-items: center; background: var(--accent-soft); border-radius: var(--radius-sm); padding: 14px 16px; font-weight: 600; }
+.mg-error { display: flex; gap: 10px; align-items: flex-start; background: #FEF3F2; border: 1px solid #FDA29B; border-radius: var(--radius-sm); padding: 14px 16px; font-weight: 600; color: var(--error); }
+.mg-warn { display: flex; gap: 12px; align-items: flex-start; background: var(--warning-soft); border: 1px solid #F5D3A6; border-radius: var(--radius-sm); padding: 16px; }
+.mg-upcoming { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.mg-upcoming li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.mg-footer a { color: var(--footer-ink); }
+.mg-plans { display: flex; flex-wrap: wrap; gap: 8px; }
+.ok-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.ok-steps li { display: flex; gap: 12px; }
+.ok-num { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.ok-dl { margin: 0; padding: 16px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px 16px; }
+.ok-dl dt { color: var(--muted); }
+.ok-dl dd { margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+
+@media (max-width: 899px) {
+  .mg-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .mg-h1 { font-size: 28px; line-height: 34px; }
+  .mg-card { padding: 16px; }
+  .mg-days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mg-wins, .mg-reasons { grid-template-columns: minmax(0, 1fr); }
+  .mg-actions .btn { flex: 1 1 100%; }
+}
+/* Manage pages use a slightly smaller section heading (design/ManageBooking.dc.html). */
+.mg-card .h3 { font-size: 20px; line-height: 26px; }

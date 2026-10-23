@@ -86,10 +86,23 @@ async function handle(event: Stripe.Event) {
         .neq('status', 'refunded');
       return;
     }
+    case 'charge.succeeded': {
+      // Keep the Stripe receipt link for the manage page.
+      const ch = event.data.object;
+      const piId = typeof ch.payment_intent === 'string' ? ch.payment_intent : ch.payment_intent?.id;
+      if (piId && ch.receipt_url) await db.from('payments').update({ receipt_url: ch.receipt_url }).eq('stripe_payment_intent', piId);
+      return;
+    }
     case 'charge.refunded': {
       const ch = event.data.object;
       const piId = typeof ch.payment_intent === 'string' ? ch.payment_intent : ch.payment_intent?.id;
-      if (piId && ch.refunded) await db.from('payments').update({ status: 'refunded', updated_at: new Date().toISOString() }).eq('stripe_payment_intent', piId);
+      if (piId) {
+        await db.from('payments').update({
+          refunded_cents: ch.amount_refunded,
+          ...(ch.refunded ? { status: 'refunded' } : {}),
+          updated_at: new Date().toISOString(),
+        }).eq('stripe_payment_intent', piId);
+      }
       return;
     }
     default:

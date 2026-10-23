@@ -182,3 +182,60 @@ export async function confirmSession(session: Stripe.Checkout.Session, expanded:
   }
   return { ok: true, ref: r.ref, already: !!r.already };
 }
+
+export interface ConfirmationView {
+  ref: string;
+  isPet: boolean;
+  service: 'standard' | 'deep' | 'move' | 'pet';
+  frequency: 'one_time' | 'weekly' | 'biweekly' | 'twice_weekly';
+  phone: string;
+  email: string;
+  beds: number | null;
+  baths: number | null;
+  dogs: number | null;
+  petFreq: keyof typeof PET_FREQ_LABEL;
+  cond: 'kept' | 'weeks' | 'month';
+  routeDay: string | null;
+  date: string;
+  window: string | null;
+  address: string;
+  pricePerVisitCents: number;
+  firstVisitCents: number;
+  discountCents: number;
+}
+
+/** What the confirmation page shows for a booking (by its reference). */
+export async function loadConfirmation(ref: string): Promise<ConfirmationView | null> {
+  const { data: p } = await createServiceClient()
+    .from('plans')
+    .select('ref, service, frequency, beds, baths, dogs, yard_condition, route_day, window, price_per_visit_cents, customer:customers(mobile, email), address:addresses(street, unit, city, zip), visits(date, occurrence_date, price_cents, discount_cents)')
+    .eq('ref', ref)
+    .single<{
+      ref: string; service: ConfirmationView['service']; frequency: ConfirmationView['frequency']; beds: number | null; baths: number | null;
+      dogs: number | null; yard_condition: ConfirmationView['cond'] | null; route_day: string | null; window: string | null; price_per_visit_cents: number;
+      customer: { mobile: string; email: string }; address: { street: string; unit: string | null; city: string; zip: string };
+      visits: { date: string; occurrence_date: string; price_cents: number; discount_cents: number }[];
+    }>();
+  if (!p) return null;
+  const first = [...p.visits].sort((a, b) => a.occurrence_date.localeCompare(b.occurrence_date))[0];
+  return {
+    ref: p.ref,
+    isPet: p.service === 'pet',
+    service: p.service,
+    frequency: p.frequency,
+    phone: p.customer.mobile,
+    email: p.customer.email,
+    beds: p.beds,
+    baths: p.baths,
+    dogs: p.dogs,
+    petFreq: PET_FREQ[p.frequency],
+    cond: p.yard_condition ?? 'kept',
+    routeDay: p.route_day,
+    date: first.date,
+    window: p.window,
+    address: `${p.address.street}${p.address.unit ? `, ${p.address.unit}` : ''}, ${p.address.city}, GA ${p.address.zip}`,
+    pricePerVisitCents: p.price_per_visit_cents,
+    firstVisitCents: first.price_cents,
+    discountCents: first.discount_cents,
+  };
+}

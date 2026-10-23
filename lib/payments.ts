@@ -88,6 +88,35 @@ export async function chargeVisit(visitId: string, kind: ChargeKind, upgradeCent
   }
 }
 
+/**
+ * Refund a prepaid visit, keeping `keepCents` (a late fee). Safe to repeat: it only refunds
+ * what hasn't been refunded yet.
+ */
+export async function refundVisit(visitId: string, keepCents = 0): Promise<{ ok: boolean; refundedCents: number }> {
+  const db = createServiceClient();
+  const { data: pay } = await db.from('payments').select('id, stripe_payment_intent, amount_cents, refunded_cents')
+    .eq('visit_id', visitId).eq('kind', 'visit').eq('status', 'succeeded').maybeSingle();
+  if (!pay?.stripe_payment_intent) return { ok: true, refundedCents: 0 };
+  const target = Math.max(0, pay.amount_cents - keepCents);
+  const amount = target - pay.refunded_cents;
+  if (amount <= 0) return { ok: true, refundedCents: 0 };
+  try {
+    await stripe().refunds.create(
+      { payment_intent: pay.stripe_payment_intent, amount, reason: 'requested_by_customer', metadata: { visit_id: visitId, kept_cents: String(keepCents) } },
+      { idempotencyKey: `refund-${visitId}-${target}` },
+    );
+  } catch (err) {
+    console.error('refundVisit failed', { visitId, message: (err as Error).message });
+    return { ok: false, refundedCents: 0 };
+  }
+  await db.from('payments').update({
+    refunded_cents: target,
+    status: target >= pay.amount_cents ? 'refunded' : 'succeeded',
+    updated_at: new Date().toISOString(),
+  }).eq('id', pay.id);
+  return { ok: true, refundedCents: amount };
+}
+
 /** Stripe-hosted page where a customer saves a new card (after a decline, or from their manage link). */
 export async function createCardUpdateSession(customerId: string, returnPath: string): Promise<string | null> {
   const db = createServiceClient();

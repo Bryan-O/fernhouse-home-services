@@ -24,6 +24,12 @@ export const CONSENT = {
   },
 } as const;
 
+// Text templates (design/Messages.dc.html). Every text starts with "Fernhouse:" and links
+// only to our own domain. Sent in build step 7; queued in `messages` until then.
+export const TEXTS = {
+  manageLink: (url: string) => `Fernhouse: Here’s your link to manage your booking: ${url} It expires in 7 days.`,
+} as const;
+
 export const QUOTE = {
   sent: (phone: string) => `Thanks — we’ll text ${phone} with your quote.`,
   intro: 'Leave your mobile number and we’ll text you a quote today — no payment needed.',
