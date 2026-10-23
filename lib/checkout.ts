@@ -5,6 +5,7 @@ import { createServiceClient } from './supabase/admin';
 import { cardDetails, stripe } from './stripe';
 import { ARRIVAL_WINDOWS, BRAND, CLEAN_SERVICE_LABEL, OFFER, PET_FREQ_LABEL, ROUTE_DAYS, SITE_URL, dogsText } from './config';
 import { fmtShort } from './booking';
+import { inBackground, notifyBookingConfirmed } from './notify';
 
 // Stripe Checkout lets a session expire no sooner than 30 minutes after it's created.
 const CHECKOUT_MINUTES = 31;
@@ -180,6 +181,9 @@ export async function confirmSession(session: Stripe.Checkout.Session, expanded:
   if (stripeCustomer && card.payment_method_id) {
     await stripe().customers.update(stripeCustomer, { invoice_settings: { default_payment_method: card.payment_method_id } });
   }
+  // Texts and emails to the customer and the owner — sent once, whichever of the webhook
+  // and the confirmation page gets here first.
+  inBackground('booking messages', () => notifyBookingConfirmed(planId));
   return { ok: true, ref: r.ref, already: !!r.already };
 }
 

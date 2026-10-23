@@ -2,9 +2,7 @@
 
 import { createServiceClient } from '@/lib/supabase/admin';
 import { supabaseConfigured } from '@/lib/supabase/env';
-import { createManageToken } from '@/lib/manage';
-import { siteOrigin } from '@/lib/checkout';
-import { TEXTS } from '@/lib/messages';
+import { inBackground, notifyManageLink } from '@/lib/notify';
 import { toE164 } from '@/lib/booking';
 
 const LINKS_PER_HOUR = 3;
@@ -25,13 +23,10 @@ export async function sendManageLink(phone: string): Promise<{ ok: true } | { ok
 
   const since = new Date(Date.now() - 3600_000).toISOString();
   const { count } = await db.from('messages').select('id', { count: 'exact', head: true })
-    .eq('to_address', mobile).eq('template', 'manage_link').gte('created_at', since);
+    .eq('to_address', mobile).eq('template', 'manageLink').gte('created_at', since);
   if ((count ?? 0) >= LINKS_PER_HOUR) return { ok: true };
 
-  const token = await createManageToken(customer.id);
-  const url = `${await siteOrigin()}/b/${token}`;
-  // Queued here; build step 7 sends queued texts through Twilio.
-  await db.from('messages').insert({ customer_id: customer.id, to_address: mobile, channel: 'sms', template: 'manage_link', body: TEXTS.manageLink(url), status: 'queued' });
-  if (process.env.NODE_ENV !== 'production' || process.env.STRIPE_API_BASE) console.info('[dev] manage link for', mobile, url);
+  // Sent after the response, so a known number answers no slower than an unknown one.
+  inBackground('manage link text', () => notifyManageLink(customer.id, mobile));
   return { ok: true };
 }

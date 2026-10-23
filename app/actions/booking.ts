@@ -7,6 +7,7 @@ import { encryptField } from '@/lib/crypto';
 import { CONSENT } from '@/lib/messages';
 import { stripe, stripeConfigured } from '@/lib/stripe';
 import { createCheckout } from '@/lib/checkout';
+import { inBackground, notifyQuoteRequested } from '@/lib/notify';
 import {
   ARRIVAL_WINDOWS,
   BOOKING,
@@ -247,7 +248,7 @@ export async function requestQuote(input: { phone: string; dogs: number; overHal
     phone: mobile, service: 'pet', dogs, over_half_acre: !!input.overHalfAcre,
     utm_source: u.utm_source, utm_medium: u.utm_medium, utm_campaign: u.utm_campaign,
     utm_content: u.utm_content, utm_term: u.utm_term, fbclid: u.fbclid, gclid: u.gclid,
-  });
+  }).select('id').single();
   const c = await db.from('sms_consent').insert({
     phone: mobile, kind: 'booking', form: 'quote', consent_text_version: CONSENT.quote.version,
     consent_text: CONSENT.quote.text, ip: meta.ip || null, user_agent: meta.userAgent || null,
@@ -256,5 +257,6 @@ export async function requestQuote(input: { phone: string; dogs: number; overHal
     console.error('quote insert failed', q.error?.message ?? c.error?.message);
     return { ok: false, reason: 'error' };
   }
+  inBackground('quote messages', () => notifyQuoteRequested({ id: q.data.id, phone: mobile, dogs, overHalfAcre: !!input.overHalfAcre }));
   return { ok: true };
 }

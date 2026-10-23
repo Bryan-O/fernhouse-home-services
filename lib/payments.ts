@@ -5,6 +5,7 @@ import { stripe } from './stripe';
 import { ensureStripeCustomer, siteOrigin } from './checkout';
 import { BRAND } from './config';
 import { fmtShort } from './booking';
+import { inBackground, notifyPaymentFailed } from './notify';
 
 export type ChargeKind = 'visit' | 'late_fee' | 'cleanup_upgrade';
 
@@ -76,11 +77,12 @@ export async function chargeVisit(visitId: string, kind: ChargeKind, upgradeCent
     if (err instanceof Stripe.errors.StripeCardError) {
       const piId = (err.raw as { payment_intent?: { id?: string } })?.payment_intent?.id ?? null;
       const auth = err.code === 'authentication_required';
-      await db.from('payments').insert({
+      const { data: row } = await db.from('payments').insert({
         visit_id: visitId, stripe_payment_intent: piId, amount_cents: amount, kind, status: 'failed',
         failure_reason: err.decline_code ?? err.code ?? 'card_error',
-      });
-      // TODO (build step 7): text the customer ("Payment failed") and alert the owner.
+      }).select('id').single();
+      // "Payment failed" text and "Update your card" email to the customer; alert to the owner.
+      if (row) inBackground('payment failed messages', () => notifyPaymentFailed(row.id));
       return { ok: false, reason: auth ? 'authentication_required' : 'declined', message: err.message };
     }
     console.error('chargeVisit failed', { visitId, kind, message: (err as Error).message });

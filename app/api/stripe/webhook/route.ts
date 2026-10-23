@@ -3,6 +3,7 @@ import type Stripe from 'stripe';
 import { stripe, stripeConfigured, cardDetails } from '@/lib/stripe';
 import { confirmSession } from '@/lib/checkout';
 import { createServiceClient } from '@/lib/supabase/admin';
+import { inBackground, notifyPaymentFailed } from '@/lib/notify';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -46,7 +47,6 @@ async function handle(event: Stripe.Event) {
         const full = await stripe().checkout.sessions.retrieve(s.id, { expand: ['payment_intent.payment_method', 'setup_intent.payment_method'] });
         const r = await confirmSession(s, full);
         if (!r.ok && r.reason === 'error') throw new Error('confirm failed');
-        // TODO (build step 7): booking texts and emails to the customer and the owner.
       } else if (s.metadata?.kind === 'card_update' && s.metadata.customer_id) {
         const full = await stripe().checkout.sessions.retrieve(s.id, { expand: ['setup_intent.payment_method'] });
         const si = typeof full.setup_intent === 'object' ? full.setup_intent : null;
@@ -76,14 +76,17 @@ async function handle(event: Stripe.Event) {
       // Off-session charges: settle the payment row created when the charge was made.
       const pi = event.data.object;
       const failed = event.type === 'payment_intent.payment_failed';
-      await db.from('payments')
+      const { data: changed } = await db.from('payments')
         .update({
           status: failed ? 'failed' : 'succeeded',
           failure_reason: failed ? pi.last_payment_error?.decline_code ?? pi.last_payment_error?.code ?? 'payment_failed' : null,
           updated_at: new Date().toISOString(),
         })
         .eq('stripe_payment_intent', pi.id)
-        .neq('status', 'refunded');
+        .not('status', 'in', failed ? '(refunded,failed)' : '(refunded)')
+        .select('id');
+      // A charge that failed after it was made (not at the time): tell the customer and the owner.
+      if (failed) for (const p of changed ?? []) inBackground('payment failed messages', () => notifyPaymentFailed(p.id));
       return;
     }
     case 'charge.succeeded': {
