@@ -46,7 +46,8 @@ export default function PrivacyPage() {
       <p><strong>We don’t share your mobile number or text-message consent with anyone for their own marketing.</strong> Mobile information is never sold or shared with third parties or affiliates for marketing or promotional purposes. We share it only with the texting provider that delivers our messages.</p>
 
       <h2 id="p-cookies">Cookies and analytics</h2>
-      <p>We use cookies and similar tools from Google Analytics and the Meta Pixel to measure site traffic and the results of our ads. You can limit this through your browser’s cookie settings, the <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out add-on</a>, and your <a href="https://www.facebook.com/adpreferences">Meta ad preferences</a>.</p>
+      <p>We use cookies and similar tools from Google Analytics and the Meta Pixel to measure site traffic and the results of our ads. They run only on our public pages — never on your booking-management link. When you book or ask for a quote, our server also tells Meta that it happened (the Meta Conversions API), with your email address in hashed (scrambled) form so it can be matched to an ad you saw. We never send your phone number.</p>
+      <p>If your browser sends a Global Privacy Control signal, we don’t load these tools or tell Meta about your booking. You can also limit them through your browser’s cookie settings, the <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out add-on</a>, and your <a href="https://www.facebook.com/adpreferences">Meta ad preferences</a>.</p>
 
       <h2 id="p-share">How we share information</h2>
       <p><strong>We do not sell your personal information.</strong> We share it only:</p>

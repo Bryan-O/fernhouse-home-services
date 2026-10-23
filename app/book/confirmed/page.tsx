@@ -5,6 +5,7 @@ import { BrandMark } from '@/components/BrandMark';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Lock, PhoneIcon } from '@/components/Icons';
 import { ClearDraft } from './ClearDraft';
+import { PurchaseEvent } from './PurchaseEvent';
 import { Confirmed } from './Confirmed';
 import { BRAND } from '@/lib/config';
 import { stripeConfigured } from '@/lib/stripe';
@@ -40,6 +41,7 @@ export default async function ConfirmedPage({ searchParams }: { searchParams: Pr
         {view ? (
           <>
             <ClearDraft />
+            <PurchaseEvent refId={view.ref} value={(view.firstVisitCents - view.discountCents) / 100} item={view.isPet ? 'Pet waste removal' : 'House cleaning'} />
             <Confirmed v={view} sessionId={sessionId} />
           </>
         ) : (

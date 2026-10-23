@@ -8,6 +8,7 @@ import { CONSENT } from '@/lib/messages';
 import { stripe, stripeConfigured } from '@/lib/stripe';
 import { createCheckout } from '@/lib/checkout';
 import { inBackground, notifyQuoteRequested } from '@/lib/notify';
+import { capiLead } from '@/lib/meta-capi';
 import {
   ARRIVAL_WINDOWS,
   BOOKING,
@@ -85,7 +86,7 @@ export interface StartBookingInput {
   draft: BookingDraft;
   idempotencyKey: string;
   acceptFullPrice?: boolean;
-  utm?: Partial<Record<'utm_source' | 'utm_medium' | 'utm_campaign' | 'utm_content' | 'utm_term' | 'fbclid' | 'gclid', string>>;
+  utm?: Partial<Record<'utm_source' | 'utm_medium' | 'utm_campaign' | 'utm_content' | 'utm_term' | 'fbclid' | 'gclid' | 'fbp', string>> & { ads_ok?: boolean };
 }
 
 async function requestMeta() {
@@ -95,6 +96,17 @@ async function requestMeta() {
 }
 
 const clip = (s: string, n: number) => String(s ?? '').trim().slice(0, n);
+
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid'] as const;
+/** Ad attribution from the browser: known keys only, short strings, a well-formed _fbp. */
+function cleanUtm(u: StartBookingInput['utm']) {
+  const out: Record<string, string> = {};
+  for (const k of UTM_KEYS) if (typeof u?.[k] === 'string' && u[k]!.trim()) out[k] = u[k]!.trim().slice(0, 200);
+  const adsOk = u?.ads_ok !== false;
+  if (!adsOk) { delete out.fbclid; delete out.gclid; }
+  const fbp = adsOk && typeof u?.fbp === 'string' && /^fb\.\d\.\d{10,14}\.\d{1,24}$/.test(u.fbp) ? u.fbp : null;
+  return { utm: out, fbp, adsOk };
+}
 
 /**
  * Create a pending booking and hold its slot for 15 minutes. Prices are recomputed
@@ -161,7 +173,7 @@ export async function startBooking(input: StartBookingInput): Promise<StartBooki
     customer: { name: clip(d.name, 120), mobile, email: clip(d.email, 254).toLowerCase() },
     address: { street: clip(d.address, 200), unit: clip(d.unit, 40), city, zip: d.zip, access_notes: access_notes ?? null, gate_code: gate_code ?? null },
     consents,
-    utm: input.utm ?? {},
+    utm: cleanUtm(input.utm).utm,
     ip: meta.ip,
     user_agent: meta.userAgent,
   };
@@ -171,8 +183,10 @@ export async function startBooking(input: StartBookingInput): Promise<StartBooki
     console.error('start_booking failed', { code: error.code, message: error.message });
     return { ok: false, reason: 'error' };
   }
-  const r = data as { ok: boolean; reason?: string; ref?: string; hold_expires_at?: string; first_visit_cents?: number; discount_cents?: number; replayed?: boolean };
+  const r = data as { ok: boolean; reason?: string; ref?: string; plan_id?: string; hold_expires_at?: string; first_visit_cents?: number; discount_cents?: number; replayed?: boolean };
   if (!r.ok) return { ok: false, reason: (r.reason as 'full' | 'offer_used' | 'date_out_of_range') ?? 'error' };
+  const ad = cleanUtm(input.utm);
+  if (!r.replayed && (ad.fbp || !ad.adsOk)) await createServiceClient().from('plans').update({ fbp: ad.fbp, ads_ok: ad.adsOk }).eq('id', r.plan_id!);
 
   // Hand over to Stripe Checkout. Without Stripe keys (local preview) the booking just stays pending.
   let checkoutUrl: string | null = null;
@@ -214,7 +228,7 @@ export async function releaseAttempt(idempotencyKey: string): Promise<void> {
   await db.rpc('abandon_booking', { p_plan_id: plan.id });
 }
 
-export type LeadResult = { ok: true } | { ok: false; reason: 'invalid' | 'not_connected' | 'error' };
+export type LeadResult = { ok: true; id?: string } | { ok: false; reason: 'invalid' | 'not_connected' | 'error' };
 
 /** "Join the waitlist" when a ZIP is outside the area. */
 export async function joinWaitlist(phone: string, zip: string): Promise<LeadResult> {
@@ -243,11 +257,12 @@ export async function requestQuote(input: { phone: string; dogs: number; overHal
   if (!supabaseConfigured()) return { ok: false, reason: 'not_connected' };
   const db = createServiceClient();
   const meta = await requestMeta();
-  const u = input.utm ?? {};
+  const ad = cleanUtm(input.utm);
+  const u = ad.utm;
   const q = await db.from('quote_requests').insert({
     phone: mobile, service: 'pet', dogs, over_half_acre: !!input.overHalfAcre,
     utm_source: u.utm_source, utm_medium: u.utm_medium, utm_campaign: u.utm_campaign,
-    utm_content: u.utm_content, utm_term: u.utm_term, fbclid: u.fbclid, gclid: u.gclid,
+    utm_content: u.utm_content, utm_term: u.utm_term, fbclid: u.fbclid, gclid: u.gclid, fbp: ad.fbp, ads_ok: ad.adsOk,
   }).select('id').single();
   const c = await db.from('sms_consent').insert({
     phone: mobile, kind: 'booking', form: 'quote', consent_text_version: CONSENT.quote.version,
@@ -258,5 +273,6 @@ export async function requestQuote(input: { phone: string; dogs: number; overHal
     return { ok: false, reason: 'error' };
   }
   inBackground('quote messages', () => notifyQuoteRequested({ id: q.data.id, phone: mobile, dogs, overHalfAcre: !!input.overHalfAcre }));
-  return { ok: true };
+  inBackground('meta lead', () => capiLead(q.data.id, meta.ip || null, meta.userAgent || null));
+  return { ok: true, id: q.data.id };
 }

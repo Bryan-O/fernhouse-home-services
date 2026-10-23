@@ -25,6 +25,8 @@ import {
   type CleanService,
 } from '@/lib/config';
 import { CONSENT, QUOTE } from '@/lib/messages';
+import { readAttribution } from '@/lib/attribution';
+import { trackEvent } from '@/lib/analytics';
 import { toE164 } from '@/lib/booking';
 import { requestQuote } from '@/app/actions/booking';
 import { pickClean, type CleanStep1, type PetStep1, type ServiceTab } from '@/lib/booking-store';
@@ -290,12 +292,13 @@ function QuoteBox({ title, showBack, onBack, dogs, overHalfAcre }: { title: stri
       return;
     }
     setBusy(true);
-    // The confirmation text goes out once texting is connected (build step 7).
-    const r = await requestQuote({ phone, dogs, overHalfAcre }).catch(() => ({ ok: false as const, reason: 'error' as const }));
+    const r = await requestQuote({ phone, dogs, overHalfAcre, utm: readAttribution() }).catch(() => ({ ok: false as const, reason: 'error' as const }));
     setBusy(false);
     if (r.ok) {
       setSent(true);
       setError(null);
+      // Same event id as the server's Conversions API Lead, so Meta counts it once.
+      trackEvent({ name: 'generate_lead', params: { lead_source: 'pet_quote' } }, { name: 'Lead', eventID: r.id ? `quote-${r.id}` : undefined });
     } else {
       setError(r.reason === 'invalid' ? 'phone' : 'failed');
     }

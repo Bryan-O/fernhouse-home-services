@@ -6,6 +6,7 @@ import { cardDetails, stripe } from './stripe';
 import { ARRIVAL_WINDOWS, BRAND, CLEAN_SERVICE_LABEL, OFFER, PET_FREQ_LABEL, ROUTE_DAYS, SITE_URL, dogsText } from './config';
 import { fmtShort } from './booking';
 import { inBackground, notifyBookingConfirmed } from './notify';
+import { capiPurchase } from './meta-capi';
 
 // Stripe Checkout lets a session expire no sooner than 30 minutes after it's created.
 const CHECKOUT_MINUTES = 31;
@@ -184,6 +185,7 @@ export async function confirmSession(session: Stripe.Checkout.Session, expanded:
   // Texts and emails to the customer and the owner — sent once, whichever of the webhook
   // and the confirmation page gets here first.
   inBackground('booking messages', () => notifyBookingConfirmed(planId));
+  if (!r.already) inBackground('meta purchase', () => capiPurchase(planId));
   return { ok: true, ref: r.ref, already: !!r.already };
 }
 

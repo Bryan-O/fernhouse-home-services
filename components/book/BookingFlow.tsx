@@ -5,7 +5,9 @@ import { Check } from '../Icons';
 import { SummaryBar, SummarySide } from './Summary';
 import { CleanStep2, CleanStep3, CleanStep4, PetStep2, PetStep3, PetStep4, Waitlist } from './Steps';
 import { ErrIcon } from './parts';
-import { BOOKING, BRAND, PET_WASTE_PRICING, PRICING } from '@/lib/config';
+import { BOOKING, BRAND, PET_WASTE_PRICING, PRICING, TRACKING } from '@/lib/config';
+import { readAttribution } from '@/lib/attribution';
+import { trackEvent } from '@/lib/analytics';
 import { DEFAULT_CLEAN, DEFAULT_PET_STEP1, readClean, readPet } from '@/lib/booking-store';
 import {
   isFullDate,
@@ -193,7 +195,7 @@ export function BookingFlow() {
     setPayFailed(false); // the new attempt's outcome replaces the old banner
     setSubmitting(true);
     attemptKey.current ??= crypto.randomUUID();
-    const r = await startBooking({ draft: d, idempotencyKey: attemptKey.current, acceptFullPrice: offerUsed }).catch(() => ({ ok: false as const, reason: 'error' as const }));
+    const r = await startBooking({ draft: d, idempotencyKey: attemptKey.current, acceptFullPrice: offerUsed, utm: readAttribution() }).catch(() => ({ ok: false as const, reason: 'error' as const }));
     setSubmitting(false);
     if (r.ok) {
       const h = { ref: r.ref, expiresAt: r.holdExpiresAt, key: attemptKey.current };
@@ -201,6 +203,11 @@ export function BookingFlow() {
       setPayFailed(false);
       setRedirecting(true);
       window.scrollTo(0, 0);
+      const value = (r.firstVisitCents - r.discountCents) / 100;
+      trackEvent(
+        { name: 'begin_checkout', params: { currency: TRACKING.currency, value, items: [{ item_name: isPet ? 'Pet waste removal' : 'House cleaning' }] } },
+        { name: 'InitiateCheckout', params: { currency: TRACKING.currency, value }, eventID: `checkout-${r.ref}` },
+      );
       if (r.checkoutUrl) {
         writeDraft({ ...d, hold: h }); // so a cancelled checkout can come back to the countdown
         window.location.assign(r.checkoutUrl);
@@ -232,6 +239,7 @@ export function BookingFlow() {
     setWait((w) => ({ ...w, busy: true, error: null }));
     const r = await joinWaitlist(wait.phone, d.zip).catch(() => ({ ok: false as const, reason: 'error' as const }));
     setWait((w) => ({ ...w, busy: false, joined: r.ok, error: r.ok ? null : r.reason === 'invalid' ? 'phone' : 'failed' }));
+    if (r.ok) trackEvent({ name: 'join_waitlist', params: { zip: d.zip } });
   };
 
   const clearZip = () => {

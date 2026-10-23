@@ -204,7 +204,7 @@ export const POLICIES = {
 
 // Terms and Privacy Policy values. TODO (owner): Georgia attorney review before launch.
 export const LEGAL = {
-  privacyUpdated: 'October 21, 2026',
+  privacyUpdated: 'October 23, 2026', // cookies and analytics section updated for build step 10
   termsUpdated: 'October 21, 2026',
   damageReportHours: 48,
   directHireFee: 1000,
@@ -338,3 +338,16 @@ export const STORAGE_KEYS = {
 } as const;
 
 export const BOOKING_REF_PREFIX = 'FH';
+
+// ───────── Analytics and ads (build step 10) ─────────
+
+export const TRACKING = {
+  attributionDays: 30, // an ad click or UTM link counts for bookings within 30 days (last click wins)
+  // Only these public pages load Google Analytics and the Meta Pixel. Manage links, pro job
+  // links and the owner dashboard never do: their addresses hold private tokens.
+  pages: ['/', '/pet-waste-removal', '/book', '/book/confirmed', '/manage', '/privacy', '/terms'],
+  // The confirmation page's address holds the Stripe session, so the Pixel stays off there;
+  // Meta gets the Purchase from our server (Conversions API) instead.
+  noPixelPages: ['/book/confirmed'],
+  currency: 'USD',
+} as const;
