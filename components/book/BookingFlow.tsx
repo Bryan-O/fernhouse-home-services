@@ -17,7 +17,7 @@ import {
   type Availability,
   type BookingDraft,
 } from '@/lib/booking';
-import { getAvailability, joinWaitlist, startBooking } from '@/app/actions/booking';
+import { getAvailability, joinWaitlist, releaseAttempt, startBooking } from '@/app/actions/booking';
 
 type Step = 2 | 3 | 4;
 
@@ -31,6 +31,7 @@ const EMPTY: Omit<BookingDraft, 'svc' | 'clean' | 'pet'> = {
 interface Hold {
   ref: string;
   expiresAt: string;
+  key: string; // the attempt's idempotency key: a retry after checkout reuses this booking
 }
 
 function readDraft(): (Partial<BookingDraft> & { hold?: Hold }) | null {
@@ -75,6 +76,7 @@ export function BookingFlow() {
   const [submitting, setSubmitting] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const [hold, setHold] = useState<Hold | null>(null);
+  const [noPayments, setNoPayments] = useState(false);
   const [payFailed, setPayFailed] = useState(false);
   const [offerUsed, setOfferUsed] = useState(false);
   const [serverError, setServerError] = useState(false);
@@ -105,6 +107,7 @@ export function BookingFlow() {
     }));
     // Back from checkout without paying: the slot is still held, show the countdown.
     if (params.get('checkout') === 'cancelled' && savedHold && new Date(savedHold.expiresAt) > new Date()) {
+      attemptKey.current = savedHold.key;
       setHold(savedHold);
       setPayFailed(true);
       setAgree(true);
@@ -146,6 +149,12 @@ export function BookingFlow() {
   const e3 = showErrors && step === 3 ? step3Errors(d) : {};
 
   const go = (next: Step) => {
+    if (next < 4 && hold) {
+      // Changing the booking after checkout started: release that attempt; paying again starts fresh.
+      releaseAttempt(hold.key).catch(() => {});
+      attemptKey.current = null;
+      setHold(null);
+    }
     setStep(next);
     setShowErrors(false);
     setPayFailed(false);
@@ -181,23 +190,31 @@ export function BookingFlow() {
     }
     setShowErrors(false);
     setServerError(false);
+    setPayFailed(false); // the new attempt's outcome replaces the old banner
     setSubmitting(true);
     attemptKey.current ??= crypto.randomUUID();
     const r = await startBooking({ draft: d, idempotencyKey: attemptKey.current, acceptFullPrice: offerUsed }).catch(() => ({ ok: false as const, reason: 'error' as const }));
     setSubmitting(false);
     if (r.ok) {
-      setHold({ ref: r.ref, expiresAt: r.holdExpiresAt });
+      const h = { ref: r.ref, expiresAt: r.holdExpiresAt, key: attemptKey.current };
+      setHold(h);
       setPayFailed(false);
       setRedirecting(true);
       window.scrollTo(0, 0);
+      if (r.checkoutUrl) {
+        writeDraft({ ...d, hold: h }); // so a cancelled checkout can come back to the countdown
+        window.location.assign(r.checkoutUrl);
+      } else {
+        setNoPayments(true);
+      }
       return;
     }
     if (r.reason === 'offer_used') {
       setOfferUsed(true);
       return;
     }
-    attemptKey.current = null;
     if (r.reason === 'full' || r.reason === 'date_out_of_range') {
+      attemptKey.current = null; // nothing was saved; the next attempt is a new booking
       await loadAvailability();
       setStep(2);
       setShowErrors(true);
@@ -314,8 +331,10 @@ export function BookingFlow() {
               <h2 className="display h3">Taking you to secure checkout…</h2>
               <p className="body" style={{ margin: 0, color: 'var(--ink-2)', maxWidth: 420 }}>You’ll pay Fernhouse through Stripe. We never see or store your card number.</p>
               <p className="small" style={{ margin: 0, color: 'var(--muted)' }}>Please keep this page open.</p>
-              {/* TODO (build step 5): redirect to Stripe Checkout here. Until then the booking stays pending and its hold expires. */}
-              <p className="small" data-dev-note style={{ margin: 0, color: 'var(--muted)' }}>Booking {hold.ref} is held — payment is connected in build step 5.</p>
+              {noPayments && (
+                // Local preview without Stripe keys only; never shown once payments are connected.
+                <p className="small" data-dev-note style={{ margin: 0, color: 'var(--muted)' }}>Payments aren’t connected in this preview. Booking {hold.ref} is held for {BOOKING.holdMinutes} minutes.</p>
+              )}
             </div>
           ) : isPet && pet ? (
             step === 2 ? (

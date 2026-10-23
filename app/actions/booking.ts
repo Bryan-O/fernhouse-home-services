@@ -5,6 +5,8 @@ import { createServiceClient } from '@/lib/supabase/admin';
 import { supabaseConfigured } from '@/lib/supabase/env';
 import { encryptField } from '@/lib/crypto';
 import { CONSENT } from '@/lib/messages';
+import { stripe, stripeConfigured } from '@/lib/stripe';
+import { createCheckout } from '@/lib/checkout';
 import {
   ARRIVAL_WINDOWS,
   BOOKING,
@@ -75,7 +77,7 @@ export async function getAvailability(): Promise<Availability> {
 const closedDates = (slots: Record<string, number>) => Object.keys(slots).filter((d) => slots[d] === 0);
 
 export type StartBookingResult =
-  | { ok: true; ref: string; holdExpiresAt: string; firstVisitCents: number; discountCents: number; replayed: boolean }
+  | { ok: true; ref: string; holdExpiresAt: string; firstVisitCents: number; discountCents: number; replayed: boolean; checkoutUrl: string | null }
   | { ok: false; reason: 'invalid' | 'full' | 'offer_used' | 'date_out_of_range' | 'not_connected' | 'error' };
 
 export interface StartBookingInput {
@@ -170,7 +172,19 @@ export async function startBooking(input: StartBookingInput): Promise<StartBooki
   }
   const r = data as { ok: boolean; reason?: string; ref?: string; hold_expires_at?: string; first_visit_cents?: number; discount_cents?: number; replayed?: boolean };
   if (!r.ok) return { ok: false, reason: (r.reason as 'full' | 'offer_used' | 'date_out_of_range') ?? 'error' };
+
+  // Hand over to Stripe Checkout. Without Stripe keys (local preview) the booking just stays pending.
+  let checkoutUrl: string | null = null;
+  if (stripeConfigured()) {
+    const c = await createCheckout(r.ref!).catch((err) => {
+      console.error('createCheckout failed', { ref: r.ref, message: (err as Error).message });
+      return { ok: false as const, reason: 'error' as const };
+    });
+    if (!c.ok) return { ok: false, reason: 'error' };
+    checkoutUrl = c.url;
+  }
   return {
+    checkoutUrl,
     ok: true,
     ref: r.ref!,
     holdExpiresAt: r.hold_expires_at!,
@@ -178,6 +192,25 @@ export async function startBooking(input: StartBookingInput): Promise<StartBooki
     discountCents: r.discount_cents!,
     replayed: !!r.replayed,
   };
+}
+
+/**
+ * The visitor changed their booking after starting checkout: drop that pending attempt so its
+ * hold doesn't block a slot and its Stripe session can't be paid. Knowing the attempt's key
+ * proves it's theirs; paid bookings are never touched.
+ */
+export async function releaseAttempt(idempotencyKey: string): Promise<void> {
+  if (!/^[0-9a-f-]{36}$/i.test(idempotencyKey) || !supabaseConfigured()) return;
+  const db = createServiceClient();
+  const { data: plan } = await db.from('plans').select('id, stripe_checkout_session_id')
+    .eq('idempotency_key', idempotencyKey).eq('status', 'pending').maybeSingle();
+  if (!plan) return;
+  if (plan.stripe_checkout_session_id && stripeConfigured()) {
+    await stripe().checkout.sessions.expire(plan.stripe_checkout_session_id).catch(() => {
+      // Already expired or completed — confirmCheckout refunds a payment on an ended booking.
+    });
+  }
+  await db.rpc('abandon_booking', { p_plan_id: plan.id });
 }
 
 export type LeadResult = { ok: true } | { ok: false; reason: 'invalid' | 'not_connected' | 'error' };

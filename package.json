@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:db": "scripts/test-db.sh"
+    "test": "vitest run --exclude 'lib/**/*.int.test.ts'",
+    "test:db": "scripts/test-db.sh",
+    "test:int": "scripts/test-int.sh"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
@@ -18,7 +19,8 @@
     "next": "^16.4.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "server-only": "^0.0.1"
+    "server-only": "^0.0.1",
+    "stripe": "^23.0.1"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
