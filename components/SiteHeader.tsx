@@ -62,7 +62,7 @@ export function SiteHeader({ variant }: { variant: Variant }) {
           )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <CallButton />
-            <Link className="btn btn-primary btn-sm" href={minimal ? '/#booking' : '/book'}>Book now</Link>
+            <Link className="btn btn-primary btn-sm hdr-book" href={minimal ? '/#booking' : '/book'}>Book now</Link>
           </div>
         </div>
       </header>
@@ -130,9 +130,9 @@ export function SiteHeader({ variant }: { variant: Variant }) {
           </button>
           <CallButton />
           {onHome ? (
-            <a className="btn btn-primary btn-sm" href="#booking" onClick={() => pickClean()}>Book now</a>
+            <a className="btn btn-primary btn-sm hdr-book" href="#booking" onClick={() => pickClean()}>Book now</a>
           ) : (
-            <a className="btn btn-primary btn-sm" href="#booking">Book now</a>
+            <a className="btn btn-primary btn-sm hdr-book" href="#booking">Book now</a>
           )}
         </div>
       </div>

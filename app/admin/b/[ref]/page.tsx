@@ -5,6 +5,7 @@ import { OwnerFrame } from '@/components/admin/OwnerHeader';
 import { requireOwner } from '@/lib/auth';
 import { loadAssign } from '@/lib/ops';
 import { AssignPicker } from './AssignPicker';
+import { NoAccessForm } from '@/components/admin/ProblemForms';
 
 export const metadata: Metadata = { title: 'Assign a pro', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -35,6 +36,7 @@ export default async function AssignPage({ params }: { params: Promise<{ ref: st
         ) : (
           <AssignPicker planId={a.planId} legend={a.legend} pros={a.pros} customerFirst={a.customerFirst} />
         )}
+        {a.dueVisit && <NoAccessForm visitId={a.dueVisit.id} isPet={a.dueVisit.isPet} label={a.dueVisit.label} />}
       </div>
     </OwnerFrame>
   );

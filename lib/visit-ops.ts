@@ -2,9 +2,10 @@ import 'server-only';
 import { createServiceClient } from './supabase/admin';
 import { chargeVisit } from './payments';
 import { stripeConfigured } from './stripe';
-import { AUTOMATIONS, PET_WASTE_PRICING } from './config';
+import { AUTOMATIONS, PET_WASTE_PRICING, POLICIES } from './config';
+import { addDays } from './booking';
 import {
-  inBackground, notifyAssigned, notifyOnTheWay, notifyUpgradeAsked, notifyUpgradeDeclined, notifyVisitDone,
+  inBackground, notifyAssigned, notifyNoAccess, notifyOnTheWay, notifyUpgradeAsked, notifyUpgradeDeclined, notifyVisitDone, notifyWeatherMove,
 } from './notify';
 
 // What happens to a visit after booking: a pro is assigned, goes on the way, marks it done
@@ -105,4 +106,42 @@ export async function saveGatePhoto(visitId: string, path: string): Promise<bool
   if (!data?.length) return false;
   const { error } = await db.from('visits').update({ gate_photo_url: path }).eq('id', visitId).in('status', ['scheduled', 'confirmed']);
   return !error;
+}
+
+/**
+ * The team couldn't get in. Yards move to the next day (the text promises a return tomorrow);
+ * cleans are marked no-access. The late fee the Terms allow is charged only if the owner asks.
+ */
+export async function markNoAccess(visitId: string, reason: string, chargeFee: boolean): Promise<{ ok: boolean; moved?: string; error?: string }> {
+  const db = createServiceClient();
+  const { data: v } = await db.from('visits').select('id, date, status, plan:plans!inner(service)').eq('id', visitId)
+    .single<{ id: string; date: string; status: string; plan: { service: string } }>();
+  if (!v || !['scheduled', 'confirmed'].includes(v.status)) return { ok: false, error: 'That visit isn’t open.' };
+  let moved: string | undefined;
+  if (v.plan.service === 'pet') {
+    const next = addDays(v.date, 1);
+    const { error } = await db.from('visits').update({ date: next, on_way_at: null }).eq('id', v.id);
+    if (error) return { ok: false, error: error.code === '23505' ? 'This yard already has a visit tomorrow.' : 'Not saved.' };
+    moved = next;
+  } else {
+    await db.from('visits').update({ status: 'no_access', fee_cents: chargeFee ? POLICIES.lateCancelFee * 100 : 0 }).eq('id', v.id);
+  }
+  inBackground('no access text', () => notifyNoAccess(v.id, reason));
+  if (chargeFee && v.plan.service !== 'pet') inBackground('no access fee', () => chargeVisit(v.id, 'late_fee'));
+  return { ok: true, moved };
+}
+
+/** Weather: move every open yard visit on one day to another, and text each customer. */
+export async function moveYardDay(from: string, to: string): Promise<{ moved: number; clashes: number }> {
+  const db = createServiceClient();
+  const { data: visits } = await db.from('visits').select('id, plan:plans!inner(service)').eq('date', from).in('status', ['scheduled', 'confirmed'])
+    .eq('plans.service', 'pet');
+  let moved = 0, clashes = 0;
+  for (const v of visits ?? []) {
+    const { error } = await db.from('visits').update({ date: to, on_way_at: null }).eq('id', v.id);
+    if (error) { clashes++; continue; }
+    moved++;
+    inBackground('weather move text', () => notifyWeatherMove(v.id));
+  }
+  return { moved, clashes };
 }

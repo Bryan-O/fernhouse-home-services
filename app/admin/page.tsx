@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { OwnerFrame } from '@/components/admin/OwnerHeader';
 import { ActionButton, OwnerToast } from '@/components/admin/OwnerBits';
+import { WeatherMove } from '@/components/admin/ProblemForms';
 import { requireOwner } from '@/lib/auth';
 import { loadToday } from '@/lib/ops';
 import { markQuoted, retryCharge } from './ops-actions';
@@ -82,6 +83,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   </table>
                 </div>
               ) : <p className="small" style={{ margin: 0, color: 'var(--muted)' }}>No visits today.</p>}
+              {t.openYardsToday > 0 && <WeatherMove count={t.openYardsToday} />}
             </section>
           </div>
 

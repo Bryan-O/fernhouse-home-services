@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Check } from '@/components/Icons';
@@ -101,6 +101,15 @@ export function ManageApp({ token, data, av, rating, cardUpdated }: { token: str
       window.scrollTo(0, 0);
     });
   };
+  // When the view changes (overview ↔ reschedule ↔ cancel), the button that was pressed is gone:
+  // move focus to the new view's heading so keyboard and screen-reader users aren't lost.
+  const firstView = useRef(true);
+  useEffect(() => {
+    if (firstView.current) { firstView.current = false; return; }
+    const h = document.querySelector<HTMLElement>('main h1');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+  }, [view]);
+
   const go = (v: View, visit?: VisitView | null) => {
     setError('');
     setToast('');

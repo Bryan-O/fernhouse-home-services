@@ -520,6 +520,28 @@ export async function notifyUpgradeDeclined(visitId: string): Promise<void> {
   });
 }
 
+// ───────── Couldn't get in · weather ─────────
+
+export async function notifyNoAccess(visitId: string, reason: string): Promise<void> {
+  const p = await visitPlan(visitId);
+  const v = p?.visits.find((x) => x.id === visitId);
+  if (!p || !v) return;
+  await sendText({
+    to: p.customer.mobile, customerId: p.customer.id, audience: 'customer', template: 'noAccess', dedupeKey: `noaccess:${v.id}:${v.date}`,
+    body: TEXTS.noAccess({ reason: reason.trim().slice(0, 60) || 'no access' }),
+  });
+}
+
+export async function notifyWeatherMove(visitId: string): Promise<void> {
+  const p = await visitPlan(visitId);
+  const v = p?.visits.find((x) => x.id === visitId);
+  if (!p || !v) return;
+  await sendText({
+    to: p.customer.mobile, customerId: p.customer.id, audience: 'customer', template: 'weatherMove', dedupeKey: `weather:${v.id}:${v.date}`,
+    body: TEXTS.weatherMove({ date: dayDate(v.date) }),
+  });
+}
+
 // ───────── Replies to our number ─────────
 
 /** A customer's (non-keyword) reply: forward it to the owner's inbox. */

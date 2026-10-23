@@ -826,3 +826,10 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
   .cap .ad-stepper { gap: 2px; }
   .cap .ad-st-btn { width: 28px; height: 28px; }
 }
+
+/* Very small phones (under 360px, narrower than any design frame): keep the header on one
+   line with no sideways scrolling. The page's own booking buttons stay. */
+@media (max-width: 359px) {
+  .wrap { padding-left: 16px; padding-right: 16px; }
+  .hdr-book { display: none; }
+}

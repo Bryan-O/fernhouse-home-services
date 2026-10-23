@@ -4,15 +4,15 @@ import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { requireOwner } from '@/lib/auth';
 import { createServiceClient } from '@/lib/supabase/admin';
-import { assignPlan } from '@/lib/visit-ops';
+import { assignPlan, markNoAccess, moveYardDay } from '@/lib/visit-ops';
 import { chargeVisit } from '@/lib/payments';
 import { stripeConfigured } from '@/lib/stripe';
 import { createProLink } from '@/lib/pro-links';
 import { displayUrl, shortName } from '@/lib/format';
 import { publicOrigin, sendText } from '@/lib/notify';
 import { CONSENT, TEXTS } from '@/lib/messages';
-import { toE164, todayIso } from '@/lib/booking';
-import { ARRIVAL_WINDOWS, PRO_REQUIRED_DOCUMENTS, SERVICE_ZIPS } from '@/lib/config';
+import { addDays, fmtLong, toE164, todayIso, weekday } from '@/lib/booking';
+import { ARRIVAL_WINDOWS, PRO_REQUIRED_DOCUMENTS, ROUTE_DAYS, SERVICE_ZIPS } from '@/lib/config';
 
 // Owner-only. Every action checks the signed-in owner first.
 
@@ -175,4 +175,24 @@ export async function saveOwnerDoc(proId: string, kind: string, path: string, ex
   });
   revalidatePath('/admin/pros');
   return error ? { ok: false, error: 'Not saved. Please try again.' } : { ok: true, message: 'Uploaded and verified.' };
+}
+
+export async function noAccess(visitId: string, reason: string, chargeFee: boolean): Promise<OwnerResult> {
+  await requireOwner();
+  if (!uuid(visitId)) return { ok: false, error: 'Not found.' };
+  const r = await markNoAccess(visitId, reason, chargeFee);
+  revalidatePath('/admin');
+  if (!r.ok) return { ok: false, error: r.error ?? 'Not saved.' };
+  return { ok: true, message: r.moved ? `Customer texted. The yard visit moved to ${fmtLong(r.moved)}.` : `Customer texted. Visit marked “couldn’t get in”${chargeFee ? ' and the late fee charged' : ''}.` };
+}
+
+export async function weatherMove(to: string): Promise<OwnerResult> {
+  await requireOwner();
+  const today = todayIso();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(to) || to <= today || to > addDays(today, 14)) return { ok: false, error: 'Pick a day in the next two weeks.' };
+  if (!ROUTE_DAYS.some((r) => r.day === weekday(to))) return { ok: false, error: 'Yard routes run Monday to Friday — pick a weekday.' };
+  const r = await moveYardDay(today, to);
+  revalidatePath('/admin');
+  if (!r.moved && !r.clashes) return { ok: false, error: 'No open yard visits today.' };
+  return { ok: true, message: `${r.moved} yard visit${r.moved === 1 ? '' : 's'} moved to ${fmtLong(to)}; customers texted.${r.clashes ? ` ${r.clashes} already had a visit that day — move those by hand.` : ''}` };
 }

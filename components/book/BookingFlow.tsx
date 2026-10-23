@@ -72,6 +72,10 @@ export function BookingFlow() {
   const [av, setAv] = useState<Availability | null>(null);
   const [avError, setAvError] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
+  // Keyboard and screen-reader users: after "Continue", focus the new step's heading; after a
+  // failed "Continue", focus the first field with a problem (WCAG 2.4.3, 3.3.1).
+  const [focusTick, setFocusTick] = useState<{ kind: 'step' | 'error'; n: number } | null>(null);
+  const showProblems = () => { setShowErrors(true); setFocusTick((t) => ({ kind: 'error', n: (t?.n ?? 0) + 1 })); };
   const [monthOffset, setMonthOffset] = useState(0);
   const [gateWarned, setGateWarned] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -150,6 +154,16 @@ export function BookingFlow() {
   const e2 = showErrors && step === 2 && av ? step2Errors(d, av) : {};
   const e3 = showErrors && step === 3 ? step3Errors(d) : {};
 
+  useEffect(() => {
+    if (!focusTick) return;
+    const el = focusTick.kind === 'error'
+      ? document.querySelector<HTMLElement>('.book-grid [aria-invalid="true"], .book-grid .err[role="alert"]')
+      : document.querySelector<HTMLElement>(`#${isPet ? 'ps' : 's'}${step}-title`);
+    if (!el) return;
+    if (!el.matches('input, select, textarea, button')) el.setAttribute('tabindex', '-1');
+    el.focus({ preventScroll: focusTick.kind === 'step' });
+  }, [focusTick, step, isPet]);
+
   const go = (next: Step) => {
     if (next < 4 && hold) {
       // Changing the booking after checkout started: release that attempt; paying again starts fresh.
@@ -158,6 +172,7 @@ export function BookingFlow() {
       setHold(null);
     }
     setStep(next);
+    setFocusTick((t) => ({ kind: 'step', n: (t?.n ?? 0) + 1 }));
     setShowErrors(false);
     setPayFailed(false);
     setServerError(false);
@@ -167,7 +182,7 @@ export function BookingFlow() {
   const continue2 = () => {
     if (!av) return;
     if (Object.keys(step2Errors(d, av)).length) {
-      setShowErrors(true);
+      showProblems();
       return;
     }
     if (isPet && !d.gate.trim() && !gateWarned) {
@@ -179,7 +194,7 @@ export function BookingFlow() {
 
   const continue3 = () => {
     if (Object.keys(step3Errors(d)).length) {
-      setShowErrors(true);
+      showProblems();
       return;
     }
     go(4);
@@ -187,7 +202,7 @@ export function BookingFlow() {
 
   const pay = async () => {
     if (!agree) {
-      setShowErrors(true);
+      showProblems();
       return;
     }
     setShowErrors(false);

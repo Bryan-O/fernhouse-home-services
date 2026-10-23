@@ -4,8 +4,8 @@ import { createServiceClient } from '@/lib/supabase/admin';
 import { supabaseConfigured } from '@/lib/supabase/env';
 import { inBackground, notifyManageLink } from '@/lib/notify';
 import { toE164 } from '@/lib/booking';
+import { LIMITS } from '@/lib/config';
 
-const LINKS_PER_HOUR = 3;
 
 /**
  * "Find my booking": text a manage link to a number that has a booking. The answer is the
@@ -24,7 +24,7 @@ export async function sendManageLink(phone: string): Promise<{ ok: true } | { ok
   const since = new Date(Date.now() - 3600_000).toISOString();
   const { count } = await db.from('messages').select('id', { count: 'exact', head: true })
     .eq('to_address', mobile).eq('template', 'manageLink').gte('created_at', since);
-  if ((count ?? 0) >= LINKS_PER_HOUR) return { ok: true };
+  if ((count ?? 0) >= LIMITS.manageLinksPerHour) return { ok: true };
 
   // Sent after the response, so a known number answers no slower than an unknown one.
   inBackground('manage link text', () => notifyManageLink(customer.id, mobile));

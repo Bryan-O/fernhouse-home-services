@@ -36,6 +36,7 @@ export interface TodayView {
   kpis: { n: number; label: string; tone: 'warn' | 'bad' | null }[];
   unassigned: { ref: string; what: string; when: string; area: string; ago: string; price: string }[];
   today: { when: string; svc: string; area: string; pro: string; status: string; tone: Tone; note: string | null }[];
+  openYardsToday: number;
   failed: { paymentId: string; title: string; what: string; sub: string }[];
   quotes: { id: string; what: string; phone: string; smsHref: string; ago: string }[];
   docs: { proId: string; title: string; sub: string; warn: boolean }[];
@@ -167,6 +168,7 @@ export async function loadToday(now = new Date()): Promise<TodayView> {
     ],
     unassigned,
     today: today_,
+    openYardsToday: (vis.data ?? []).filter((v) => v.plan.service === 'pet' && v.status !== 'done').length,
     failed,
     quotes: (quotes.data ?? []).map((q) => ({
       id: q.id,
@@ -197,6 +199,8 @@ export interface AssignView {
   pros: { id: string; name: string; detail: string; status: string; tone: Tone; blocked: boolean }[];
   assigned: { pro: string; count: number } | null;
   customerFirst: string;
+  /** An open visit due today (or overdue): where "Couldn't get in" applies. */
+  dueVisit: { id: string; isPet: boolean; label: string } | null;
 }
 
 export async function loadAssign(refNumber: string, now = new Date()): Promise<AssignView | null> {
@@ -266,6 +270,10 @@ export async function loadAssign(refNumber: string, now = new Date()): Promise<A
     pros: open.length ? list : [],
     assigned: !open.length && assignedPros.length ? { pro: shortName(assignedPros[0].pro!.name), count: assignedPros.length } : null,
     customerFirst: p.customer.name.trim().split(/\s+/)[0],
+    dueVisit: (() => {
+      const d = visits.find((v) => v.date <= today && ['scheduled', 'confirmed'].includes(v.status) && v.pro_id);
+      return d ? { id: d.id, isPet: pet, label: pet ? dayDate(d.date) : `${dayDate(d.date)} · ${windowShort(d.window)}` } : null;
+    })(),
   };
 }
 

@@ -12,6 +12,7 @@ import { capiLead } from '@/lib/meta-capi';
 import {
   ARRIVAL_WINDOWS,
   BOOKING,
+  LIMITS,
   CAPACITY_DEFAULTS,
   cityForZip,
   PET_WASTE_PRICING,
@@ -230,6 +231,15 @@ export async function releaseAttempt(idempotencyKey: string): Promise<void> {
 
 export type LeadResult = { ok: true; id?: string } | { ok: false; reason: 'invalid' | 'not_connected' | 'error' };
 
+/** Too many quote/waitlist requests from this connection in the last hour? */
+async function tooManyLeads(ip: string): Promise<boolean> {
+  if (!ip) return false;
+  const since = new Date(Date.now() - 3600_000).toISOString();
+  const { count } = await createServiceClient().from('sms_consent').select('id', { count: 'exact', head: true })
+    .eq('ip', ip).in('form', ['quote', 'waitlist']).gte('given_at', since);
+  return (count ?? 0) >= LIMITS.leadsPerIpPerHour;
+}
+
 /** "Join the waitlist" when a ZIP is outside the area. */
 export async function joinWaitlist(phone: string, zip: string): Promise<LeadResult> {
   const mobile = toE164(phone);
@@ -237,6 +247,7 @@ export async function joinWaitlist(phone: string, zip: string): Promise<LeadResu
   if (!supabaseConfigured()) return { ok: false, reason: 'not_connected' };
   const db = createServiceClient();
   const meta = await requestMeta();
+  if (await tooManyLeads(meta.ip)) return { ok: false, reason: 'error' };
   const w = await db.from('waitlist').upsert({ phone: mobile, zip }, { onConflict: 'phone,zip', ignoreDuplicates: true });
   const c = await db.from('sms_consent').insert({
     phone: mobile, kind: 'booking', form: 'waitlist', consent_text_version: CONSENT.waitlist.version,
@@ -257,6 +268,11 @@ export async function requestQuote(input: { phone: string; dogs: number; overHal
   if (!supabaseConfigured()) return { ok: false, reason: 'not_connected' };
   const db = createServiceClient();
   const meta = await requestMeta();
+  if (await tooManyLeads(meta.ip)) return { ok: false, reason: 'error' };
+  // The same number again within half an hour: say yes, but don't text or log it twice.
+  const { data: recent } = await db.from('quote_requests').select('id').eq('phone', mobile)
+    .gte('created_at', new Date(Date.now() - LIMITS.quoteRepeatMinutes * 60_000).toISOString()).limit(1).maybeSingle();
+  if (recent) return { ok: true, id: recent.id };
   const ad = cleanUtm(input.utm);
   const u = ad.utm;
   const q = await db.from('quote_requests').insert({

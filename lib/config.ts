@@ -339,6 +339,16 @@ export const STORAGE_KEYS = {
 
 export const BOOKING_REF_PREFIX = 'FH';
 
+// ───────── Abuse limits ─────────
+
+// Each quote request texts the number typed in, so public forms are limited
+// (texts cost money, and "SMS pumping" fraud targets forms like these).
+export const LIMITS = {
+  quoteRepeatMinutes: 30, // the same number asking again within 30 minutes isn't texted again
+  leadsPerIpPerHour: 5, // quote + waitlist requests from one connection per hour
+  manageLinksPerHour: 3, // "find my booking" texts per number per hour
+} as const;
+
 // ───────── Analytics and ads (build step 10) ─────────
 
 export const TRACKING = {

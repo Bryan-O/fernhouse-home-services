@@ -26,11 +26,11 @@ export function PetHero() {
   }, [ready, pet]);
 
   return (
-    <section id="hero" aria-label="Book pet waste removal" style={{ background: 'var(--paper-2)' }}>
+    <section id="hero" aria-labelledby="pet-hero-h" style={{ background: 'var(--paper-2)' }}>
       <div className="wrap sec hero-grid">
         <div className="a-copy hero-copy">
           <span className="small kicker"><Paw size={16} stroke="var(--accent)" />Pet Waste Removal</span>
-          <h1 className="display h1" style={{ maxWidth: 560 }}>Your yard, scooped weekly. You never touch it.</h1>
+          <h1 id="pet-hero-h" className="display h1" style={{ maxWidth: 560 }}>Your yard, scooped weekly. You never touch it.</h1>
           <p className="body" style={{ margin: 0, color: 'var(--ink-2)', maxWidth: '65ch' }}>
             Weekly dog waste removal for Atlanta homes. We scoop, haul it away, and text you a photo of your latched gate — you never need to be home.
           </p>
