@@ -659,3 +659,9 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .footer-id { display: flex; flex-direction: column; gap: 8px; min-width: 220px; }
 .footer-id-tight { gap: 6px; }
 .footer-id-tight .small { line-height: normal; }
+
+/* ═════════ Owner dashboard ═════════ */
+
+.ad-tab { background: none; border: 0; color: var(--footer-ink); font: inherit; font-size: 15px; font-weight: 600; min-height: 44px; padding: 0 14px; border-radius: var(--radius-pill); cursor: pointer; }
+.ad-tab[aria-current='page'] { background: rgba(255, 255, 255, 0.12); color: #FFFFFF; }
+@media (hover: hover) { .ad-tab:hover { color: #FFFFFF; } }
