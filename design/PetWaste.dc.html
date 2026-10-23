@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dog Waste Removal in Atlanta, GA | Fernhouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.pw{container-type:inline-size;container-name:pw}
+.wrap{max-width:1120px;margin:0 auto;padding-left:32px;padding-right:32px;box-sizing:border-box}
+.sec{padding-top:72px;padding-bottom:72px}
+.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+.h1{font-size:40px;line-height:48px}
+.h2{font-size:30px;line-height:36px}
+.h3{font-size:22px;line-height:28px;font-weight:700;letter-spacing:-0.01em}
+.body{font-size:17px;line-height:27px}
+.small{font-size:14px;line-height:21px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:16px;font-weight:600;line-height:1;text-decoration:none;cursor:pointer;border:0;box-sizing:border-box;white-space:nowrap;transition:transform 120ms ease,background-color 120ms ease,border-color 120ms ease}
+.btn:active{transform:scale(0.98)}
+.btn-sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn-primary{background:var(--accent);color:#FFFFFF}
+.btn-primary:active{background:color-mix(in srgb,var(--accent) 80%,#000)}
+.btn-secondary{background:#FFFFFF;color:var(--ink);border:1.5px solid rgba(22,33,31,0.15)}
+.btn-white{background:#FFFFFF;color:var(--ink)}
+.btn[aria-disabled="true"]{opacity:0.5;pointer-events:none}
+.link{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+@media (hover:hover){
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 88%,#000)}
+.btn-secondary:hover{border-color:rgba(22,33,31,0.35)}
+.btn-white:hover{background:#EEF3F1}
+.opt:hover{border-color:rgba(22,33,31,0.3)}
+.faq-q:hover{color:var(--accent)}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.on-accent :focus-visible{outline-color:#FFFFFF}
+.opt{background:#FFFFFF;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer;font-family:inherit;transition:border-color 120ms ease,background-color 120ms ease,transform 120ms ease}
+.opt:active{transform:scale(0.98)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.stepper-btn{width:44px;height:44px;border-radius:999px;border:0;background:var(--paper-2);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 120ms ease}
+.stepper-btn:active{transform:scale(0.94)}
+.stepper-btn[disabled]{opacity:0.5;pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);grid-template-areas:"copy widget" "photo widget";gap:32px 56px;align-items:start}
+.a-copy{grid-area:copy}.a-widget{grid-area:widget}.a-photo{grid-area:photo}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 24px}
+.why-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.pet-freqs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 8px;padding-top:6px}
+.price-cards{display:none}
+.addons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.faq-panel{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows 240ms ease,visibility 240ms}
+.faq-panel.open{grid-template-rows:1fr;visibility:visible}
+.faq-panel > div{overflow:hidden}
+.chev{transition:transform 240ms ease;flex:none}
+.chev.open{transform:rotate(180deg)}
+.dd{position:relative}
+.dd-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:0;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink-2);padding:12px 0;cursor:pointer}
+.dd-menu{position:absolute;top:100%;left:-16px;width:300px;background:#FFFFFF;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:8px;display:flex;flex-direction:column;z-index:40}
+.dd-item{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:48px;padding:8px 12px;border-radius:12px;text-decoration:none;color:var(--ink);font-size:15px;font-weight:600}
+.dd-item small{font-size:13px;font-weight:400;color:var(--muted)}
+.dd-item:hover,.dd-item:focus-visible{background:var(--paper-2)}
+.dd-item[aria-current="page"]{background:var(--accent-soft)}
+.dd-sep{height:1px;background:var(--line);margin:6px 8px}
+.menu-btn{display:none}
+.mmenu{display:none}
+.m-row{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:52px;padding:0 4px;box-sizing:border-box;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);text-decoration:none;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;text-align:left}
+.m-sub{display:flex;align-items:center;min-height:52px;padding:0 16px;border-bottom:1px solid var(--line);color:var(--ink-2);text-decoration:none;font-size:15px;font-weight:600}
+.mbar{display:none}
+.mbar-space{display:none}
+.nav-links{display:flex}
+@container pw (max-width:1023px){
+.nav-links{display:none !important}
+.menu-btn{display:inline-flex}
+.mmenu{display:block}
+.hero-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "widget" "photo"}
+.a-widget{max-width:560px;width:100%}
+.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@container pw (max-width:899px){.grid-3{grid-template-columns:minmax(0,1fr)}}
+@container pw (max-width:767px){
+.wrap{padding-left:20px;padding-right:20px}
+.sec{padding-top:48px;padding-bottom:48px}
+.h1{font-size:32px;line-height:38px}
+.grid-4,.why-grid,.addons{grid-template-columns:minmax(0,1fr)}
+.btn-block-m{width:100%}
+.call-label{display:none}
+.a-widget{padding:16px !important}
+.price-table{display:none}
+.price-cards{display:grid}
+.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;transform:translateY(110%);transition:transform 200ms ease}
+.mbar.show{transform:translateY(0)}
+.mbar-space{display:block;height:84px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+</helmet>
+<div class="pw" style="--ink: #16211F; --ink-2: #3D4A47; --muted: #5B6764; --paper: #FFFFFF; --paper-2: #F6F8F7; --accent: {{accent}}; --accent-soft: #E3F2EC; --gold: #C99A2C; --line: #DCE3E0; --error: #B42318; --shadow-card: 0 1px 2px rgba(22,33,31,0.05), 0 12px 32px -16px rgba(22,33,31,0.22); --shadow-elev: 0 -6px 24px -8px rgba(22,33,31,0.22); font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--paper); width: 100%; min-width: 0; -webkit-font-smoothing: antialiased">
+
+<!-- Header (same as the home page; Pet Waste Removal is the current page) -->
+<header style="position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,0.96); border-bottom: 1px solid var(--line)">
+<div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px">
+<a href="Main.dc.html" aria-label="Fernhouse home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-height: 44px">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 10px; background: var(--accent); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5"></path><path d="M6 9.5V19h12V9.5"></path></svg></span>
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.01em">Fernhouse</span>
+</a>
+<nav class="nav-links" aria-label="Main" style="align-items: center; gap: 28px; font-size: 15px; font-weight: 600">
+<div class="dd" onMouseEnter="{{ddEnter}}" onMouseLeave="{{ddLeave}}" onKeyDown="{{ddKey}}" onBlur="{{ddBlur}}">
+<button type="button" id="svc-btn" class="dd-btn" aria-expanded="{{ddOpen}}" aria-controls="svc-menu" onClick="{{ddToggle}}">Services<svg class="{{ddChevCls}}" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+<sc-if value="{{ddOpen}}" hint-placeholder-val="{{false}}">
+<div id="svc-menu" class="dd-menu" aria-label="Services">
+<a class="dd-item" href="Main.dc.html#booking" onClick="{{goStandard}}">Residential Cleaning<small>Recurring upkeep, weekly or biweekly</small></a>
+<a class="dd-item" href="Main.dc.html#booking" onClick="{{goDeep}}">Deep Cleaning<small>A full top-to-bottom reset</small></a>
+<a class="dd-item" href="Main.dc.html#booking" onClick="{{goMove}}">Move-In/Out Cleaning<small>Empty-home detail clean</small></a>
+<div class="dd-sep" aria-hidden="true"></div>
+<a class="dd-item" href="#top" aria-current="page">Pet Waste Removal<small>Weekly yard service</small></a>
+</div>
+</sc-if>
+</div>
+<a href="#pricing" style="color: var(--ink-2); text-decoration: none; padding: 12px 0">Pricing</a>
+<a href="#how" style="color: var(--ink-2); text-decoration: none; padding: 12px 0">How it works</a>
+<a href="#faq" style="color: var(--ink-2); text-decoration: none; padding: 12px 0">FAQ</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" class="btn btn-secondary btn-sm menu-btn" aria-label="Menu" aria-expanded="{{menuOpen}}" aria-controls="m-menu" onClick="{{toggleMenu}}" style="width: 44px; padding: 0"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></button>
+<a class="btn btn-secondary btn-sm" href="tel:+16784396213" aria-label="Call (678) 439-6213" style="padding: 0 14px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"></path></svg><span class="call-label">(678) 439-6213</span></a>
+<a class="btn btn-primary btn-sm" href="#booking">Book now</a>
+</div>
+</div>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<nav id="m-menu" class="mmenu" aria-label="Menu" style="border-top: 1px solid var(--line); background: #FFFFFF">
+<div class="wrap" style="padding-top: 4px; padding-bottom: 12px">
+<button type="button" class="m-row" aria-expanded="{{mSvcOpen}}" aria-controls="m-svc" onClick="{{toggleMSvc}}">Services<svg class="{{mSvcChevCls}}" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+<sc-if value="{{mSvcOpen}}" hint-placeholder-val="{{false}}">
+<div id="m-svc">
+<a class="m-sub" href="Main.dc.html#booking" onClick="{{goStandard}}">Residential Cleaning</a>
+<a class="m-sub" href="Main.dc.html#booking" onClick="{{goDeep}}">Deep Cleaning</a>
+<a class="m-sub" href="Main.dc.html#booking" onClick="{{goMove}}">Move-In/Out Cleaning</a>
+<a class="m-sub" href="#top" aria-current="page" onClick="{{closeMenu}}" style="border-top: 1px dashed var(--line); color: var(--accent)">Pet Waste Removal</a>
+</div>
+</sc-if>
+<a class="m-row" href="#pricing" onClick="{{closeMenu}}">Pricing</a>
+<a class="m-row" href="#how" onClick="{{closeMenu}}">How it works</a>
+<a class="m-row" href="#faq" onClick="{{closeMenu}}" style="border-bottom: 0">FAQ</a>
+</div>
+</nav>
+</sc-if>
+</header>
+
+<main id="top">
+
+<!-- Hero: booking card locked to Pet Waste (no toggle) -->
+<section id="hero" aria-label="Book pet waste removal" style="background: var(--paper-2)">
+<div class="wrap sec hero-grid">
+
+<div class="a-copy" style="display: flex; flex-direction: column; gap: 24px; min-width: 0">
+<span class="small" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid var(--line); font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4" r="2"></circle><circle cx="18" cy="8" r="2"></circle><circle cx="20" cy="16" r="2"></circle><path d="M9 10a5 5 0 015 5v3.5a3.5 3.5 0 01-6.84 1.05Q6.52 17.48 4.46 16.84A3.5 3.5 0 015.5 10z"></path></svg>Pet Waste Removal</span>
+<h1 class="display h1" style="max-width: 560px">Your yard, scooped weekly. You never touch it.</h1>
+<p class="body" style="margin: 0; color: var(--ink-2); max-width: 65ch">Weekly dog waste removal for Atlanta homes. We scoop, haul it away, and text you a photo of your latched gate — you never need to be home.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a class="btn btn-primary btn-block-m" href="#booking">See my price</a>
+<a class="btn btn-secondary btn-block-m" href="tel:+16784396213"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"></path></svg>Call (678) 439-6213</a>
+</div>
+<ul aria-label="Why customers book" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px">
+<li class="small" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>No contracts</li>
+<li class="small" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Background-checked &amp; insured</li>
+<li class="small" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Gate photo every visit</li>
+<li class="small" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Re-scoop guarantee</li>
+</ul>
+</div>
+
+<!-- TODO (owner): yard photo — clean fenced backyard or a latched gate. Never presented as a Fernhouse tech. -->
+<div class="a-photo" role="img" aria-label="Photo placeholder: clean fenced backyard with a latched gate" style="aspect-ratio: 3 / 2; border-radius: 16px; background: #E3ECE8; border: 1px dashed #B9C8C2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; box-sizing: border-box; text-align: center">
+<svg aria-hidden="true" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5B6764" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-9 9"></path></svg>
+<span class="small" style="color: var(--muted); font-weight: 600; max-width: 320px">Yard photo — clean fenced backyard with a latched gate</span>
+</div>
+
+<div id="booking" class="a-widget" style="background: #FFFFFF; border-radius: 16px; box-shadow: var(--shadow-card); border: 1px solid var(--line); padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; min-width: 0">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+<h2 class="display" style="font-size: 22px; line-height: 28px">Pet Waste Removal</h2>
+<span class="small" style="color: var(--muted); font-weight: 600">Step 1 of 4</span>
+</div>
+<div aria-hidden="true" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<span style="height: 4px; border-radius: 4px; background: var(--accent)"></span><span style="height: 4px; border-radius: 4px; background: var(--line)"></span><span style="height: 4px; border-radius: 4px; background: var(--line)"></span><span style="height: 4px; border-radius: 4px; background: var(--line)"></span>
+</div>
+</div>
+
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0">
+<legend class="small" style="font-weight: 600; color: var(--ink); padding: 0; margin-bottom: 8px">How often?</legend>
+<div class="pet-freqs">
+<sc-for list="{{petFreqs}}" as="f" hint-placeholder-count="4">
+<button type="button" class="opt" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" style="min-height: 60px; padding: 8px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; position: relative">
+<sc-if value="{{f.popular}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 11px; font-weight: 600; color: #FFFFFF; background: var(--accent); padding: 2px 8px; border-radius: 999px">Most popular</span></sc-if>
+<span style="font-size: 15px; font-weight: 600">{{f.label}}</span>
+<span style="font-size: 12px; color: var(--ink-2); font-weight: 600">{{f.price}}</span>
+</button>
+</sc-for>
+</div>
+</fieldset>
+
+<div role="group" aria-label="Dogs" style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+<span class="small" style="font-weight: 600">Dogs</span>
+<div style="flex: 0 1 200px; display: flex; align-items: center; justify-content: space-between; border: 1.5px solid var(--line); border-radius: 12px; padding: 4px; min-height: 52px; box-sizing: border-box">
+<button type="button" class="stepper-btn" aria-label="Fewer dogs" onClick="{{dogDown}}" disabled="{{dogMin}}" style="border: 0; background: var(--paper-2)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></button>
+<output aria-live="polite" style="font-size: 18px; font-weight: 600">{{dogLabel}}</output>
+<button type="button" class="stepper-btn" aria-label="More dogs" onClick="{{dogUp}}" disabled="{{dogMax}}" style="border: 0; background: var(--paper-2)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></button>
+</div>
+</div>
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0">
+<legend class="small" style="font-weight: 600; color: var(--ink); padding: 0; margin-bottom: 8px; width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 8px"><span style="white-space: nowrap">Yard condition today</span><sc-if value="{{petPriced}}" hint-placeholder-val="{{true}}"><span style="font-weight: 400; color: var(--ink-2); white-space: nowrap">Over ½ acre? <button type="button" onClick="{{pickYardLarge}}" style="background: none; border: 0; padding: 0; min-height: 24px; font: inherit; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Get a quote</button></span></sc-if></legend>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{conds}}" as="c" hint-placeholder-count="3">
+<button type="button" class="opt" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}" style="min-height: 56px; padding: 6px; font-size: 14px; font-weight: 600; line-height: 1.25">{{c.label}}</button>
+</sc-for>
+</div>
+</fieldset>
+
+<sc-if value="{{petPriced}}" hint-placeholder-val="{{true}}">
+<div aria-live="polite" style="background: var(--paper-2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div class="small" style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">{{petSummary}}</span><span style="font-weight: 600">{{petVisitLine}}</span></div>
+<sc-if value="{{petHasInitial}}" hint-placeholder-val="{{true}}"><div class="small" style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">Initial yard cleanup</span><span style="font-weight: 600"><sc-if value="{{petStrike}}" hint-placeholder-val="{{true}}"><s style="color: var(--muted); font-weight: 400; margin-right: 6px">${{petStrikePrice}}</s></sc-if>${{petInitial}}</span></div></sc-if>
+<div style="border-top: 1px solid var(--line); padding-top: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+<span style="font-weight: 600">{{petHeadLabel}}</span>
+<span class="display" style="font-size: 32px; line-height: 1; color: var(--ink)">${{petHeadPrice}}</span>
+</div>
+<span class="small" style="color: var(--muted)">{{petAfterLine}}</span>
+<sc-if value="{{petHasInitial}}" hint-placeholder-val="{{true}}"><span class="small" style="color: var(--muted)">Yard worse than you picked? We’ll text you before charging more.</span></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{petQuote}}" hint-placeholder-val="{{false}}">
+<div aria-live="polite" style="background: #FFF8EB; border: 1px solid #F1DDB3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-weight: 600">{{petQuoteTitle}}</span>
+<sc-if value="{{yardLarge}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{pickYardStd}}" style="align-self: flex-start; background: none; border: 0; padding: 4px 0; font: inherit; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Back to standard pricing</button></sc-if>
+<span class="small" style="color: var(--ink-2)">Leave your mobile number and we’ll text you a quote today — no payment needed.</span>
+<sc-if value="{{quoteNotSent}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<label for="quote-phone" class="small" style="width: 100%; font-weight: 600">Mobile phone</label>
+<input id="quote-phone" type="tel" inputmode="tel" autocomplete="tel" value="{{quotePhone}}" onChange="{{onQuotePhone}}" placeholder="(404) 555-0123" style="flex: 1 1 160px; min-height: 48px; font-family: inherit; font-size: 16px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 12px">
+<button type="button" class="btn btn-primary btn-sm" onClick="{{sendQuote}}" style="min-height: 48px">Text me a quote</button>
+</div>
+<p class="small" style="margin: 0; color: var(--muted); font-size: 12px; line-height: 18px">By tapping Text me a quote, you agree to get texts from Fernhouse about your quote. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. <a class="link" href="Legal.dc.html">Privacy</a></p>
+</sc-if>
+<sc-if value="{{quoteSent}}" hint-placeholder-val="{{false}}"><span class="small" style="color: var(--accent); font-weight: 600">Thanks — we’ll text {{quotePhone}} with your quote.</span></sc-if>
+</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<a class="btn btn-primary" href="Booking.dc.html" aria-disabled="{{petQuote}}" style="width: 100%">Book yard cleanup<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></a>
+<p class="small" style="margin: 0; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>Charged after each visit. You pay Fernhouse, never anyone directly.</p>
+<div class="small" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; border-top: 1px solid var(--line); padding-top: 12px; color: var(--ink-2)"><span style="display: inline-flex; align-items: center; gap: 6px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17"></path><path d="M8 3v4"></path><path d="M16 3v4"></path></svg>Route day, not an arrival window</span><a class="link" href="Main.dc.html#booking" onClick="{{goStandard}}">Need a home clean instead?</a></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- Trust strip (same as the home page) -->
+<section aria-label="Our promises" style="background: #FFFFFF; border-bottom: 1px solid var(--line)">
+<ul class="wrap grid-4" style="list-style: none; margin: 0 auto; padding-top: 24px; padding-bottom: 24px">
+<li style="display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Vetted, bonded &amp; insured</li>
+<li style="display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M16 5a3 3 0 010 6"></path><path d="M18 14.5c1.8.8 3 2.5 3 4.5"></path></svg>Backup team, never cancelled</li>
+<li style="display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M20 11a8 8 0 10-2.3 5.7"></path><path d="M20 5v6h-6"></path></svg>Re-scoop guarantee</li>
+<li style="display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>Secure online payment</li>
+</ul>
+</section>
+
+<!-- How it works -->
+<section id="how" aria-label="How it works" style="background: #FFFFFF">
+<div class="wrap sec" style="display: flex; flex-direction: column; gap: 32px">
+<h2 class="display h2">How it works</h2>
+<ol class="grid-3" style="list-style: none; margin: 0; padding: 0">
+<li style="display: flex; flex-direction: column; gap: 12px">
+<span class="display" style="width: 40px; height: 40px; border-radius: 999px; background: var(--ink); color: #FFFFFF; font-size: 16px; display: flex; align-items: center; justify-content: center">1</span>
+<h3 class="display h3">Book in 60 seconds</h3>
+<p class="body" style="margin: 0; color: var(--ink-2)">Pick how often, how many dogs and how the yard looks today. You see your price before you book.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 12px">
+<span class="display" style="width: 40px; height: 40px; border-radius: 999px; background: var(--ink); color: #FFFFFF; font-size: 16px; display: flex; align-items: center; justify-content: center">2</span>
+<h3 class="display h3">We scoop on your day</h3>
+<p class="body" style="margin: 0; color: var(--ink-2)">We walk the yard in a grid, bag every pile and haul it away. Tools and boots are sanitized between yards.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 12px">
+<span class="display" style="width: 40px; height: 40px; border-radius: 999px; background: var(--ink); color: #FFFFFF; font-size: 16px; display: flex; align-items: center; justify-content: center">3</span>
+<h3 class="display h3">Gate photo every visit</h3>
+<p class="body" style="margin: 0; color: var(--ink-2)">You get a text with a photo of your latched gate. Missed a spot? Tell us within 24 hours and we come back free.</p>
+</li>
+</ol>
+</div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" aria-label="Pricing" style="background: var(--paper-2)">
+<div class="wrap sec" style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 640px">
+<h2 class="display h2">Simple per-visit pricing</h2>
+<p class="body" style="margin: 0; color: var(--ink-2)">Per visit, for yards up to ½ acre. Charged after each visit — no contracts.</p>
+</div>
+<div class="price-table" style="background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; overflow: hidden">
+<table style="width: 100%; border-collapse: collapse; font-size: 16px">
+<thead>
+<tr style="background: var(--paper-2); text-align: left">
+<th scope="col" style="padding: 14px 24px; font-weight: 600">Dogs</th>
+<th scope="col" style="padding: 14px 24px; font-weight: 600">Weekly</th>
+<th scope="col" style="padding: 14px 24px; font-weight: 600">Twice weekly</th>
+<th scope="col" style="padding: 14px 24px; font-weight: 600">Every other week</th>
+<th scope="col" style="padding: 14px 24px; font-weight: 600">One-time yard reset</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{priceRows}}" as="r" hint-placeholder-count="4">
+<tr style="border-top: 1px solid var(--line)">
+<th scope="row" style="padding: 14px 24px; text-align: left; font-weight: 600">{{r.label}}</th>
+<td style="padding: 14px 24px"><span style="display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap"><strong>${{r.weekly}}</strong><sc-if value="{{r.popular}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 3px 10px; border-radius: 999px">Most popular</span></sc-if></span></td>
+<td style="padding: 14px 24px"><strong>${{r.twice}}</strong></td>
+<td style="padding: 14px 24px"><strong>${{r.biweekly}}</strong></td>
+<td style="padding: 14px 24px"><strong>${{r.once}}</strong></td>
+</tr>
+</sc-for>
+<tr style="border-top: 1px solid var(--line); background: #FFF8EB">
+<th scope="row" style="padding: 14px 24px; text-align: left; font-weight: 600">5+ dogs, or over ½ acre</th>
+<td colspan="4" style="padding: 14px 24px; color: var(--ink-2)">Custom quote — <a class="link" href="#booking">text us for a quote</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="price-cards" style="grid-template-columns: minmax(0, 1fr); gap: 12px">
+<sc-for list="{{priceRows}}" as="r" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span style="font-weight: 600">{{r.label}}</span><sc-if value="{{r.popular}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 3px 10px; border-radius: 999px">Weekly is most popular</span></sc-if></div>
+<div class="small" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="display: flex; flex-direction: column"><span style="color: var(--muted)">Weekly</span><strong style="font-size: 18px">${{r.weekly}}</strong></div>
+<div style="display: flex; flex-direction: column"><span style="color: var(--muted)">Twice weekly</span><strong style="font-size: 18px">${{r.twice}}</strong></div>
+<div style="display: flex; flex-direction: column"><span style="color: var(--muted)">Every other week</span><strong style="font-size: 18px">${{r.biweekly}}</strong></div>
+<div style="display: flex; flex-direction: column"><span style="color: var(--muted)">One-time yard reset</span><strong style="font-size: 18px">${{r.once}}</strong></div>
+</div>
+</div>
+</sc-for>
+<div style="background: #FFF8EB; border: 1px solid #F1DDB3; border-radius: 16px; padding: 16px" class="small"><strong>5+ dogs, or over ½ acre:</strong> custom quote — <a class="link" href="#booking">text us for a quote</a></div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 20px 24px; display: flex; flex-direction: column; gap: 6px">
+<h3 class="display" style="font-size: 18px; line-height: 24px">Initial yard cleanup</h3>
+<p class="body" style="margin: 0; color: var(--ink-2)">If the yard has built up, your first visit is a longer cleanup, priced by how it looks today. After that you pay the per-visit price.</p>
+<ul class="small" style="margin: 4px 0 0; padding-left: 20px; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px">
+<li><strong style="color: var(--ink)">Kept up weekly:</strong> no cleanup charge — your first visit is the per-visit price.</li>
+<li><strong style="color: var(--ink)">A few weeks behind:</strong> ${{initWeekly}} with weekly or twice-weekly service (normally ${{initFull}}); ${{initFull}} with every other week.</li>
+<li><strong style="color: var(--ink)">A month or more:</strong> ${{initFull}}.</li>
+<li><strong style="color: var(--ink)">One-time yard reset:</strong> ${{oneTime}} flat, any condition.</li>
+</ul>
+<p class="small" style="margin: 4px 0 0; color: var(--muted)">If your first visit needs more cleanup than you picked, we’ll text you before charging the higher rate.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h3 class="display" style="font-size: 18px; line-height: 24px">Add-ons</h3>
+<div class="addons">
+<div style="background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 20px 24px; display: flex; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 600">Yard deodorizer</span><span class="small" style="color: var(--ink-2)">A pet-safe spray for patios and high-traffic spots.</span></div>
+<span style="font-weight: 700; white-space: nowrap">+${{deodorizer}}<span class="small" style="color: var(--muted); font-weight: 400"> / visit</span></span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 20px 24px; display: flex; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 600">Sanitizing spray</span><span class="small" style="color: var(--ink-2)">A deeper clean for patios, runs and turf.</span></div>
+<span style="font-weight: 700; white-space: nowrap">+${{sanitizing}}</span>
+</div>
+</div>
+<p class="small" style="margin: 0; color: var(--muted)">We don’t offer flea, tick or any pesticide treatments.</p>
+</div>
+</div>
+</section>
+
+<!-- Why Fernhouse -->
+<section aria-label="Why Fernhouse" style="background: #FFFFFF">
+<div class="wrap sec" style="display: flex; flex-direction: column; gap: 32px">
+<h2 class="display h2">Why book with Fernhouse</h2>
+<div class="why-grid">
+<div style="border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; gap: 16px">
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 12px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 class="display h3">Vetted, bonded and insured pros</h3><p class="body" style="margin: 0; color: var(--ink-2)">Every pro is background-checked before their first visit and carries their own bonding and liability insurance, which we verify before they’re booked.</p></div>
+</div>
+<div style="border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; gap: 16px">
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 12px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17"></path><path d="M8 3v4"></path><path d="M16 3v4"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 class="display h3">Your yard is never skipped</h3><p class="body" style="margin: 0; color: var(--ink-2)">You keep the same route day. If your pro is out, a backup covers your yard.</p></div>
+</div>
+<div style="border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; gap: 16px">
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 12px; background: #F8F0DC; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A6514" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 10-2.3 5.7"></path><path d="M20 5v6h-6"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 class="display h3">Proof every visit</h3><p class="body" style="margin: 0; color: var(--ink-2)">A photo of your latched gate after every visit. Spot something we missed? Tell us within 24 hours and we come back free.</p></div>
+</div>
+<div style="border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; gap: 16px">
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 12px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="12" cy="12" r="3"></circle><path d="M8 5l1.5-2h5L16 5"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 class="display h3">One company for your home and yard</h3><p class="body" style="margin: 0; color: var(--ink-2)">Book home cleaning and yard service with the same account, and pay one company for both. <a class="link" href="Main.dc.html#booking" onClick="{{goStandard}}">See home cleaning</a></p></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Service areas -->
+<section aria-label="Service areas" style="background: var(--paper-2)">
+<div class="wrap sec" style="display: flex; flex-direction: column; gap: 24px">
+<h2 class="display h2">Serving Atlanta and surrounding suburbs</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{areas}}" as="area" hint-placeholder-count="9">
+<li style="display: flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 999px; background: #FFFFFF; border: 1px solid var(--line); font-size: 15px; font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>{{area}}</li>
+</sc-for>
+<li style="display: flex; align-items: center; padding: 10px 16px; border-radius: 999px; background: var(--accent-soft); font-size: 15px; font-weight: 600">+ surrounding suburbs</li>
+</ul>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" aria-label="Pet waste questions" style="background: #FFFFFF">
+<div class="wrap sec" style="max-width: 820px; display: flex; flex-direction: column; gap: 24px">
+<h2 class="display h2">Pet waste questions</h2>
+<div style="border-top: 1px solid var(--line)">
+<sc-for list="{{faqs}}" as="q" hint-placeholder-count="6">
+<div style="border-bottom: 1px solid var(--line)">
+<h3 style="margin: 0">
+<button type="button" class="faq-q" id="{{q.btnId}}" aria-expanded="{{q.open}}" aria-controls="{{q.panelId}}" onClick="{{q.toggle}}" style="width: 100%; min-height: 60px; padding: 16px 0; background: none; border: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; text-align: left; font-family: inherit; font-size: 17px; font-weight: 600; color: var(--ink); cursor: pointer">
+{{q.q}}
+<svg class="{{q.chevCls}}" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+</h3>
+<div class="{{q.panelCls}}" id="{{q.panelId}}" role="region" aria-labelledby="{{q.btnId}}">
+<div><p class="body" style="margin: 0; padding: 0 40px 20px 0; color: var(--ink-2); max-width: 65ch">{{q.a}}</p></div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- Final CTA -->
+<section class="on-accent" aria-label="Book pet waste removal" style="background: var(--accent); color: #FFFFFF">
+<div class="wrap sec" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<h2 class="display h2" style="color: #FFFFFF">A clean yard this week.</h2>
+<p class="body" style="margin: 0; color: #FFFFFF">Weekly from ${{fromWeekly}} per visit · No contracts</p>
+</div>
+<a class="btn btn-white btn-block-m" href="#booking">Book yard cleanup</a>
+</div>
+</section>
+
+</main>
+
+<footer style="background: var(--ink); color: #CDD6D3">
+<div class="wrap" style="padding-top: 48px; padding-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 220px">
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px; color: #FFFFFF">Fernhouse</span>
+<span class="small">Serving Atlanta and surrounding suburbs</span>
+<a href="tel:+16784396213" class="small" style="color: #FFFFFF; text-decoration: none; padding: 4px 0">(678) 439-6213</a>
+<a href="mailto:fernhousehomeservices@gmail.com" class="small" style="color: #FFFFFF; text-decoration: none; padding: 4px 0">fernhousehomeservices@gmail.com</a>
+</div>
+<nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 4px 24px; align-content: flex-start; font-size: 15px">
+<a href="Main.dc.html#services" style="color: #CDD6D3; text-decoration: none; padding: 12px 0">Home Cleaning</a>
+<a href="#top" style="color: #CDD6D3; text-decoration: none; padding: 12px 0">Pet Waste Removal</a>
+<a href="#pricing" style="color: #CDD6D3; text-decoration: none; padding: 12px 0">Pricing</a>
+<a href="#faq" style="color: #CDD6D3; text-decoration: none; padding: 12px 0">FAQ</a>
+<a href="Legal.dc.html" style="color: #CDD6D3; text-decoration: none; padding: 12px 0">Privacy Policy</a>
+<a href="Terms.dc.html" style="color: #CDD6D3; text-decoration: none; padding: 12px 0">Terms</a>
+<a href="ManageBooking.dc.html" style="color: #CDD6D3; text-decoration: none; padding: 12px 0">Manage booking</a>
+</nav>
+</div>
+<div class="wrap small" style="padding-bottom: 32px; color: #9DAAA6">© 2026 Fernhouse. All rights reserved.</div>
+</footer>
+
+<div class="mbar-space" aria-hidden="true"></div>
+<div class="{{mbarCls}}" role="region" aria-label="Quick booking" style="background: #FFFFFF; border-top: 1px solid var(--line); box-shadow: var(--shadow-elev); padding: 12px 20px; align-items: center; justify-content: space-between; gap: 12px">
+<span class="small" style="font-weight: 600">Yard cleanup from ${{fromWeekly}}/visit</span>
+<a class="btn btn-primary btn-sm" href="#booking" style="min-height: 48px">Book now</a>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E7A5F","options":["#0E7A5F","#1F5FBF","#16211F","#9A4A1F"]},"$preview":{"width":1440,"height":4500}}'>
+// /pet-waste-removal — its own page. Same PET_WASTE_PRICING and SERVICE_AREAS as the home page (lib/config.ts in the build).
+var PET_WASTE_PRICING = {
+  weekly1Dog: 24, perExtraDog: 3, biweeklyAdd: 8, twiceWeeklyLess: 4, oneTime: 89,
+  // Initial yard cleanup is set by yard condition and replaces the first visit's price:
+  //   kept up weekly → none · a few weeks behind → $39 with weekly/twice-weekly ($75 otherwise) · a month or more → $75
+  initialCleanup: 75, initialCleanupWithWeekly: 39,
+  maxDogs: 4, // 5+ dogs or a yard over ½ acre → quote
+  addOns: { deodorizer: 12, sanitizing: 29 } // never flea/tick or any pesticide treatment
+};
+var PET_FREQS = [
+  { id: 'weekly', label: 'Weekly', popular: true },
+  { id: 'twice', label: 'Twice weekly' },
+  { id: 'biweekly', label: 'Every other week' },
+  { id: 'once', label: 'One-time cleanup' }
+];
+var YARD_CONDITIONS = [
+  { id: 'kept', label: 'Kept up weekly' },
+  { id: 'weeks', label: 'A few weeks behind' },
+  { id: 'month', label: 'A month or more' }
+];
+var PET_FREQ_LABEL = { weekly: 'Weekly', twice: 'Twice weekly', biweekly: 'Every other week', once: 'One-time cleanup' };
+var SERVICE_AREAS = ['Atlanta', 'Marietta', 'Sandy Springs', 'Roswell', 'Alpharetta', 'Decatur', 'Brookhaven', 'Suwanee', 'Norcross'];
+var STORE_KEY = 'booking-step1', PET_STORE_KEY = 'booking-pet', SERVICE_KEY = 'booking-service';
+var FAQS = [
+  ['What day do you come?', 'You pick a preferred weekday when you book, and we scoop on that route day every week. If weather moves a visit, we text you the new day.'],
+  ['Do I need to be home?', 'No. Leave the gate unlocked or share the code, and we text you a photo of your latched gate after every visit.'],
+  ['What happens to the waste?', 'We bag it and haul it away — nothing is left in your trash bin.'],
+  ['What if my dogs are in the yard?', 'Tell us when you book whether they’re friendly. If not, keep them inside on your route day. If we can’t safely enter, we text you and come back.'],
+  ['What is the initial yard cleanup?', 'If waste has built up, the first visit takes longer, so it’s priced by how the yard looks today: nothing extra if it’s kept up weekly, $39 if it’s a few weeks behind (with weekly or twice-weekly service), and $75 if it’s been a month or more. After that you pay the per-visit price. If the yard needs more than you picked, we text you before charging the higher rate.'],
+  ['Do you use any chemicals?', 'Only if you add our pet-safe deodorizer or sanitizing treatment. We never apply flea, tick or any pesticide treatments.']
+];
+
+function petVisit(freq, dogs) {
+  var P = PET_WASTE_PRICING, w = P.weekly1Dog + P.perExtraDog * (Math.min(dogs, P.maxDogs) - 1);
+  return freq === 'once' ? P.oneTime : freq === 'biweekly' ? w + P.biweeklyAdd : freq === 'twice' ? w - P.twiceWeeklyLess : w;
+}
+function petInitial(freq, cond) {
+  var P = PET_WASTE_PRICING;
+  if (freq === 'once' || cond === 'kept') return 0;
+  if (cond === 'month' || freq === 'biweekly') return P.initialCleanup;
+  return P.initialCleanupWithWeekly;
+}
+function dogsText(n) { return n > PET_WASTE_PRICING.maxDogs ? '5+ dogs' : n === 1 ? '1 dog' : n + ' dogs'; }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { petFreq: 'weekly', dogs: 1, yard: 'std', cond: 'weeks', quotePhone: '', quoteSent: false, ddOpen: false, menuOpen: false, mSvcOpen: false, faqOpen: -1, showBar: false };
+  }
+  componentDidMount() {
+    var self = this;
+    try {
+      var pet = JSON.parse(window.localStorage.getItem(PET_STORE_KEY) || 'null');
+      if (pet && pet.petFreq) this.setState({ petFreq: pet.petFreq, dogs: pet.dogs, yard: pet.yard, cond: pet.cond || 'weeks' });
+    } catch (e) {}
+    try {
+      var hero = document.getElementById('hero');
+      if (hero && window.IntersectionObserver) {
+        this.io = new IntersectionObserver(function (entries) { self.setState({ showBar: !entries[0].isIntersecting }); });
+        this.io.observe(hero);
+      }
+    } catch (e) {}
+  }
+  componentWillUnmount() { if (this.io) this.io.disconnect(); }
+  componentDidUpdate() {
+    var s = this.state;
+    try {
+      window.localStorage.setItem(PET_STORE_KEY, JSON.stringify({ petFreq: s.petFreq, dogs: s.dogs, yard: s.yard, cond: s.cond }));
+      window.localStorage.setItem(SERVICE_KEY, 'pet');
+    } catch (e) {}
+  }
+  renderVals() {
+    var self = this, s = this.state, PW = PET_WASTE_PRICING;
+    var petQuote = s.dogs > PW.maxDogs || s.yard === 'large';
+    var visit = petVisit(s.petFreq, s.dogs);
+    var once = s.petFreq === 'once';
+    var goClean = function (service) {
+      return function () {
+        try {
+          var saved = JSON.parse(window.localStorage.getItem(STORE_KEY) || 'null') || { freq: 'biweekly', beds: 3, baths: 2 };
+          saved.service = service;
+          window.localStorage.setItem(STORE_KEY, JSON.stringify(saved));
+          window.localStorage.setItem(SERVICE_KEY, 'clean');
+        } catch (e) {}
+      };
+    };
+    return {
+      accent: this.props.accent ?? '#0E7A5F',
+      ddOpen: s.ddOpen,
+      ddChevCls: s.ddOpen ? 'chev open' : 'chev',
+      ddToggle: function () { self.setState({ ddOpen: !s.ddOpen }); },
+      ddEnter: function () { try { if (window.matchMedia('(hover: hover)').matches) self.setState({ ddOpen: true }); } catch (e) {} },
+      ddLeave: function () { try { if (window.matchMedia('(hover: hover)').matches) self.setState({ ddOpen: false }); } catch (e) {} },
+      ddKey: function (ev) { if (ev.key === 'Escape') { self.setState({ ddOpen: false }); try { document.getElementById('svc-btn').focus(); } catch (e) {} } },
+      ddBlur: function (ev) { if (!ev.currentTarget.contains(ev.relatedTarget)) self.setState({ ddOpen: false }); },
+      goStandard: goClean('standard'), goDeep: goClean('deep'), goMove: goClean('move'),
+      menuOpen: s.menuOpen,
+      toggleMenu: function () { self.setState({ menuOpen: !s.menuOpen }); },
+      closeMenu: function () { self.setState({ menuOpen: false }); },
+      mSvcOpen: s.mSvcOpen,
+      mSvcChevCls: s.mSvcOpen ? 'chev open' : 'chev',
+      toggleMSvc: function () { self.setState({ mSvcOpen: !s.mSvcOpen }); },
+
+      petFreqs: PET_FREQS.map(function (f) {
+        return { label: f.label, popular: !!f.popular, pressed: s.petFreq === f.id,
+          price: petQuote ? 'Quote' : '$' + petVisit(f.id, s.dogs) + (f.id === 'once' ? '' : '/visit'),
+          pick: function () { self.setState({ petFreq: f.id }); } };
+      }),
+      dogLabel: s.dogs > PW.maxDogs ? '5+' : String(s.dogs),
+      conds: YARD_CONDITIONS.map(function (c) { return { label: c.label, pressed: s.cond === c.id, pick: function () { self.setState({ cond: c.id }); } }; }),
+      petStrike: petInitial(s.petFreq, s.cond) === PW.initialCleanupWithWeekly,
+      petStrikePrice: PW.initialCleanup,
+      dogMin: s.dogs <= 1, dogMax: s.dogs > PW.maxDogs,
+      dogDown: function () { self.setState({ dogs: Math.max(1, s.dogs - 1) }); },
+      dogUp: function () { self.setState({ dogs: Math.min(PW.maxDogs + 1, s.dogs + 1) }); },
+      yardStd: s.yard === 'std', yardLarge: s.yard === 'large',
+      pickYardStd: function () { self.setState({ yard: 'std' }); },
+      pickYardLarge: function () { self.setState({ yard: 'large' }); },
+      petPriced: !petQuote, petQuote: petQuote,
+      petSummary: PET_FREQ_LABEL[s.petFreq] + ' · ' + dogsText(s.dogs),
+      petVisitLine: once ? 'Flat yard reset' : '$' + visit + ' / visit',
+      petHasInitial: petInitial(s.petFreq, s.cond) > 0,
+      petInitial: petInitial(s.petFreq, s.cond),
+      petHeadLabel: once ? 'One-time yard reset' : 'First visit',
+      petHeadPrice: once ? visit : (petInitial(s.petFreq, s.cond) || visit),
+      petAfterLine: once ? 'Charged after the visit. Switch to weekly and pay $' + petVisit('weekly', s.dogs) + ' per visit.'
+        : 'Then $' + visit + ' per visit. No contracts.',
+      petQuoteTitle: s.dogs > PW.maxDogs ? '5 or more dogs? Let’s quote your yard.' : 'Yard over ½ acre? Let’s quote it.',
+      quotePhone: s.quotePhone, quoteSent: s.quoteSent, quoteNotSent: !s.quoteSent,
+      onQuotePhone: function (ev) { self.setState({ quotePhone: ev.target.value }); },
+      // TODO (owner CRM): store quote lead { phone, dogs, yard, service: 'pet-waste', utm }.
+      sendQuote: function () { if (String(s.quotePhone).replace(/\D/g, '').length === 10) self.setState({ quoteSent: true }); },
+
+      priceRows: [1, 2, 3, 4].map(function (n) {
+        return { label: dogsText(n), weekly: petVisit('weekly', n), twice: petVisit('twice', n), biweekly: petVisit('biweekly', n), once: petVisit('once', n), popular: n === 1 };
+      }),
+      initWeekly: PW.initialCleanupWithWeekly, initFull: PW.initialCleanup, oneTime: PW.oneTime,
+      deodorizer: PW.addOns.deodorizer, sanitizing: PW.addOns.sanitizing,
+      fromWeekly: PW.weekly1Dog,
+      areas: SERVICE_AREAS,
+      faqs: FAQS.map(function (f, i) {
+        var open = s.faqOpen === i;
+        return { q: f[0], a: f[1], open: open, btnId: 'pfaq-q-' + i, panelId: 'pfaq-a-' + i,
+          panelCls: open ? 'faq-panel open' : 'faq-panel', chevCls: open ? 'chev open' : 'chev',
+          toggle: function () { self.setState({ faqOpen: open ? -1 : i }); } };
+      }),
+      mbarCls: s.showBar ? 'mbar show' : 'mbar'
+    };
+  }
+}
+</script>
+</body>
+</html>

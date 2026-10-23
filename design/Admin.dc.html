@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Owner dashboard — Fernhouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.mb{container-type:inline-size;container-name:mb}
+.wrap{max-width:1120px;margin:0 auto;padding-left:32px;padding-right:32px;box-sizing:border-box}
+.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+.h1{font-size:36px;line-height:44px}
+.h3{font-size:20px;line-height:26px;font-weight:700;letter-spacing:-0.01em}
+.body{font-size:17px;line-height:27px}
+.small{font-size:14px;line-height:21px}
+.card{background:#FFFFFF;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:24px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:16px;font-weight:600;line-height:1;text-decoration:none;cursor:pointer;border:0;box-sizing:border-box;white-space:nowrap;transition:transform 120ms ease,background-color 120ms ease,border-color 120ms ease}
+.btn:active{transform:scale(0.98)}
+.btn-sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn-primary{background:var(--accent);color:#FFFFFF}
+.btn-secondary{background:#FFFFFF;color:var(--ink);border:1.5px solid rgba(22,33,31,0.15)}
+.btn-danger{background:var(--error);color:#FFFFFF}
+.btn[disabled]{opacity:0.5;pointer-events:none}
+.linkbtn{background:none;border:0;padding:10px 0;font:inherit;font-weight:600;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.linkbtn-danger{color:var(--error)}
+@media (hover:hover){
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 88%,#000)}
+.btn-secondary:hover{border-color:rgba(22,33,31,0.35)}
+.btn-danger:hover{background:color-mix(in srgb,var(--error) 88%,#000)}
+.opt:hover{border-color:rgba(22,33,31,0.3)}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt{background:#FFFFFF;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer;font-family:inherit;transition:border-color 120ms ease,background-color 120ms ease,transform 120ms ease}
+.opt:active{transform:scale(0.98)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt[disabled]{background:var(--paper-2);color:#A9B4B0;border-style:dashed;pointer-events:none}
+.input{width:100%;min-height:52px;font-family:'Inter',system-ui,sans-serif;font-size:16px;color:var(--ink);padding:0 16px;border:1.5px solid var(--line);border-radius:12px;background:#FFFFFF;box-sizing:border-box}
+.input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.input[aria-invalid="true"]{border-color:var(--error)}
+.err{margin:0;font-size:14px;line-height:21px;color:var(--error);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;line-height:20px;white-space:nowrap}
+.dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 20px;margin:0;font-size:15px;line-height:22px}
+.dl dt{color:var(--muted)}
+.dl dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start}
+.col{display:flex;flex-direction:column;gap:24px;min-width:0}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.wins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.reasons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.narrow{max-width:640px}
+.call-label{display:inline}
+.step-in{animation:stepIn 200ms ease both}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@container mb (max-width:899px){.grid-main{grid-template-columns:minmax(0,1fr)}}
+@container mb (max-width:767px){
+.wrap{padding-left:20px;padding-right:20px}
+.h1{font-size:28px;line-height:34px}
+.card{padding:16px}
+.call-label{display:none}
+.days{grid-template-columns:repeat(3,minmax(0,1fr))}
+.wins,.reasons{grid-template-columns:minmax(0,1fr)}
+.actions .btn{flex:1 1 100%}
+.btn-block-m{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+.ad-nav{display:flex;gap:4px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.ad-tab{background:none;border:0;color:#CDD6D3;font:inherit;font-size:15px;font-weight:600;min-height:44px;padding:0 14px;border-radius:999px;cursor:pointer}
+.ad-tab[aria-current="page"]{background:rgba(255,255,255,0.12);color:#FFFFFF}
+.ad-tab:focus-visible{outline-color:#FFFFFF}
+@media (hover:hover){.ad-tab:hover{color:#FFFFFF}}
+.kpis{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:2px}
+.row-card{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.tbl-wrap{overflow-x:auto;margin:0 -4px}
+.tbl{width:100%;border-collapse:collapse;font-size:15px;line-height:22px}
+.tbl th,.tbl td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.tbl thead th{font-size:13px;color:var(--muted);font-weight:600}
+.pro-opt{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:64px;padding:10px 14px;text-align:left}
+.pro-opt[disabled]{opacity:1}
+.stepper{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;padding:3px}
+.stepper output{min-width:22px;text-align:center;font-weight:600}
+.st-btn{width:36px;height:36px;border-radius:50%;border:0;background:var(--paper-2);font:inherit;font-size:18px;font-weight:600;color:var(--ink);cursor:pointer}
+.st-btn[disabled]{opacity:0.4;pointer-events:none}
+@container mb (max-width:767px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.row-card{flex-wrap:wrap}.row-card .btn{flex:1 1 100%}.ad-tab{padding:0 10px;font-size:14px}.stack thead{display:none}.stack,.stack tbody{display:block}.stack tr{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line)}.stack td{border:0;padding:0;display:contents}.stack .pill{justify-self:start}.stack td::before{content:attr(data-l);font-size:13px;color:var(--muted);font-weight:600;align-self:center}.sec-head{flex-direction:column;align-items:flex-start !important;gap:2px !important}.brand-sub{display:none}.cap thead{display:none}.cap,.cap tbody{display:block}.cap tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 8px;padding:12px 0;border-bottom:1px solid var(--line)}.cap th,.cap td{border:0;padding:0}.cap th{grid-column:1/-1}.cap td{display:flex;flex-direction:column;gap:4px;align-items:flex-start}.cap td::before{content:attr(data-w);font-size:12px;font-weight:600;color:var(--muted)}.cap .stepper{gap:2px}.cap .st-btn{width:28px;height:28px}}
+</style>
+
+</helmet>
+<div class="mb" style="--ink: #16211F; --ink-2: #3D4A47; --muted: #5B6764; --paper-2: #F6F8F7; --accent: #0E7A5F; --accent-soft: #E3F2EC; --gold: #C99A2C; --line: #DCE3E0; --error: #B42318; --warning: #B54708; --shadow-card: 0 1px 2px rgba(22,33,31,0.05), 0 12px 32px -16px rgba(22,33,31,0.22); font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--paper-2); width: 100%; min-width: 0; -webkit-font-smoothing: antialiased">
+
+<header style="background: var(--ink); color: #FFFFFF">
+<div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 9px; background: var(--accent); display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5"></path><path d="M6 9.5V19h12V9.5"></path></svg></span>
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 17px">Fernhouse<span class="brand-sub" style="font-weight: 600; color: #9DAAA6"> Owner</span></span>
+</div>
+<nav class="ad-nav" aria-label="Owner">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4"><button type="button" class="ad-tab" aria-current="{{t.current}}" onClick="{{t.go}}">{{t.label}}</button></sc-for>
+</nav>
+</div>
+</header>
+
+<main class="wrap" style="padding-top: 28px; padding-bottom: 56px">
+
+<sc-if value="{{showToast}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; gap: 10px; align-items: center; background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-weight: 600; margin-bottom: 20px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>{{toast}}</span></div>
+</sc-if>
+
+<!-- ================= TODAY / DASHBOARD ================= -->
+<sc-if value="{{isHome}}" hint-placeholder-val="{{true}}">
+<div class="step-in" style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="small" style="color: var(--muted); font-weight: 600">Thursday, October 22</span><h1 class="display h1">Good evening</h1></div>
+<span class="small" style="color: var(--ink-2)">New bookings also text (678) 439-6213 and email you.</span>
+</div>
+
+<ul class="kpis" aria-label="Needs attention">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<li class="kpi" style="{{k.style}}"><span class="display" style="font-size: 28px; line-height: 32px">{{k.n}}</span><span class="small" style="font-weight: 600">{{k.label}}</span></li>
+</sc-for>
+</ul>
+
+<div class="grid-main">
+<div class="col">
+<section class="card" aria-labelledby="need-h">
+<div class="sec-head"><h2 class="display h3" id="need-h">Needs a pro</h2><span class="small" style="color: var(--muted)">Assign within 24 hours of booking</span></div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{unassigned}}" as="u" hint-placeholder-count="3">
+<li class="row-card">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 600">{{u.what}}</span><span class="small" style="color: var(--ink-2)">{{u.when}} · {{u.area}}</span><span class="small" style="color: var(--muted)">Booked {{u.ago}} · ${{u.price}}</span></div>
+<button type="button" class="btn btn-primary btn-sm" onClick="{{u.assign}}">Assign</button>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section class="card" aria-labelledby="today-h">
+<h2 class="display h3" id="today-h">Today’s visits</h2>
+<div class="tbl-wrap">
+<table class="tbl stack">
+<thead><tr><th scope="col">When</th><th scope="col">Service</th><th scope="col">Area</th><th scope="col">Pro</th><th scope="col">Status</th></tr></thead>
+<tbody>
+<sc-for list="{{today}}" as="v" hint-placeholder-count="6">
+<tr><td data-l="When" style="white-space: nowrap; font-weight: 600">{{v.when}}</td><td data-l="Service">{{v.svc}}</td><td data-l="Area">{{v.area}}</td><td data-l="Pro">{{v.pro}}</td><td data-l="Status"><span class="pill" style="{{v.pillStyle}}">{{v.status}}</span></td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+
+<div class="col">
+<section class="card" aria-labelledby="pay-h">
+<h2 class="display h3" id="pay-h">Failed payments</h2>
+<div class="row-card" style="align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Taylor M. · $165</span><span class="small" style="color: var(--ink-2)">Oct 20 clean · card declined</span><span class="small" style="color: var(--muted)">Customer texted · reminder sends tomorrow 9 AM</span></div>
+<button type="button" class="btn btn-secondary btn-sm" onClick="{{retry}}">Retry</button>
+</div>
+</section>
+
+<section class="card" aria-labelledby="quote-h">
+<h2 class="display h3" id="quote-h">Quote requests</h2>
+<sc-for list="{{quotes}}" as="q" hint-placeholder-count="2">
+<div class="row-card">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">{{q.what}}</span><span class="small" style="color: var(--ink-2)">{{q.phone}} · {{q.ago}}</span></div>
+<a class="btn btn-secondary btn-sm" href="sms:+14045550123">Text quote</a>
+</div>
+</sc-for>
+</section>
+
+<section class="card" aria-labelledby="docs-h">
+<h2 class="display h3" id="docs-h">Pro documents</h2>
+<div class="row-card" style="background: #FFF4E5; border-color: #F5D3A6">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Andre W. · insurance expires Nov 14</span><span class="small" style="color: var(--ink-2)">He can’t be assigned visits after that date until a new certificate is verified.</span></div>
+</div>
+<div class="row-card">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Lena P. · bond certificate</span><span class="small" style="color: var(--ink-2)">Uploaded today · needs your check</span></div>
+<button type="button" class="btn btn-secondary btn-sm" onClick="{{goPros}}">Review</button>
+</div>
+</section>
+
+<section class="card" aria-labelledby="wait-h" style="gap: 10px">
+<h2 class="display h3" id="wait-h">Waitlist</h2>
+<p class="small" style="margin: 0; color: var(--ink-2)">7 people outside the area · most asked: 30097 Duluth (3), 30044 Lawrenceville (2).</p>
+</section>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ================= ASSIGN A PRO ================= -->
+<sc-if value="{{isAssign}}" hint-placeholder-val="{{false}}">
+<div class="step-in narrow" style="margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+<button type="button" class="linkbtn" onClick="{{goHome}}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>Back to today</button>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="small" style="color: var(--muted); font-weight: 600">FH-26-04817 · booked 2 hours ago</span><h1 class="display h1">Assign a pro</h1></div>
+<section class="card">
+<dl class="dl">
+<dt>Service</dt><dd>Standard clean · 3 bed, 2 bath · biweekly</dd>
+<dt>When</dt><dd>Tue, Oct 27 · 8–11 AM arrival</dd>
+<dt>Where</dt><dd>Marietta 30062 (full address shows to the pro once assigned)</dd>
+<dt>Customer</dt><dd>Jordan E. · (404) 555-0187</dd>
+<dt>Notes</dt><dd>1 friendly cat · skip the office</dd>
+<dt>Pays</dt><dd>$132 (first clean, 20% off)</dd>
+</dl>
+</section>
+<section class="card">
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<legend style="font-size: 15px; font-weight: 600; padding: 0; margin-bottom: 4px">Pros who cover 30062 on Tuesdays</legend>
+<sc-for list="{{pros}}" as="p" hint-placeholder-count="4">
+<button type="button" class="opt pro-opt" aria-pressed="{{p.pressed}}" disabled="{{p.blocked}}" onClick="{{p.pick}}">
+<span style="display: flex; flex-direction: column; gap: 2px; text-align: left; min-width: 0"><span style="font-weight: 600">{{p.name}}</span><span class="small" style="color: var(--ink-2)">{{p.detail}}</span></span>
+<span class="pill" style="{{p.pillStyle}}">{{p.status}}</span>
+</button>
+</sc-for>
+</fieldset>
+<p class="small" style="margin: 0; color: var(--muted)">Confirm with the pro by text or phone first. Assigning sends them the job link and tells the customer their team is confirmed.</p>
+<button type="button" class="btn btn-primary" onClick="{{assignNow}}" disabled="{{noPro}}" style="width: 100%">{{assignLabel}}</button>
+</section>
+</div>
+</sc-if>
+
+<!-- ================= CAPACITY ================= -->
+<sc-if value="{{isCapacity}}" hint-placeholder-val="{{false}}">
+<div class="step-in" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 6px"><h1 class="display h1">Booking capacity</h1><p class="body" style="margin: 0; color: var(--ink-2); max-width: 640px">How many visits the booking page can take. When a slot fills, customers see that date as Full. Raise the numbers as you add pros.</p></div>
+<div class="grid-main">
+<section class="card" aria-labelledby="cap-clean">
+<h2 class="display h3" id="cap-clean">Home cleaning · per arrival window</h2>
+<div class="tbl-wrap">
+<table class="tbl cap">
+<thead><tr><th scope="col">Day</th><th scope="col">8–11 AM</th><th scope="col">11 AM–2 PM</th><th scope="col">2–5 PM</th></tr></thead>
+<tbody>
+<sc-for list="{{capRows}}" as="r" hint-placeholder-count="6">
+<tr><th scope="row" style="text-align: left">{{r.day}}</th>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="3"><td data-w="{{c.w}}"><div class="stepper" role="group" aria-label="{{c.aria}}"><button type="button" class="st-btn" aria-label="Fewer" onClick="{{c.down}}" disabled="{{c.min}}">−</button><output>{{c.n}}</output><button type="button" class="st-btn" aria-label="More" onClick="{{c.up}}">+</button></div></td></sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<p class="small" style="margin: 0; color: var(--muted)">Sunday is closed. Set a window to 0 to stop taking bookings in it.</p>
+</section>
+<div class="col">
+<section class="card" aria-labelledby="cap-pet">
+<h2 class="display h3" id="cap-pet">Pet waste · yards per route day</h2>
+<sc-for list="{{petCap}}" as="r" hint-placeholder-count="5">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><span style="font-weight: 600">{{r.day}}</span><div class="stepper" role="group" aria-label="{{r.aria}}"><button type="button" class="st-btn" aria-label="Fewer" onClick="{{r.down}}" disabled="{{r.min}}">−</button><output>{{r.n}}</output><button type="button" class="st-btn" aria-label="More" onClick="{{r.up}}">+</button></div></div>
+</sc-for>
+</section>
+<section class="card" aria-labelledby="cap-block">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><h2 class="display h3" id="cap-block">Blocked days</h2><button type="button" class="linkbtn">Block a day</button></div>
+<ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line)">
+<li style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line)"><span style="font-weight: 600">Thu, Nov 26 · Thanksgiving</span><button type="button" class="linkbtn" style="padding: 0">Remove</button></li>
+<li style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line)"><span style="font-weight: 600">Dec 24–25 · Holidays</span><button type="button" class="linkbtn" style="padding: 0">Remove</button></li>
+</ul>
+<p class="small" style="margin: 0; color: var(--muted)">Existing visits on a blocked day aren’t cancelled — you’ll see them in Today.</p>
+</section>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ================= PROS ================= -->
+<sc-if value="{{isPros}}" hint-placeholder-val="{{false}}">
+<div class="step-in" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap"><h1 class="display h1">Pros</h1><button type="button" class="btn btn-primary btn-sm">Add a pro</button></div>
+<section class="card">
+<div class="tbl-wrap">
+<table class="tbl stack">
+<thead><tr><th scope="col">Pro</th><th scope="col">Services</th><th scope="col">Areas</th><th scope="col">Insurance</th><th scope="col">Bond</th><th scope="col">Background check</th></tr></thead>
+<tbody>
+<sc-for list="{{proRows}}" as="p" hint-placeholder-count="4">
+<tr><td data-l="Pro"><span style="font-weight: 600">{{p.name}}</span></td><td data-l="Services">{{p.svc}}</td><td data-l="Areas">{{p.areas}}</td><td data-l="Insurance"><span class="pill" style="{{p.insStyle}}">{{p.ins}}</span></td><td data-l="Bond"><span class="pill" style="{{p.bondStyle}}">{{p.bond}}</span></td><td data-l="Background check"><span class="pill" style="{{p.bgStyle}}">{{p.bg}}</span></td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<p class="small" style="margin: 0; color: var(--muted)">A pro with any missing, unverified or expired document can’t be assigned. Pros’ names are never shown to customers.</p>
+</section>
+</div>
+</sc-if>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"screen":{"editor":"enum","default":"home","options":["home","assign","capacity","pros"]},"$preview":{"width":1440,"height":1290}}'>
+// /admin — owner only (Supabase Auth, one owner account). Every new booking also sends the owner a text + email.
+// Capacity rows feed the booking page's "Full" days; a pro is assignable only with verified, unexpired insurance, bond and background check.
+var OK = 'background: var(--accent-soft); color: var(--accent)';
+var WARN = 'background: #FFF4E5; color: #B54708';
+var BAD = 'background: #FDECEA; color: #B42318';
+var NEUTRAL = 'background: var(--paper-2); color: var(--ink-2)';
+var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+var PROS = [
+  { name: 'Maria G.', detail: 'Cleaning · 2 visits that day · 1 open window', status: 'Available', style: OK },
+  { name: 'Lena P.', detail: 'Cleaning · bond certificate not checked yet', status: 'Can’t assign', style: BAD, blocked: true },
+  { name: 'Andre W.', detail: 'Cleaning + yard · insurance expires Nov 14', status: 'Available', style: WARN },
+  { name: 'Keisha R.', detail: 'Cleaning · off on Tuesdays', status: 'Off that day', style: NEUTRAL, blocked: true }
+];
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var sc = props.screen || 'home';
+    var cap = DAYS.map(function (d, i) { return i === 5 ? [1, 1, 0] : [2, 2, 1]; });
+    this.state = { view: sc, pro: sc === 'assign' ? 0 : -1, toast: '', cap: cap, pet: [12, 12, 10, 12, 8], assigned: false };
+  }
+  renderVals() {
+    var self = this, s = this.state;
+    var go = function (v) { return function () { self.setState({ view: v, toast: '' }); }; };
+    var setCap = function (d, w, delta) { return function () { var c = s.cap.map(function (r) { return r.slice(); }); c[d][w] = Math.max(0, c[d][w] + delta); self.setState({ cap: c }); }; };
+    var setPet = function (d, delta) { return function () { var p = s.pet.slice(); p[d] = Math.max(0, p[d] + delta); self.setState({ pet: p }); }; };
+    return {
+      tabs: [['home', 'Today'], ['capacity', 'Capacity'], ['pros', 'Pros']].map(function (t) {
+        return { label: t[1], current: (s.view === t[0] || (t[0] === 'home' && s.view === 'assign')) ? 'page' : 'false', go: go(t[0]) };
+      }),
+      isHome: s.view === 'home', isAssign: s.view === 'assign', isCapacity: s.view === 'capacity', isPros: s.view === 'pros',
+      showToast: !!s.toast, toast: s.toast,
+      goHome: go('home'), goPros: go('pros'),
+      kpis: [
+        { n: s.assigned ? 2 : 3, label: 'need a pro', style: WARN },
+        { n: 6, label: 'visits today', style: 'background: #FFFFFF' },
+        { n: 1, label: 'failed payment', style: BAD },
+        { n: 2, label: 'quote requests', style: 'background: #FFFFFF' }
+      ],
+      unassigned: [
+        { what: 'Standard clean · 3 bed, 2 bath', when: 'Tue, Oct 27 · 8–11 AM', area: 'Marietta', ago: '2 hours ago', price: 132 },
+        { what: 'Pet waste · weekly · 2 dogs', when: 'Tuesdays from Oct 27', area: 'Roswell', ago: '5 hours ago', price: 39 },
+        { what: 'Deep clean · 4 bed, 3 bath', when: 'Sat, Oct 31 · 11 AM–2 PM', area: 'Decatur', ago: 'yesterday', price: 352 }
+      ].slice(s.assigned ? 1 : 0).map(function (u) { u.assign = go('assign'); return u; }),
+      today: [
+        { when: '8–11 AM', svc: 'Standard clean', area: 'Sandy Springs', pro: 'Maria G.', status: 'Done', pillStyle: OK },
+        { when: '8–11 AM', svc: 'Deep clean', area: 'Brookhaven', pro: 'Andre W.', status: 'In progress', pillStyle: WARN },
+        { when: 'Route day', svc: 'Pet waste · 6 yards', area: 'Alpharetta', pro: 'Andre W.', status: '4 of 6 done', pillStyle: WARN },
+        { when: '11 AM–2 PM', svc: 'Standard clean', area: 'Decatur', pro: 'Keisha R.', status: 'On the way', pillStyle: NEUTRAL },
+        { when: '2–5 PM', svc: 'Move-out clean', area: 'Atlanta', pro: 'Maria G.', status: 'Scheduled', pillStyle: NEUTRAL },
+        { when: '2–5 PM', svc: 'Standard clean', area: 'Marietta', pro: 'Keisha R.', status: 'Scheduled', pillStyle: NEUTRAL }
+      ],
+      retry: function () { self.setState({ toast: 'Retrying Taylor M.’s card. You’ll get a text with the result.' }); },
+      quotes: [{ what: 'Pet waste · 6 dogs', phone: '(404) 555-0123', ago: '1 hour ago' }, { what: 'Pet waste · ¾-acre yard, 2 dogs', phone: '(770) 555-0164', ago: 'this morning' }],
+      pros: PROS.map(function (p, i) {
+        return { name: p.name, detail: p.detail, status: p.status, pillStyle: p.style, blocked: !!p.blocked, pressed: s.pro === i, pick: function () { self.setState({ pro: i }); } };
+      }),
+      noPro: s.pro < 0,
+      assignLabel: s.pro < 0 ? 'Pick a pro' : 'Assign ' + PROS[s.pro].name + ' & notify',
+      assignNow: function () { if (s.pro < 0) return; self.setState({ view: 'home', assigned: true, toast: PROS[s.pro].name + ' assigned. They got the job link, and Jordan got “Your team is confirmed.”' }); },
+      capRows: DAYS.map(function (d, di) {
+        return { day: d, cells: s.cap[di].map(function (n, wi) { return { n: n, w: ['8–11 AM', '11 AM–2 PM', '2–5 PM'][wi], min: n <= 0, aria: d + ' window ' + (wi + 1) + ' visits', up: setCap(di, wi, 1), down: setCap(di, wi, -1) }; }) };
+      }),
+      petCap: DAYS.slice(0, 5).map(function (d, di) { return { day: d, n: s.pet[di], min: s.pet[di] <= 0, aria: d + ' yards', up: setPet(di, 1), down: setPet(di, -1) }; }),
+      proRows: [
+        { name: 'Maria G.', svc: 'Cleaning', areas: 'Atlanta, Sandy Springs, Marietta', ins: 'Verified · Jun 2027', insStyle: OK, bond: 'Verified', bondStyle: OK, bg: 'Clear', bgStyle: OK },
+        { name: 'Andre W.', svc: 'Cleaning, yard', areas: 'Brookhaven, Alpharetta, Roswell', ins: 'Expires Nov 14', insStyle: WARN, bond: 'Verified', bondStyle: OK, bg: 'Clear', bgStyle: OK },
+        { name: 'Keisha R.', svc: 'Cleaning', areas: 'Decatur, Marietta', ins: 'Verified · Mar 2027', insStyle: OK, bond: 'Verified', bondStyle: OK, bg: 'Clear', bgStyle: OK },
+        { name: 'Lena P.', svc: 'Cleaning', areas: 'Marietta, Roswell', ins: 'Verified · Aug 2027', insStyle: OK, bond: 'Needs check', bondStyle: BAD, bg: 'Clear', bgStyle: OK }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

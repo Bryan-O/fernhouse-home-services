@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Manage your booking — Fernhouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.mb{container-type:inline-size;container-name:mb}
+.wrap{max-width:1120px;margin:0 auto;padding-left:32px;padding-right:32px;box-sizing:border-box}
+.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+.h1{font-size:36px;line-height:44px}
+.h3{font-size:20px;line-height:26px;font-weight:700;letter-spacing:-0.01em}
+.body{font-size:17px;line-height:27px}
+.small{font-size:14px;line-height:21px}
+.card{background:#FFFFFF;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:24px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:16px;font-weight:600;line-height:1;text-decoration:none;cursor:pointer;border:0;box-sizing:border-box;white-space:nowrap;transition:transform 120ms ease,background-color 120ms ease,border-color 120ms ease}
+.btn:active{transform:scale(0.98)}
+.btn-sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn-primary{background:var(--accent);color:#FFFFFF}
+.btn-secondary{background:#FFFFFF;color:var(--ink);border:1.5px solid rgba(22,33,31,0.15)}
+.btn-danger{background:var(--error);color:#FFFFFF}
+.btn[disabled]{opacity:0.5;pointer-events:none}
+.linkbtn{background:none;border:0;padding:10px 0;font:inherit;font-weight:600;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.linkbtn-danger{color:var(--error)}
+@media (hover:hover){
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 88%,#000)}
+.btn-secondary:hover{border-color:rgba(22,33,31,0.35)}
+.btn-danger:hover{background:color-mix(in srgb,var(--error) 88%,#000)}
+.opt:hover{border-color:rgba(22,33,31,0.3)}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt{background:#FFFFFF;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer;font-family:inherit;transition:border-color 120ms ease,background-color 120ms ease,transform 120ms ease}
+.opt:active{transform:scale(0.98)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt[disabled]{background:var(--paper-2);color:#A9B4B0;border-style:dashed;pointer-events:none}
+.input{width:100%;min-height:52px;font-family:'Inter',system-ui,sans-serif;font-size:16px;color:var(--ink);padding:0 16px;border:1.5px solid var(--line);border-radius:12px;background:#FFFFFF;box-sizing:border-box}
+.input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.input[aria-invalid="true"]{border-color:var(--error)}
+.err{margin:0;font-size:14px;line-height:21px;color:var(--error);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;line-height:20px;white-space:nowrap}
+.dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 20px;margin:0;font-size:15px;line-height:22px}
+.dl dt{color:var(--muted)}
+.dl dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start}
+.col{display:flex;flex-direction:column;gap:24px;min-width:0}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.wins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.reasons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.narrow{max-width:640px}
+.call-label{display:inline}
+.step-in{animation:stepIn 200ms ease both}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@container mb (max-width:899px){.grid-main{grid-template-columns:minmax(0,1fr)}}
+@container mb (max-width:767px){
+.wrap{padding-left:20px;padding-right:20px}
+.h1{font-size:28px;line-height:34px}
+.card{padding:16px}
+.call-label{display:none}
+.days{grid-template-columns:repeat(3,minmax(0,1fr))}
+.wins,.reasons{grid-template-columns:minmax(0,1fr)}
+.actions .btn{flex:1 1 100%}
+.btn-block-m{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+</helmet>
+<div class="mb" style="--ink: #16211F; --ink-2: #3D4A47; --muted: #5B6764; --paper-2: #F6F8F7; --accent: #0E7A5F; --accent-soft: #E3F2EC; --gold: #C99A2C; --line: #DCE3E0; --error: #B42318; --warning: #B54708; --shadow-card: 0 1px 2px rgba(22,33,31,0.05), 0 12px 32px -16px rgba(22,33,31,0.22); font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--paper-2); width: 100%; min-width: 0; -webkit-font-smoothing: antialiased">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid var(--line)">
+<div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px">
+<a href="Main.dc.html" aria-label="Fernhouse home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-height: 44px">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 10px; background: var(--accent); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5"></path><path d="M6 9.5V19h12V9.5"></path></svg></span>
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px">Fernhouse</span>
+</a>
+<div style="display: flex; align-items: center; gap: 8px">
+<a class="btn btn-secondary btn-sm" href="sms:+16784396213" aria-label="Text us at (678) 439-6213" style="padding: 0 14px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"></path></svg><span class="call-label">Text us</span></a>
+<a class="btn btn-secondary btn-sm" href="tel:+16784396213" aria-label="Call (678) 439-6213" style="padding: 0 14px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"></path></svg><span class="call-label">(678) 439-6213</span></a>
+</div>
+</div>
+</header>
+
+<main class="wrap" style="padding-top: 40px; padding-bottom: 64px">
+
+<!-- ============ FIND MY BOOKING (no passwords: texted magic link) ============ -->
+<sc-if value="{{isFind}}" hint-placeholder-val="{{false}}">
+<div class="narrow step-in" style="margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 class="display h1">Manage your booking</h1>
+<p class="body" style="margin: 0; color: var(--ink-2)">Enter the mobile number you booked with. We’ll text you a secure link — no password needed.</p>
+</div>
+<div class="card">
+<sc-if value="{{findNotSent}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="find-phone" style="font-size: 15px; font-weight: 600">Mobile phone</label>
+<input id="find-phone" class="input" type="tel" inputmode="tel" autocomplete="tel" value="{{findPhone}}" onChange="{{onFindPhone}}" aria-invalid="{{findErr}}" aria-describedby="find-msg" placeholder="(404) 555-0123">
+<div id="find-msg"><sc-if value="{{findErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert">Please enter the 10-digit mobile number you booked with.</p></sc-if></div>
+</div>
+<button type="button" class="btn btn-primary" onClick="{{sendLink}}" style="width: 100%">Text me a link</button>
+<p class="small" style="margin: 0; color: var(--muted)">The link works for 7 days. Msg &amp; data rates may apply.</p>
+</sc-if>
+<sc-if value="{{findSent}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; gap: 12px; align-items: flex-start">
+<span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 600">Check your texts</span><span class="small" style="color: var(--ink-2)">If {{findPhone}} has a booking with us, a link is on its way. It can take a minute.</span></div>
+</div>
+<button type="button" class="linkbtn" onClick="{{resetFind}}" style="align-self: flex-start">Use a different number</button>
+</sc-if>
+</div>
+<p class="small" style="margin: 0; color: var(--ink-2); text-align: center">Changed your number? Call <a class="link" href="tel:+16784396213">(678) 439-6213</a>.</p>
+</div>
+</sc-if>
+
+<!-- ============ OVERVIEW — home cleaning ============ -->
+<sc-if value="{{isOverview}}" hint-placeholder-val="{{true}}">
+<div class="step-in" style="display: flex; flex-direction: column; gap: 24px">
+<sc-if value="{{showToast}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; gap: 10px; align-items: center; background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-weight: 600"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>{{toast}}</span></div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="small" style="color: var(--muted); font-weight: 600">Booking FH-26-04817</span>
+<h1 class="display h1">Hi Jordan, here’s your plan</h1>
+</div>
+
+<div class="grid-main">
+<div class="col">
+<section class="card" aria-labelledby="next-h">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span class="small" style="color: var(--muted); font-weight: 600" id="next-h">Next visit</span>
+<span class="display" style="font-size: 26px; line-height: 32px">{{nextDate}}</span>
+<span class="body" style="color: var(--ink-2)">Arrival {{nextWindow}}</span>
+</div>
+<span class="pill" style="background: var(--accent-soft); color: var(--accent)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Team confirmed</span>
+</div>
+<dl class="dl">
+<dt>Service</dt><dd>Standard clean · 3 bed, 2 bath</dd>
+<dt>Address</dt><dd>482 Maple Ridge Dr, Marietta, GA 30062</dd>
+<dt>Price</dt><dd>${{price}} · charged {{chargeLine}}</dd>
+</dl>
+<div style="display: flex; gap: 10px; align-items: flex-start; background: var(--paper-2); border-radius: 12px; padding: 12px 14px">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+<span class="small" style="color: var(--ink-2)">Free changes until <strong style="color: var(--ink)">{{freeUntil}}</strong>. After that, changes or cancellations carry a ${{lateFee}} fee.</span>
+</div>
+<div class="actions">
+<button type="button" class="btn btn-primary btn-sm" onClick="{{goReschedule}}">Reschedule</button>
+<button type="button" class="btn btn-secondary btn-sm" onClick="{{skipVisit}}">Skip this visit</button>
+<button type="button" class="btn btn-secondary btn-sm" onClick="{{goCancel}}">Cancel visit</button>
+</div>
+</section>
+
+<section class="card" aria-labelledby="plan-h">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap">
+<h2 class="display h3" id="plan-h">Your plan</h2>
+<span class="pill" style="background: var(--paper-2); color: var(--ink-2)">{{planStatus}}</span>
+</div>
+<p class="body" style="margin: 0; color: var(--ink-2)">Biweekly standard clean, every other Tuesday. No contract — pause or cancel anytime.</p>
+<ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line)">
+<sc-for list="{{upcoming}}" as="u" hint-placeholder-count="3">
+<li style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px"><span style="font-weight: 600">{{u.date}}</span><span style="color: var(--ink-2)">{{u.note}}</span></li>
+</sc-for>
+</ul>
+<div class="actions">
+<button type="button" class="btn btn-secondary btn-sm" onClick="{{togglePause}}">{{pauseLabel}}</button>
+<button type="button" class="linkbtn linkbtn-danger" onClick="{{goCancelPlan}}" style="padding: 10px 8px">Cancel plan</button>
+</div>
+</section>
+</div>
+
+<div class="col">
+<section class="card" aria-labelledby="access-h">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><h2 class="display h3" id="access-h">Access &amp; notes</h2><button type="button" class="linkbtn">Edit</button></div>
+<dl class="dl">
+<dt>Entry</dt><dd>Lockbox by side door · code shared with your team only</dd>
+<dt>Pets</dt><dd>1 friendly cat</dd>
+<dt>Requests</dt><dd>Skip the office</dd>
+</dl>
+</section>
+<section class="card" aria-labelledby="pay-h">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><h2 class="display h3" id="pay-h">Payment</h2><button type="button" class="linkbtn">Update card</button></div>
+<dl class="dl">
+<dt>Card</dt><dd>Visa •••• 4242</dd>
+<dt>Last charge</dt><dd>$132 on Oct 13 · <a class="link" href="#receipt">Receipt</a></dd>
+</dl>
+<p class="small" style="margin: 0; color: var(--muted)">Card details are handled by Stripe. You pay Fernhouse, never anyone directly.</p>
+</section>
+<section class="card" aria-labelledby="help-h" style="gap: 10px">
+<h2 class="display h3" id="help-h">Something not right?</h2>
+<p class="small" style="margin: 0; color: var(--ink-2)">Tell us within 24 hours of a visit and we’ll send a team back to re-clean, free.</p>
+<button type="button" class="btn btn-secondary btn-sm" style="align-self: flex-start">Request a re-clean</button>
+</section>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ============ RESCHEDULE ============ -->
+<sc-if value="{{isReschedule}}" hint-placeholder-val="{{false}}">
+<div class="narrow step-in" style="margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<button type="button" class="linkbtn" onClick="{{goOverview}}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>Back to your booking</button>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 class="display h1">Reschedule your visit</h1>
+<p class="body" style="margin: 0; color: var(--ink-2)">Moving <strong style="color: var(--ink)">{{nextDate}}, {{nextWindow}}</strong>. It’s free — you’re more than 24 hours out.</p>
+</div>
+<div class="card">
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0">
+<legend style="font-size: 15px; font-weight: 600; padding: 0; margin-bottom: 10px">New day</legend>
+<div class="days">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="10">
+<button type="button" class="opt" aria-pressed="{{d.pressed}}" disabled="{{d.full}}" onClick="{{d.pick}}" aria-label="{{d.aria}}" style="min-height: 60px; padding: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px"><span style="font-size: 13px; font-weight: 600; color: inherit">{{d.dow}}</span><span style="font-size: 16px; font-weight: 600">{{d.num}}</span><sc-if value="{{d.full}}" hint-placeholder-val="{{false}}"><span style="font-size: 11px; font-weight: 600">Full</span></sc-if></button>
+</sc-for>
+</div>
+</fieldset>
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0">
+<legend style="font-size: 15px; font-weight: 600; padding: 0; margin-bottom: 10px">Arrival window</legend>
+<div class="wins">
+<sc-for list="{{wins}}" as="w" hint-placeholder-count="3">
+<button type="button" class="opt" aria-pressed="{{w.pressed}}" onClick="{{w.pick}}" style="min-height: 52px; padding: 6px; font-size: 15px; font-weight: 600">{{w.label}}</button>
+</sc-for>
+</div>
+</fieldset>
+<div style="background: var(--paper-2); border-radius: 12px; padding: 14px 16px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap" aria-live="polite">
+<span class="small" style="color: var(--ink-2)">New visit</span><span style="font-weight: 600">{{newWhen}}</span>
+</div>
+<button type="button" class="btn btn-primary" onClick="{{confirmReschedule}}" disabled="{{noNewDay}}" style="width: 100%">Confirm new time</button>
+<p class="small" style="margin: 0; color: var(--muted); text-align: center">Only this visit moves. The rest of your plan stays on its schedule.</p>
+</div>
+</div>
+</sc-if>
+
+<!-- ============ CANCEL (inside 24 hours → fee) ============ -->
+<sc-if value="{{isCancel}}" hint-placeholder-val="{{false}}">
+<div class="narrow step-in" style="margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<button type="button" class="linkbtn" onClick="{{goOverview}}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>Back to your booking</button>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 class="display h1">Cancel this visit?</h1>
+<p class="body" style="margin: 0; color: var(--ink-2)">{{nextDate}}, {{nextWindow}}. Your plan continues after this visit.</p>
+</div>
+<div role="alert" style="display: flex; gap: 12px; align-items: flex-start; background: #FFF4E5; border: 1px solid #F5D3A6; border-radius: 12px; padding: 16px">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 3l9.5 17h-19z"></path><path d="M12 10v4"></path><path d="M12 17.5h.01"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 600">Your visit is in 18 hours, so a ${{lateFee}} fee applies.</span><span class="small" style="color: var(--ink-2)">Your team is already scheduled. Changes are free until 24 hours before a visit.</span></div>
+</div>
+<div class="card">
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0">
+<legend style="font-size: 15px; font-weight: 600; padding: 0; margin-bottom: 10px">What’s the reason? <span style="font-weight: 400; color: var(--muted)">(optional)</span></legend>
+<div class="reasons">
+<sc-for list="{{reasons}}" as="r" hint-placeholder-count="4">
+<button type="button" class="opt" aria-pressed="{{r.pressed}}" onClick="{{r.pick}}" style="min-height: 52px; padding: 8px 12px; font-size: 15px; font-weight: 600; text-align: left">{{r.label}}</button>
+</sc-for>
+</div>
+</fieldset>
+<div style="display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 14px"><span style="font-weight: 600">Late cancellation fee</span><span style="font-weight: 600">${{lateFee}}</span></div>
+<button type="button" class="btn btn-danger" onClick="{{confirmCancel}}" style="width: 100%">Cancel visit · ${{lateFee}} fee</button>
+<button type="button" class="btn btn-secondary" onClick="{{goOverview}}" style="width: 100%">Keep my visit</button>
+<p class="small" style="margin: 0; color: var(--muted); text-align: center">Need to move it instead? Text us at <a class="link" href="sms:+16784396213">(678) 439-6213</a> and we’ll try to find a free swap.</p>
+</div>
+</div>
+</sc-if>
+
+<!-- ============ CANCELLED ============ -->
+<sc-if value="{{isCancelled}}" hint-placeholder-val="{{false}}">
+<div class="narrow step-in" style="margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+<span aria-hidden="true" style="width: 48px; height: 48px; border-radius: 50%; background: var(--paper-2); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+<h1 class="display h1">Visit cancelled</h1>
+<p class="body" style="margin: 0; color: var(--ink-2)">Your {{nextDate}} visit is cancelled. A ${{lateFee}} late fee was charged to Visa •••• 4242 — we’ve texted and emailed a receipt.</p>
+</div>
+<div class="card">
+<dl class="dl">
+<dt>Your plan</dt><dd>Still active · biweekly</dd>
+<dt>Next visit</dt><dd>Tuesday, November 10 · 8–11 AM</dd>
+</dl>
+<div class="actions">
+<button type="button" class="btn btn-primary btn-sm" onClick="{{goOverview}}">Back to your booking</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ============ OVERVIEW — pet waste ============ -->
+<sc-if value="{{isPet}}" hint-placeholder-val="{{false}}">
+<div class="step-in" style="display: flex; flex-direction: column; gap: 24px">
+<sc-if value="{{showToast}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; gap: 10px; align-items: center; background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-weight: 600"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>{{toast}}</span></div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="small" style="color: var(--muted); font-weight: 600">Yard service FH-26-05132</span>
+<h1 class="display h1">Hi Jordan, here’s your yard plan</h1>
+</div>
+<div class="grid-main">
+<div class="col">
+<section class="card" aria-labelledby="pnext-h">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span class="small" style="color: var(--muted); font-weight: 600" id="pnext-h">Next visit</span>
+<span class="display" style="font-size: 26px; line-height: 32px">{{petNext}}</span>
+<span class="body" style="color: var(--ink-2)">Any time that day — it’s your route day</span>
+</div>
+<span class="pill" style="background: var(--accent-soft); color: var(--accent)">Weekly · Tuesdays</span>
+</div>
+<dl class="dl">
+<dt>Service</dt><dd>Pet waste removal · 2 dogs</dd>
+<dt>Price</dt><dd>$27 per visit · charged after each visit</dd>
+<dt>Gate</dt><dd>Side gate code 2580 — please re-latch it</dd>
+</dl>
+<div class="actions">
+<button type="button" class="btn btn-secondary btn-sm" onClick="{{petSkip}}">{{petSkipLabel}}</button>
+<button type="button" class="btn btn-secondary btn-sm">Change route day</button>
+<button type="button" class="btn btn-secondary btn-sm" onClick="{{togglePause}}">{{pauseLabel}}</button>
+</div>
+<p class="small" style="margin: 0; color: var(--muted)">Skip or change by 8 PM the night before your route day.</p>
+</section>
+<section class="card" aria-labelledby="plast-h">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h2 class="display h3" id="plast-h">Last visit · Tue, Oct 20</h2><span class="pill" style="background: var(--accent-soft); color: var(--accent)">Done 11:42 AM</span></div>
+<div role="img" aria-label="Gate photo placeholder: latched side gate after the visit" style="aspect-ratio: 16 / 9; border-radius: 12px; background: #E3ECE8; border: 1px dashed #B9C8C2; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; font-weight: 600; text-align: center; padding: 16px; box-sizing: border-box">Gate photo from the visit</div>
+<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center">
+<span class="small" style="color: var(--ink-2)">Missed a spot? You have until 11:42 AM tomorrow.</span>
+<button type="button" class="btn btn-secondary btn-sm">Request a re-scoop</button>
+</div>
+</section>
+</div>
+<div class="col">
+<section class="card" aria-labelledby="ppay-h">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><h2 class="display h3" id="ppay-h">Payment</h2><button type="button" class="linkbtn">Update card</button></div>
+<dl class="dl"><dt>Card</dt><dd>Visa •••• 4242</dd><dt>Last charge</dt><dd>$27 on Oct 20 · <a class="link" href="#receipt">Receipt</a></dd></dl>
+</section>
+<section class="card" aria-labelledby="pdogs-h">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><h2 class="display h3" id="pdogs-h">Dogs &amp; yard</h2><button type="button" class="linkbtn">Edit</button></div>
+<dl class="dl"><dt>Dogs</dt><dd>Biscuit and Maple — friendly</dd><dt>Address</dt><dd>482 Maple Ridge Dr, Marietta</dd></dl>
+</section>
+<section class="card" style="gap: 10px; background: var(--accent-soft); border-color: transparent; box-shadow: none">
+<h2 class="display h3">Add a home clean</h2>
+<p class="small" style="margin: 0; color: var(--ink-2)">Same account, same card. New customers get 20% off their first home clean.</p>
+<a class="btn btn-primary btn-sm" href="Booking.dc.html" style="align-self: flex-start">See home cleaning</a>
+</section>
+<button type="button" class="linkbtn linkbtn-danger" style="align-self: flex-start">Cancel yard service</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+</main>
+
+<footer style="background: var(--ink); color: #CDD6D3">
+<div class="wrap" style="padding-top: 24px; padding-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px">
+<span>© 2026 Fernhouse · Serving Atlanta and surrounding suburbs</span>
+<span style="display: flex; gap: 20px"><a href="Legal.dc.html" style="color: #CDD6D3">Privacy Policy</a><a href="Terms.dc.html" style="color: #CDD6D3">Terms</a></span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"screen":{"editor":"enum","default":"overview","options":["find","overview","reschedule","cancel","cancelled","pet"]},"$preview":{"width":1440,"height":1093}}'>
+// /b/[token] — reached from the link in every confirmation text/email (signed, expiring token; no passwords).
+// /manage — "find my booking": phone number → texted magic link. Never reveal whether a number has a booking.
+// Rules (lib/config.ts): free changes until 24h before a cleaning visit, then CANCEL_FEE; pet route-day changes by 8 PM the night before.
+var CANCEL_FEE = 50;
+var DAYS = [
+  ['Wed', 28], ['Thu', 29, false], ['Fri', 30], ['Mon', 2, true], ['Tue', 3],
+  ['Wed', 4], ['Thu', 5], ['Fri', 6, true], ['Mon', 9], ['Tue', 10]
+];
+var MONTH_OF = function (i) { return i < 3 ? 'Oct' : 'Nov'; };
+var WINS = ['8–11 AM', '11 AM–2 PM', '2–5 PM'];
+var REASONS = ['Schedule conflict', 'Away from home', 'Feeling unwell', 'Something else'];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var sc = props.screen || 'overview';
+    this.state = { view: sc, day: sc === 'reschedule' ? 1 : -1, win: 1, reason: -1, paused: false, toast: '', petSkipped: false, findPhone: '', findSent: false, findErr: false };
+  }
+  renderVals() {
+    var self = this, s = this.state;
+    var go = function (v) { return function () { self.setState({ view: v, toast: '' }); try { window.scrollTo(0, 0); } catch (e) {} }; };
+    return {
+      isFind: s.view === 'find', isOverview: s.view === 'overview', isReschedule: s.view === 'reschedule',
+      isCancel: s.view === 'cancel', isCancelled: s.view === 'cancelled', isPet: s.view === 'pet',
+      showToast: !!s.toast, toast: s.toast,
+      goOverview: go('overview'), goReschedule: go('reschedule'), goCancel: go('cancel'), goCancelPlan: go('cancel'),
+      nextDate: 'Tuesday, October 27', nextWindow: '8–11 AM', price: 165, chargeLine: 'the morning of your visit',
+      freeUntil: 'Mon, Oct 26 at 8 AM', lateFee: CANCEL_FEE,
+      skipVisit: function () { self.setState({ toast: 'Oct 27 skipped. Your next visit is Tuesday, November 10.' }); },
+      planStatus: s.paused ? 'Paused' : 'Active',
+      pauseLabel: s.paused ? 'Resume plan' : 'Pause plan',
+      togglePause: function () { self.setState({ paused: !s.paused, toast: s.paused ? 'Plan resumed.' : 'Plan paused. No visits are scheduled until you resume.' }); },
+      upcoming: [{ date: 'Tue, Oct 27', note: '8–11 AM' }, { date: 'Tue, Nov 10', note: '8–11 AM' }, { date: 'Tue, Nov 24', note: '8–11 AM' }],
+      days: DAYS.map(function (d, i) {
+        return { dow: d[0], num: d[1], full: !!d[2], pressed: s.day === i, aria: d[0] + ' ' + MONTH_OF(i) + ' ' + d[1] + (d[2] ? ', fully booked' : ''), pick: function () { self.setState({ day: i }); } };
+      }),
+      wins: WINS.map(function (w, i) { return { label: w, pressed: s.win === i, pick: function () { self.setState({ win: i }); } }; }),
+      noNewDay: s.day < 0,
+      newWhen: s.day < 0 ? 'Pick a day' : DAYS[s.day][0] + ', ' + MONTH_OF(s.day) + ' ' + DAYS[s.day][1] + ' · ' + WINS[s.win],
+      confirmReschedule: function () { if (s.day < 0) return; self.setState({ view: 'overview', toast: 'Moved to ' + DAYS[s.day][0] + ', ' + MONTH_OF(s.day) + ' ' + DAYS[s.day][1] + ', ' + WINS[s.win] + '. We’ve texted you a confirmation.' }); },
+      reasons: REASONS.map(function (r, i) { return { label: r, pressed: s.reason === i, pick: function () { self.setState({ reason: i }); } }; }),
+      confirmCancel: go('cancelled'),
+      petNext: s.petSkipped ? 'Tuesday, November 3' : 'Tuesday, October 27',
+      petSkipLabel: s.petSkipped ? 'Undo skip' : 'Skip next visit',
+      petSkip: function () { self.setState({ petSkipped: !s.petSkipped, toast: s.petSkipped ? 'Oct 27 is back on.' : 'Oct 27 skipped. Next visit Tuesday, November 3.' }); },
+      findPhone: s.findPhone, findErr: s.findErr, findSent: s.findSent, findNotSent: !s.findSent,
+      onFindPhone: function (ev) { self.setState({ findPhone: ev.target.value, findErr: false }); },
+      sendLink: function () { if (String(s.findPhone).replace(/\D/g, '').length === 10) self.setState({ findSent: true }); else self.setState({ findErr: true }); },
+      resetFind: function () { self.setState({ findSent: false, findPhone: '' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

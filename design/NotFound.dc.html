@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Page not found — Fernhouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.nf{container-type:inline-size;container-name:nf}
+.wrap{max-width:1120px;margin:0 auto;padding-left:32px;padding-right:32px;box-sizing:border-box}
+.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:16px;font-weight:600;line-height:1;text-decoration:none;cursor:pointer;border:0;box-sizing:border-box;white-space:nowrap;transition:transform 120ms ease,background-color 120ms ease}
+.btn:active{transform:scale(0.98)}
+.btn-sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn-primary{background:var(--accent);color:#FFFFFF}
+.btn-secondary{background:#FFFFFF;color:var(--ink);border:1.5px solid rgba(22,33,31,0.15)}
+@media (hover:hover){.btn-primary:hover{background:color-mix(in srgb,var(--accent) 88%,#000)}.btn-secondary:hover{border-color:rgba(22,33,31,0.35)}.ql:hover{border-color:var(--accent)}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.nf-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,0.9fr);gap:56px;align-items:center}
+.ql-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ql{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:0 18px;border:1px solid var(--line);border-radius:16px;background:#FFFFFF;color:var(--ink);text-decoration:none;font-weight:600;transition:border-color 120ms ease}
+@container nf (max-width:899px){.nf-grid{grid-template-columns:minmax(0,1fr);gap:32px}.art{order:-1;max-width:280px}}
+@container nf (max-width:767px){.wrap{padding-left:20px;padding-right:20px}.call-label{display:none}.btn-block-m{width:100%}.h1{font-size:32px !important;line-height:38px !important}}
+@container nf (max-width:479px){.ql-grid{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</helmet>
+<div class="nf" style="--ink: #16211F; --ink-2: #3D4A47; --muted: #5B6764; --paper-2: #F6F8F7; --accent: #0E7A5F; --accent-soft: #E3F2EC; --gold: #C99A2C; --line: #DCE3E0; font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--paper-2); width: 100%; min-width: 0; -webkit-font-smoothing: antialiased">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid var(--line)">
+<div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px">
+<a href="Main.dc.html" aria-label="Fernhouse home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-height: 44px">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 10px; background: var(--accent); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5"></path><path d="M6 9.5V19h12V9.5"></path></svg></span>
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px">Fernhouse</span>
+</a>
+<div style="display: flex; align-items: center; gap: 8px">
+<a class="btn btn-secondary btn-sm" href="tel:+16784396213" aria-label="Call (678) 439-6213" style="padding: 0 14px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"></path></svg><span class="call-label">(678) 439-6213</span></a>
+<a class="btn btn-primary btn-sm" href="Main.dc.html#booking">Book now</a>
+</div>
+</div>
+</header>
+
+<main class="wrap" style="padding-top: 72px; padding-bottom: 96px">
+<div class="nf-grid">
+<div style="display: flex; flex-direction: column; gap: 20px; min-width: 0">
+<span style="align-self: flex-start; font-size: 14px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 6px 14px; border-radius: 999px">Error 404</span>
+<h1 class="display h1" style="font-size: 44px; line-height: 52px">We couldn’t find that page.</h1>
+<p style="margin: 0; font-size: 17px; line-height: 27px; color: var(--ink-2); max-width: 52ch">The link may be old or mistyped. Everything you need is still a tap away — and booking a clean takes about 60 seconds.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a class="btn btn-primary btn-block-m" href="Main.dc.html#booking">Book a clean</a>
+<a class="btn btn-secondary btn-block-m" href="Main.dc.html">Go to the home page</a>
+</div>
+<nav aria-label="Popular pages" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px">
+<span style="font-size: 14px; font-weight: 600; color: var(--muted)">Or jump to</span>
+<div class="ql-grid">
+<a class="ql" href="Main.dc.html#services">Services<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></a>
+<a class="ql" href="Main.dc.html#pricing">Pricing<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></a>
+<a class="ql" href="Main.dc.html#faq">Questions<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></a>
+<a class="ql" href="tel:+16784396213">Call (678) 439-6213<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"></path></svg></a>
+</div>
+</nav>
+</div>
+
+<div class="art" aria-hidden="true" style="width: 100%; justify-self: center">
+<svg viewBox="0 0 320 280" width="100%" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="160" cy="150" r="118" fill="#E3F2EC"></circle>
+<path d="M78 150l82-64 82 64" stroke="#16211F" stroke-width="6"></path>
+<path d="M98 136v86h124v-86" stroke="#16211F" stroke-width="6"></path>
+<rect x="142" y="170" width="36" height="52" rx="4" stroke="#16211F" stroke-width="6"></rect>
+<path d="M160 104l5 13 13 5-13 5-5 13-5-13-13-5 13-5z" fill="#C99A2C" stroke="#C99A2C" stroke-width="2"></path>
+<path d="M232 64l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#0E7A5F" stroke="#0E7A5F" stroke-width="2"></path>
+<path d="M70 92l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z" fill="#0E7A5F" stroke="#0E7A5F" stroke-width="2"></path>
+<path d="M40 238h240" stroke="#16211F" stroke-width="6"></path>
+</svg>
+</div>
+</div>
+</main>
+
+<footer style="background: #FFFFFF; border-top: 1px solid var(--line)">
+<div class="wrap" style="padding-top: 20px; padding-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 14px; color: var(--muted)">
+<span>© 2026 Fernhouse · Serving Atlanta and surrounding suburbs</span>
+<span style="display: flex; gap: 20px"><a href="Legal.dc.html" style="color: var(--muted); padding: 10px 0">Privacy Policy</a><a href="Terms.dc.html" style="color: var(--muted); padding: 10px 0">Terms</a></span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":803}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

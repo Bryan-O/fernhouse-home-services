@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Book your clean — Fernhouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.bk{container-type:inline-size;container-name:bk}
+.wrap{max-width:1120px;margin:0 auto;padding-left:32px;padding-right:32px;box-sizing:border-box}
+.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+.h3{font-size:22px;line-height:28px;font-weight:700;letter-spacing:-0.01em}
+.body{font-size:17px;line-height:27px}
+.small{font-size:14px;line-height:21px}
+.card{background:#FFFFFF;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:28px;box-sizing:border-box}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:16px;font-weight:600;line-height:1;text-decoration:none;cursor:pointer;border:0;box-sizing:border-box;white-space:nowrap;transition:transform 120ms ease,background-color 120ms ease,border-color 120ms ease}
+.btn:active{transform:scale(0.98)}
+.btn-sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn-primary{background:var(--accent);color:#FFFFFF}
+.btn-primary:active{background:color-mix(in srgb,var(--accent) 80%,#000)}
+.btn-secondary{background:#FFFFFF;color:var(--ink);border:1.5px solid rgba(22,33,31,0.15)}
+.btn[disabled],.btn[aria-disabled="true"]{opacity:0.5;pointer-events:none}
+.btn-busy[disabled]{opacity:0.85}
+.linkbtn{background:none;border:0;padding:10px 0;font:inherit;font-weight:600;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+@media (hover:hover){
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 88%,#000)}
+.btn-secondary:hover{border-color:rgba(22,33,31,0.35)}
+.opt:hover,.day:hover{border-color:rgba(22,33,31,0.3)}
+.input:hover{border-color:rgba(22,33,31,0.35)}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-size:15px;font-weight:600;color:var(--ink)}
+.opt-tag{font-weight:400;color:var(--muted)}
+.input{width:100%;min-height:52px;font-family:'Inter',system-ui,sans-serif;font-size:16px;color:var(--ink);padding:0 16px;border:1.5px solid var(--line);border-radius:12px;background:#FFFFFF;box-sizing:border-box;transition:border-color 120ms ease}
+textarea.input{min-height:96px;padding:14px 16px;line-height:24px;resize:vertical}
+.input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.input.ok{border-color:var(--accent)}
+.input[aria-invalid="true"]{border-color:var(--error)}
+.input[disabled]{background:var(--paper-2);color:var(--muted)}
+.help{margin:0;font-size:14px;line-height:21px;color:var(--muted)}
+.help-ok{margin:0;font-size:14px;line-height:21px;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:6px}
+.err{margin:0;font-size:14px;line-height:21px;color:var(--error);font-weight:600;display:flex;align-items:flex-start;gap:6px}
+.opt{background:#FFFFFF;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer;font-family:inherit;transition:border-color 120ms ease,background-color 120ms ease,transform 120ms ease}
+.opt:active{transform:scale(0.98)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dow{font-size:13px;font-weight:600;color:var(--muted);text-align:center;padding:4px 0}
+.day{min-height:48px;border-radius:12px;border:1.5px solid var(--line);background:#FFFFFF;color:var(--ink);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:2px;transition:transform 120ms ease,border-color 120ms ease}
+.day:active{transform:scale(0.96)}
+.day[disabled]{border-color:transparent;background:transparent;color:#A9B4B0;font-weight:400;pointer-events:none}
+.day-full{background:var(--paper-2);color:var(--muted);border-style:dashed}
+.day-full .tag{font-size:10px;font-weight:600;line-height:1;color:var(--warning)}
+.day[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#FFFFFF}
+.day-full[aria-pressed="true"]{background:#FFF4E5;border-color:var(--warning);color:var(--ink)}
+.switch{position:relative;width:52px;height:32px;border-radius:999px;border:0;background:#C3CDC9;cursor:pointer;flex:none;transition:background-color 160ms ease}
+.switch::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,0.25);transition:transform 160ms ease}
+.switch[aria-checked="true"]{background:var(--accent)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+.check{width:22px;height:22px;accent-color:var(--accent);margin:2px 0 0;flex:none;cursor:pointer}
+.spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.45);border-top-color:#FFFFFF;animation:spin 800ms linear infinite;flex:none}
+.spinner-lg{width:44px;height:44px;border-width:3px;border-color:var(--accent-soft);border-top-color:var(--accent)}
+.skel{background:linear-gradient(90deg,#EBF0EE 25%,#F5F7F6 37%,#EBF0EE 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite;border-radius:8px}
+.step-in{animation:stepIn 200ms ease both}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{background-position:100% 50%}100%{background-position:0 50%}}
+.progress{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pstep{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600;color:var(--muted)}
+.pbar{height:4px;border-radius:4px;background:var(--line)}
+.is-done .pbar,.is-current .pbar{background:var(--accent)}
+.is-current{color:var(--ink)}
+.is-done{color:var(--accent)}
+.book-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start}
+.summary-side{position:sticky;top:24px}
+.summary-bar{display:none}
+.row2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:12px}
+.row2-even{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pcap{display:none;margin:0;font-size:15px;font-weight:600;color:var(--ink)}
+.plabel{display:flex}
+.pay-note{margin:-8px 0 0;color:var(--muted);text-align:right}
+.win-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.hide-s{display:inline}
+.chev{transition:transform 200ms ease;flex:none}
+.chev.open{transform:rotate(180deg)}
+@container bk (max-width:899px){
+.book-grid{grid-template-columns:minmax(0,1fr)}
+.summary-side{display:none}
+.summary-bar{display:block}
+}
+@container bk (max-width:767px){
+.wrap{padding-left:16px;padding-right:16px}
+.card{padding:20px 16px}
+.plabel{display:none !important}
+.pcap{display:block}
+.pay-note{text-align:center}
+.row2,.row2-even{grid-template-columns:minmax(0,1fr)}
+.win-grid{grid-template-columns:minmax(0,1fr)}
+.actions{flex-direction:column-reverse;align-items:stretch}
+.actions .btn{width:100%}
+.hide-s{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+*{transition:none !important;animation:none !important}
+}
+</style>
+</helmet>
+<div class="bk" style="--ink: #16211F; --ink-2: #3D4A47; --muted: #5B6764; --paper: #FFFFFF; --paper-2: #F6F8F7; --accent: {{accent}}; --accent-soft: #E3F2EC; --gold: #C99A2C; --line: #DCE3E0; --error: #B42318; --success: #0E7A5F; --warning: #B54708; --shadow-card: 0 1px 2px rgba(22,33,31,0.05), 0 12px 32px -16px rgba(22,33,31,0.22); font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--paper-2); width: 100%; min-width: 0; min-height: 100%; -webkit-font-smoothing: antialiased">
+
+<!-- Checkout header: no nav, so nothing pulls the visitor out of the flow -->
+<header style="background: #FFFFFF; border-bottom: 1px solid var(--line)">
+<div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px">
+<a href="Main.dc.html" aria-label="Fernhouse home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-height: 44px">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 10px; background: var(--accent); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5"></path><path d="M6 9.5V19h12V9.5"></path></svg></span>
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px">Fernhouse</span>
+</a>
+<div style="display: flex; align-items: center; gap: 16px">
+<span class="small hide-s" style="display: flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>Secure booking</span>
+<a class="btn btn-secondary btn-sm" href="tel:+16784396213" aria-label="Call (678) 439-6213" style="padding: 0 14px">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"></path></svg>
+<span class="hide-s">(678) 439-6213</span>
+</a>
+</div>
+</div>
+</header>
+
+<main class="wrap" style="padding-top: 32px; padding-bottom: 64px">
+
+<!-- ================= BOOKING FLOW ================= -->
+<sc-if value="{{showFlow}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h1 class="display" style="font-size: 30px; line-height: 36px">{{flowTitle}}</h1>
+<ol class="progress" aria-label="Booking steps">
+<sc-for list="{{steps}}" as="p" hint-placeholder-count="4">
+<li class="{{p.cls}}" aria-current="{{p.current}}">
+<span class="pbar" aria-hidden="true"></span>
+<span class="plabel" style="align-items: center; gap: 6px">
+<sc-if value="{{p.done}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+<span class="{{p.labelCls}}">{{p.label}}</span>
+<sc-if value="{{p.current}}" hint-placeholder-val="{{false}}"><span class="small" style="color: var(--muted); font-weight: 400">· Step {{p.n}} of 4</span></sc-if>
+</span>
+</li>
+</sc-for>
+</ol>
+<p class="pcap" aria-hidden="true">Step {{stepNum}} of 4 · <span style="color: var(--ink-2); font-weight: 400">{{stepName}}</span></p>
+</div>
+
+<div class="book-grid">
+<div style="display: flex; flex-direction: column; gap: 16px; min-width: 0">
+
+<!-- Mobile: collapsible price summary -->
+<div class="summary-bar card" style="padding: 0; overflow: hidden">
+<button type="button" aria-expanded="{{summaryOpen}}" aria-controls="sum-m" onClick="{{toggleSummary}}" style="width: 100%; min-height: 60px; padding: 12px 16px; background: none; border: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: inherit; color: var(--ink); cursor: pointer; text-align: left">
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span class="small" style="color: var(--muted)">{{barLabel}}</span>
+<sc-if value="{{loading}}" hint-placeholder-val="{{false}}"><span class="skel" style="display: block; width: 120px; height: 22px"></span></sc-if>
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{true}}"><span style="font-weight: 600">{{barPriceLabel}} <strong style="font-size: 20px">${{barPrice}}</strong></span></sc-if>
+</span>
+<span class="small" style="display: flex; align-items: center; gap: 4px; color: var(--accent); font-weight: 600">{{summaryToggleLabel}}<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="{{chevCls}}"><path d="M6 9l6 6 6-6"></path></svg></span>
+</button>
+<sc-if value="{{summaryOpen}}" hint-placeholder-val="{{false}}">
+<sc-if value="{{isPet}}" hint-placeholder-val="{{false}}">
+<div class="small" style="border-top: 1px solid var(--line); padding: 16px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">{{petLine}}</span><span style="font-weight: 600">{{petVisitLine}}</span></div>
+<sc-if value="{{petHasInitial}}" hint-placeholder-val="{{true}}"><div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">First-visit cleanup ({{petCondLabel}})</span><span style="font-weight: 600">${{petInitial}}</span></div></sc-if>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">Route day</span><span style="font-weight: 600; text-align: right">{{routeShort}}</span></div>
+<span style="color: var(--muted)">{{petAfterLine}}</span>
+</div>
+</sc-if>
+<sc-if value="{{isClean}}" hint-placeholder-val="{{true}}">
+<div id="sum-m" class="small" style="border-top: 1px solid var(--line); padding: 16px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">{{cleanLine}}</span><span style="font-weight: 600">${{base}}</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--accent); font-weight: 600">First clean −20%</span><span style="color: var(--accent); font-weight: 600">−${{discount}}</span></div><div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">When</span><span style="font-weight: 600; text-align: right">{{whenShort}}</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 8px"><span style="font-weight: 600">Total today</span><span style="font-weight: 600">${{total}}</span></div>
+<span style="color: var(--muted)">{{afterLine}}</span>
+</div>
+</sc-if>
+</sc-if>
+</div>
+
+<!-- LOADING (price + slots fetching) -->
+<sc-if value="{{loading}}" hint-placeholder-val="{{false}}">
+<div class="card" aria-busy="true" aria-live="polite" style="display: flex; flex-direction: column; gap: 20px">
+<span class="small" style="color: var(--muted); font-weight: 600">Loading available times…</span>
+<span class="skel" style="display: block; width: 45%; height: 26px"></span>
+<span class="skel" style="display: block; width: 100%; height: 52px; border-radius: 12px"></span>
+<div class="cal">
+<span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span>
+<span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span><span class="skel" style="height: 48px; border-radius: 12px"></span>
+</div>
+<div class="win-grid"><span class="skel" style="height: 64px; border-radius: 12px"></span><span class="skel" style="height: 64px; border-radius: 12px"></span><span class="skel" style="height: 64px; border-radius: 12px"></span></div>
+<span class="skel" style="display: block; width: 100%; height: 52px; border-radius: 999px"></span>
+</div>
+</sc-if>
+
+<!-- REDIRECT TO STRIPE -->
+<sc-if value="{{redirecting}}" hint-placeholder-val="{{false}}">
+<div class="card step-in" role="status" aria-live="polite" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; padding-top: 56px; padding-bottom: 56px">
+<span class="spinner spinner-lg" aria-hidden="true"></span>
+<h2 class="display h3">Taking you to secure checkout…</h2>
+<p class="body" style="margin: 0; color: var(--ink-2); max-width: 420px">You’ll pay Fernhouse through Stripe. We never see or store your card number.</p>
+<p class="small" style="margin: 0; color: var(--muted)">Please keep this page open.</p>
+</div>
+</sc-if>
+
+<!-- STEP 2 — WHEN & WHERE -->
+<sc-if value="{{showStep2}}" hint-placeholder-val="{{true}}">
+<section class="card step-in" aria-labelledby="s2-title" style="display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="s2-title" class="display h3">When &amp; where</h2>
+<div class="small" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; background: var(--paper-2); border-radius: 12px; padding: 4px 4px 4px 14px">
+<span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>{{cleanLine}}</span>
+<a href="Main.dc.html#booking" class="link" style="padding: 10px">Change</a>
+</div>
+</div>
+
+<!-- ZIP -->
+<div class="field">
+<label class="label" for="zip">ZIP code</label>
+<input id="zip" class="{{zipCls}}" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" value="{{zip}}" onChange="{{onZip}}" aria-invalid="{{zipErr}}" aria-describedby="zip-msg" style="max-width: 200px">
+<div id="zip-msg" aria-live="polite">
+<sc-if value="{{zipOk}}" hint-placeholder-val="{{true}}"><p class="help-ok"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Good news — we clean in {{zipCity}}.</span></p></sc-if>
+<sc-if value="{{zipErr}}" hint-placeholder-val="{{false}}"><p class="err"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please enter your ZIP so we can check coverage.</p></sc-if>
+<sc-if value="{{zipNeutral}}" hint-placeholder-val="{{false}}"><p class="help">We’ll check that we cover your area.</p></sc-if>
+</div>
+</div>
+
+<!-- ZIP OUT OF AREA → waitlist (never a dead end) -->
+<sc-if value="{{zipOut}}" hint-placeholder-val="{{false}}">
+<div role="status" style="background: #FFF8EB; border: 1px solid #F1DDB3; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; gap: 12px">
+<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h3 class="display" style="font-size: 18px; line-height: 24px">We don’t cover {{zip}} yet — join the waitlist</h3>
+<p class="small" style="margin: 0; color: var(--ink-2)">We’re expanding across metro Atlanta. Leave your mobile number and we’ll text you the day we start cleaning in your area.</p>
+</div>
+</div>
+<sc-if value="{{waitNotJoined}}" hint-placeholder-val="{{true}}">
+<div class="field">
+<label class="label" for="wait-phone">Mobile phone</label>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<input id="wait-phone" class="input" type="tel" autocomplete="tel" inputmode="tel" value="{{waitPhone}}" onChange="{{onWaitPhone}}" placeholder="(404) 555-0123" style="flex: 1 1 200px">
+<button type="button" class="btn btn-primary" onClick="{{joinWait}}" style="flex: 1 1 auto">Join the waitlist</button>
+</div>
+<sc-if value="{{waitErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert">Please enter a 10-digit mobile number.</p></sc-if>
+<p class="small" style="margin: 0; color: var(--muted); font-size: 12px; line-height: 18px">We’ll send one text when we reach your area. Msg &amp; data rates may apply. Reply STOP to opt out.</p>
+</div>
+</sc-if>
+<sc-if value="{{waitJoined}}" hint-placeholder-val="{{false}}"><p class="help-ok" role="status"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>You’re on the list. We’ll text {{waitPhone}} when we reach {{zip}}.</span></p></sc-if>
+<p class="small" style="margin: 0; color: var(--ink-2)">Typed the wrong ZIP? <button type="button" class="linkbtn" onClick="{{clearZip}}">Try another ZIP</button> or call <a class="link" href="tel:+16784396213">(678) 439-6213</a>.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{zipNotOut}}" hint-placeholder-val="{{true}}">
+<!-- DATE -->
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<legend class="label" style="padding: 0; margin-bottom: 12px">Pick a date</legend>
+<div style="border: 1px solid var(--line); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<button type="button" class="btn btn-secondary btn-sm" aria-label="Previous month" onClick="{{prevMonth}}" disabled="{{atFirstMonth}}" style="width: 44px; padding: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<span aria-live="polite" style="font-weight: 600">{{monthLabel}}</span>
+<button type="button" class="btn btn-secondary btn-sm" aria-label="Next month" onClick="{{nextMonth}}" disabled="{{atLastMonth}}" style="width: 44px; padding: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+<div class="cal" aria-hidden="true">
+<span class="dow">S</span><span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span>
+</div>
+<div class="cal" role="group" aria-label="{{monthLabel}}">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="35">
+<sc-if value="{{c.blank}}" hint-placeholder-val="{{false}}"><span aria-hidden="true"></span></sc-if>
+<sc-if value="{{c.real}}" hint-placeholder-val="{{true}}">
+<button type="button" class="{{c.cls}}" aria-pressed="{{c.pressed}}" aria-label="{{c.label}}" disabled="{{c.disabled}}" onClick="{{c.pick}}">
+<span>{{c.day}}</span>
+<sc-if value="{{c.full}}" hint-placeholder-val="{{false}}"><span class="tag" aria-hidden="true">Full</span></sc-if>
+</button>
+</sc-if>
+</sc-for>
+</div>
+</div>
+<p class="help">Book up to 60 days ahead. Dates marked “Full” have no open slots.</p>
+<sc-if value="{{dateErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please pick a date for your clean.</p></sc-if>
+
+<!-- FULLY BOOKED → next 3 available -->
+<sc-if value="{{dateFull}}" hint-placeholder-val="{{false}}">
+<div role="status" style="background: #FFF8EB; border: 1px solid #F1DDB3; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; font-weight: 600">{{dateLong}} is fully booked.</p>
+<p class="small" style="margin: 0; color: var(--ink-2)">These days have open slots:</p>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{alternatives}}" as="a" hint-placeholder-count="3">
+<button type="button" class="opt" onClick="{{a.pick}}" style="min-height: 56px; padding: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+<span style="font-size: 13px; color: var(--muted)">{{a.dow}}</span>
+<span style="font-size: 15px; font-weight: 600">{{a.md}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</fieldset>
+
+<!-- ARRIVAL WINDOW -->
+<sc-if value="{{showWindows}}" hint-placeholder-val="{{true}}">
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<legend class="label" style="padding: 0; margin-bottom: 4px">Arrival window <span class="opt-tag">· {{dateShort}}</span></legend>
+<p class="help" style="margin-top: -4px">Your team arrives any time within your window.</p>
+<div class="win-grid">
+<sc-for list="{{windows}}" as="w" hint-placeholder-count="3">
+<button type="button" class="opt" aria-pressed="{{w.pressed}}" aria-label="{{w.aria}}" onClick="{{w.pick}}" style="min-height: 64px; padding: 10px 14px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; text-align: left">
+<span style="font-size: 16px; font-weight: 600">{{w.label}}</span>
+<span class="small" style="color: var(--ink-2)">{{w.time}}</span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{windowErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please pick an arrival window.</p></sc-if>
+</fieldset>
+</sc-if>
+
+<!-- ADDRESS -->
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div class="row2">
+<div class="field">
+<label class="label" for="addr">Street address</label>
+<input id="addr" class="input" type="text" autocomplete="street-address" value="{{address}}" onChange="{{onAddress}}" aria-invalid="{{addressErr}}" aria-describedby="addr-msg">
+<div id="addr-msg">
+<sc-if value="{{addressErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please enter your street address.</p></sc-if>
+</div>
+</div>
+<div class="field">
+<label class="label" for="unit">Apt / unit <span class="opt-tag">(optional)</span></label>
+<input id="unit" class="input" type="text" autocomplete="address-line2" value="{{unit}}" onChange="{{onUnit}}">
+</div>
+</div>
+<sc-if value="{{zipOk}}" hint-placeholder-val="{{true}}"><p class="help">{{cityLine}}</p></sc-if>
+</div>
+
+<div class="actions">
+<a href="Main.dc.html#booking" class="btn btn-secondary">Back</a>
+<button type="button" class="btn btn-primary" onClick="{{continue2}}">Continue to your details<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
+</div>
+</sc-if>
+</section>
+</sc-if>
+
+<!-- STEP 3 — YOUR DETAILS -->
+<sc-if value="{{showStep3}}" hint-placeholder-val="{{false}}">
+<section class="card step-in" aria-labelledby="s3-title" style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 id="s3-title" class="display h3">Your details</h2>
+<p class="small" style="margin: 0; color: var(--muted)">No account or password needed.</p>
+</div>
+
+<sc-if value="{{s3HasErrors}}" hint-placeholder-val="{{false}}">
+<div role="alert" style="background: #FEF3F2; border: 1px solid #FDA29B; border-radius: 12px; padding: 14px 16px; display: flex; gap: 10px; color: var(--error); font-weight: 600" class="small">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>
+{{s3ErrorSummary}}
+</div>
+</sc-if>
+
+<div class="field">
+<label class="label" for="name">Full name</label>
+<input id="name" class="input" type="text" autocomplete="name" value="{{name}}" onChange="{{onName}}" aria-invalid="{{nameErr}}" aria-describedby="name-msg">
+<div id="name-msg"><sc-if value="{{nameErr}}" hint-placeholder-val="{{false}}"><p class="err"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please enter your name.</p></sc-if></div>
+</div>
+
+<div class="row2 row2-even">
+<div class="field">
+<label class="label" for="phone">Mobile phone</label>
+<input id="phone" class="input" type="tel" inputmode="tel" autocomplete="tel" value="{{phone}}" onChange="{{onPhone}}" aria-invalid="{{phoneErr}}" aria-describedby="phone-msg">
+<div id="phone-msg">
+<sc-if value="{{phoneErr}}" hint-placeholder-val="{{false}}"><p class="err"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please enter a 10-digit mobile number.</p></sc-if>
+<sc-if value="{{phoneOkHelp}}" hint-placeholder-val="{{true}}"><p class="help">We’ll text your confirmation.</p></sc-if>
+</div>
+</div>
+<div class="field">
+<label class="label" for="email">Email</label>
+<input id="email" class="input" type="email" inputmode="email" autocomplete="email" value="{{email}}" onChange="{{onEmail}}" aria-invalid="{{emailErr}}" aria-describedby="email-msg">
+<div id="email-msg">
+<sc-if value="{{emailErr}}" hint-placeholder-val="{{false}}"><p class="err"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please enter a valid email, like name@example.com.</p></sc-if>
+<sc-if value="{{emailOkHelp}}" hint-placeholder-val="{{true}}"><p class="help">For your receipt.</p></sc-if>
+</div>
+</div>
+</div>
+
+<div class="sms-consent" style="display: flex; flex-direction: column; gap: 10px; background: var(--paper-2); border-radius: 12px; padding: 12px 14px">
+<p class="small" style="margin: 0; color: var(--ink-2)">By giving your mobile number, you agree to get booking texts from Fernhouse — confirmations, reminders and visit updates. Message frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP to opt out. See our <a class="link" href="Legal.dc.html">Privacy Policy</a> and <a class="link" href="Terms.dc.html#t-texts">Terms</a>.</p>
+<div style="display: flex; gap: 10px; align-items: flex-start">
+<input id="sms-promo" class="check" type="checkbox" checked="{{smsPromo}}" onChange="{{toggleSmsPromo}}">
+<label for="sms-promo" class="small" style="color: var(--ink); cursor: pointer">Also text me offers, up to 2 a month <span style="color: var(--muted)">(optional)</span></label>
+</div>
+</div>
+
+<div class="field">
+<label class="label" for="access">How will your team get in? <span class="opt-tag">(optional)</span></label>
+<textarea id="access" class="input" rows="3" autocomplete="off" onChange="{{onAccess}}" aria-describedby="access-help" value="{{access}}"></textarea>
+<p id="access-help" class="help">For example: key under the mat, a door code, or a garage code. Shared only with your assigned team.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+<span id="pets-label" class="label">Pets at home?</span>
+<button type="button" class="switch" role="switch" aria-checked="{{pets}}" aria-labelledby="pets-label" onClick="{{togglePets}}"></button>
+</div>
+<sc-if value="{{pets}}" hint-placeholder-val="{{false}}">
+<div class="field">
+<label class="label" for="pet-note" style="font-weight: 400; color: var(--ink-2)">Tell your team about them <span class="opt-tag">(optional)</span></label>
+<input id="pet-note" class="input" type="text" value="{{petNote}}" onChange="{{onPetNote}}">
+</div>
+</sc-if>
+</div>
+
+<div class="field">
+<label class="label" for="requests">Special requests <span class="opt-tag">(optional)</span></label>
+<textarea id="requests" class="input" rows="3" onChange="{{onRequests}}" aria-describedby="req-help" value="{{requests}}"></textarea>
+<p id="req-help" class="help">Anything to focus on or skip.</p>
+</div>
+
+<div class="actions">
+<button type="button" class="btn btn-secondary" onClick="{{back3}}">Back</button>
+<button type="button" class="btn btn-primary" onClick="{{continue3}}">Review my booking<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
+</div>
+</section>
+</sc-if>
+
+<!-- STEP 4 — REVIEW & PAY -->
+<sc-if value="{{showStep4}}" hint-placeholder-val="{{false}}">
+<section class="card step-in" aria-labelledby="s4-title" style="display: flex; flex-direction: column; gap: 24px">
+
+<sc-if value="{{payFailed}}" hint-placeholder-val="{{false}}">
+<div role="alert" style="background: #FEF3F2; border: 1px solid #FDA29B; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 12px">
+<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18"></path><path d="M15 15l4-4"></path><path d="M19 15l-4-4"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<p style="margin: 0; font-weight: 600; color: var(--error)">Your payment didn’t go through</p>
+<p class="small" style="margin: 0; color: var(--ink-2)">Your slot is held for 15 minutes — try again. You haven’t been charged.</p>
+</div>
+</div>
+<div class="small" style="display: flex; align-items: center; gap: 8px; font-weight: 600"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2"></path><path d="M9.5 2.5h5"></path></svg>Slot held for <span aria-live="off" style="font-variant-numeric: tabular-nums">{{holdLabel}}</span></div>
+</div>
+</sc-if>
+
+<h2 id="s4-title" class="display h3">Review &amp; pay</h2>
+
+<div style="display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 16px">
+<div style="padding: 16px; display: flex; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span class="small" style="color: var(--muted); font-weight: 600">Your clean</span>
+<span style="font-weight: 600">{{cleanLine}}</span>
+</div>
+<a class="link small" href="Main.dc.html#booking" style="padding: 4px 0; align-self: flex-start">Edit</a>
+</div>
+<div style="padding: 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span class="small" style="color: var(--muted); font-weight: 600">When &amp; where</span>
+<span style="font-weight: 600">{{dateLong}}</span>
+<span class="small" style="color: var(--ink-2)">{{windowLine}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">{{addressLine}}, {{cityLine}}</span>
+</div>
+<button type="button" class="linkbtn small" onClick="{{edit2}}" style="padding: 4px 0; align-self: flex-start">Edit</button>
+</div>
+<div style="padding: 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span class="small" style="color: var(--muted); font-weight: 600">Your details</span>
+<span style="font-weight: 600; overflow-wrap: anywhere">{{name}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">{{phone}} · {{email}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">Access: {{accessLine}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">Pets: {{petsLine}}</span>
+<sc-if value="{{hasRequests}}" hint-placeholder-val="{{false}}"><span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">Requests: {{requests}}</span></sc-if>
+</div>
+<button type="button" class="linkbtn small" onClick="{{edit3}}" style="padding: 4px 0; align-self: flex-start">Edit</button>
+</div>
+</div>
+
+<div style="background: var(--paper-2); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">Base price</span><span style="font-weight: 600">${{base}}</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--accent); font-weight: 600">First clean −20%</span><span style="color: var(--accent); font-weight: 600">−${{discount}}</span></div><div style="border-top: 1px solid var(--line); padding-top: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+<span style="font-weight: 600">Total today</span>
+<span class="display" style="font-size: 32px; line-height: 1">${{total}}</span>
+</div>
+<span class="small" style="color: var(--muted)">{{afterLine}} No hidden fees, ever.</span>
+</div>
+
+<p class="small" style="margin: 0; display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>You pay Fernhouse online — never pay your cleaner directly.</p>
+
+<div class="field">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<input id="agree" class="check" type="checkbox" checked="{{agree}}" onChange="{{toggleAgree}}" disabled="{{submitting}}" aria-invalid="{{agreeErr}}" aria-describedby="agree-msg">
+<label for="agree" class="small" style="color: var(--ink); cursor: pointer">I agree to the <a class="link" href="Terms.dc.html">Terms of Service</a>, including the cancellation policy: free changes until 24 hours before your visit, $50 after that.</label>
+</div>
+<div id="agree-msg"><sc-if value="{{agreeErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please accept the Terms to continue.</p></sc-if></div>
+</div>
+
+<div class="actions">
+<button type="button" class="btn btn-secondary" onClick="{{back4}}" disabled="{{submitting}}">Back</button>
+<sc-if value="{{submitting}}" hint-placeholder-val="{{false}}">
+<button type="button" class="btn btn-primary btn-busy" disabled="{{true}}" aria-busy="true" style="min-width: 240px"><span class="spinner" aria-hidden="true"></span>Booking…</button>
+</sc-if>
+<sc-if value="{{notSubmitting}}" hint-placeholder-val="{{true}}">
+<button type="button" class="btn btn-primary" onClick="{{pay}}" style="min-width: 240px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>{{payLabel}}</button>
+</sc-if>
+</div>
+<p class="small pay-note">Secure checkout by Stripe</p>
+</section>
+</sc-if>
+
+<!-- ============ PET WASTE: STEP 2 — ROUTE DAY & ACCESS ============ -->
+<sc-if value="{{showPetStep2}}" hint-placeholder-val="{{false}}">
+<section class="card step-in" aria-labelledby="ps2-title" style="display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="ps2-title" class="display h3">Route day &amp; access</h2>
+<div class="small" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; background: var(--paper-2); border-radius: 12px; padding: 4px 4px 4px 14px">
+<span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>{{petLine}}</span>
+<a href="PetWaste.dc.html#booking" class="link" style="padding: 10px">Change</a>
+</div>
+</div>
+
+<div class="field">
+<label class="label" for="pzip">ZIP code</label>
+<input id="pzip" class="{{zipCls}}" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" value="{{zip}}" onChange="{{onZip}}" aria-invalid="{{zipErr}}" aria-describedby="pzip-msg" style="max-width: 200px">
+<div id="pzip-msg" aria-live="polite">
+<sc-if value="{{zipOk}}" hint-placeholder-val="{{true}}"><p class="help-ok"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>Good news — we scoop in {{zipCity}}.</span></p></sc-if>
+<sc-if value="{{zipErr}}" hint-placeholder-val="{{false}}"><p class="err"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please enter your ZIP so we can check coverage.</p></sc-if>
+<sc-if value="{{zipOut}}" hint-placeholder-val="{{false}}"><p class="err" style="color: var(--warning)"><span>We don’t cover {{zip}} yet. <button type="button" class="linkbtn" onClick="{{clearZip}}">Try another ZIP</button> or call <a class="link" href="tel:+16784396213">(678) 439-6213</a>.</span></p></sc-if>
+<sc-if value="{{zipNeutral}}" hint-placeholder-val="{{false}}"><p class="help">We’ll check that we cover your area.</p></sc-if>
+</div>
+</div>
+
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<legend class="label" style="padding: 0; margin-bottom: 4px">Preferred route day</legend>
+<p class="help" style="margin-top: -2px">{{routeHelp}}</p>
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{routeDays}}" as="d" hint-placeholder-count="5">
+<button type="button" class="opt" aria-pressed="{{d.pressed}}" aria-label="{{d.full}}" onClick="{{d.pick}}" style="min-height: 52px; font-size: 15px; font-weight: 600">{{d.short}}</button>
+</sc-for>
+</div>
+<sc-if value="{{hasRoute}}" hint-placeholder-val="{{true}}"><p class="help-ok"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><span>{{firstVisitLine}}</span></p></sc-if>
+<sc-if value="{{dayErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please pick a route day.</p></sc-if>
+</fieldset>
+
+<div class="row2">
+<div class="field">
+<label class="label" for="paddr">Street address</label>
+<input id="paddr" class="input" type="text" autocomplete="street-address" value="{{address}}" onChange="{{onAddress}}" aria-invalid="{{addressErr}}">
+<sc-if value="{{addressErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Please enter your street address.</p></sc-if>
+</div>
+<div class="field">
+<label class="label" for="punit">Apt / unit <span class="opt-tag">(optional)</span></label>
+<input id="punit" class="input" type="text" autocomplete="address-line2" value="{{unit}}" onChange="{{onUnit}}">
+</div>
+</div>
+
+<div class="field">
+<label class="label" for="gate">Gate code or access notes</label>
+<textarea id="gate" class="input" rows="2" onChange="{{onGate}}" aria-describedby="gate-help" value="{{gate}}"></textarea>
+<p id="gate-help" class="help">For example: gate code 2580, side gate on the left, or “gate is always unlocked.”</p>
+<sc-if value="{{gateWarn}}" hint-placeholder-val="{{false}}">
+<div role="status" class="small" style="background: #FFF8EB; border: 1px solid #F1DDB3; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>
+<span>No gate access added yet. Without a code or note, your team may not be able to get in. Add one above, or continue if your gate is always unlocked.</span>
+</div>
+</sc-if>
+</div>
+
+<div class="actions">
+<a href="PetWaste.dc.html#booking" class="btn btn-secondary">Back</a>
+<button type="button" class="btn btn-primary" onClick="{{continuePet2}}">{{petContinue2Label}}<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
+</div>
+</section>
+</sc-if>
+
+<!-- ============ PET WASTE: STEP 3 — YOUR DETAILS ============ -->
+<sc-if value="{{showPetStep3}}" hint-placeholder-val="{{false}}">
+<section class="card step-in" aria-labelledby="ps3-title" style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 id="ps3-title" class="display h3">Your details</h2>
+<p class="small" style="margin: 0; color: var(--muted)">No account or password needed.</p>
+</div>
+<sc-if value="{{s3HasErrors}}" hint-placeholder-val="{{false}}">
+<div role="alert" class="small" style="background: #FEF3F2; border: 1px solid #FDA29B; border-radius: 12px; padding: 14px 16px; display: flex; gap: 10px; color: var(--error); font-weight: 600"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>{{s3ErrorSummary}}</div>
+</sc-if>
+<div class="field">
+<label class="label" for="pname">Full name</label>
+<input id="pname" class="input" type="text" autocomplete="name" value="{{name}}" onChange="{{onName}}" aria-invalid="{{nameErr}}">
+<sc-if value="{{nameErr}}" hint-placeholder-val="{{false}}"><p class="err">Please enter your name.</p></sc-if>
+</div>
+<div class="row2 row2-even">
+<div class="field">
+<label class="label" for="pphone">Mobile phone</label>
+<input id="pphone" class="input" type="tel" inputmode="tel" autocomplete="tel" value="{{phone}}" onChange="{{onPhone}}" aria-invalid="{{phoneErr}}">
+<sc-if value="{{phoneErr}}" hint-placeholder-val="{{false}}"><p class="err">Please enter a 10-digit mobile number.</p></sc-if>
+<sc-if value="{{phoneOkHelp}}" hint-placeholder-val="{{true}}"><p class="help">Gate photos and updates come by text.</p></sc-if>
+</div>
+<div class="field">
+<label class="label" for="pemail">Email</label>
+<input id="pemail" class="input" type="email" inputmode="email" autocomplete="email" value="{{email}}" onChange="{{onEmail}}" aria-invalid="{{emailErr}}">
+<sc-if value="{{emailErr}}" hint-placeholder-val="{{false}}"><p class="err">Please enter a valid email, like name@example.com.</p></sc-if>
+<sc-if value="{{emailOkHelp}}" hint-placeholder-val="{{true}}"><p class="help">For your receipts.</p></sc-if>
+</div>
+</div>
+<div class="sms-consent" style="display: flex; flex-direction: column; gap: 10px; background: var(--paper-2); border-radius: 12px; padding: 12px 14px">
+<p class="small" style="margin: 0; color: var(--ink-2)">By giving your mobile number, you agree to get booking texts from Fernhouse — confirmations, reminders and visit updates. Message frequency varies. Msg &amp; data rates may apply. Reply HELP for help, STOP to opt out. See our <a class="link" href="Legal.dc.html">Privacy Policy</a> and <a class="link" href="Terms.dc.html#t-texts">Terms</a>.</p>
+<div style="display: flex; gap: 10px; align-items: flex-start">
+<input id="psms-promo" class="check" type="checkbox" checked="{{smsPromo}}" onChange="{{toggleSmsPromo}}">
+<label for="psms-promo" class="small" style="color: var(--ink); cursor: pointer">Also text me offers, up to 2 a month <span style="color: var(--muted)">(optional)</span></label>
+</div>
+</div>
+<div class="field">
+<label class="label" for="dognames">Your dogs’ names <span class="opt-tag">(optional)</span></label>
+<input id="dognames" class="input" type="text" value="{{dogNames}}" onChange="{{onDogNames}}">
+</div>
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<legend class="label" style="padding: 0; margin-bottom: 8px">On your route day, your dogs are…</legend>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<button type="button" class="opt" aria-pressed="{{dogsFriendly}}" onClick="{{pickFriendly}}" style="min-height: 64px; padding: 8px 10px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; text-align: left"><span style="font-size: 15px; font-weight: 600">Friendly</span><span class="small" style="color: var(--ink-2)">They can stay out</span></button>
+<button type="button" class="opt" aria-pressed="{{dogsInside}}" onClick="{{pickInside}}" style="min-height: 64px; padding: 8px 10px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; text-align: left"><span style="font-size: 15px; font-weight: 600">Kept inside</span><span class="small" style="color: var(--ink-2)">We’ll keep them in</span></button>
+</div>
+</fieldset>
+<div class="field">
+<label class="label" for="prequests">Anything else? <span class="opt-tag">(optional)</span></label>
+<textarea id="prequests" class="input" rows="2" onChange="{{onRequests}}" value="{{requests}}"></textarea>
+<p class="help">For example: skip the vegetable garden, or the back corner floods.</p>
+</div>
+<div class="actions">
+<button type="button" class="btn btn-secondary" onClick="{{back3}}">Back</button>
+<button type="button" class="btn btn-primary" onClick="{{continue3}}">Review my booking<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
+</div>
+</section>
+</sc-if>
+
+<!-- ============ PET WASTE: STEP 4 — REVIEW & CONFIRM ============ -->
+<sc-if value="{{showPetStep4}}" hint-placeholder-val="{{false}}">
+<section class="card step-in" aria-labelledby="ps4-title" style="display: flex; flex-direction: column; gap: 24px">
+<h2 id="ps4-title" class="display h3">Review &amp; confirm</h2>
+<div style="display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 16px">
+<div style="padding: 16px; display: flex; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><span class="small" style="color: var(--muted); font-weight: 600">Your yard</span><span style="font-weight: 600">{{petLine}}</span></div>
+<a class="link small" href="PetWaste.dc.html#booking" style="padding: 4px 0; align-self: flex-start">Edit</a>
+</div>
+<div style="padding: 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span class="small" style="color: var(--muted); font-weight: 600">Route day &amp; access</span>
+<span style="font-weight: 600">{{routeLong}}</span>
+<span class="small" style="color: var(--ink-2)">{{firstVisitLine}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">{{addressLine}}, {{cityLine}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">Gate: {{gateLine}}</span>
+</div>
+<button type="button" class="linkbtn small" onClick="{{edit2}}" style="padding: 4px 0; align-self: flex-start">Edit</button>
+</div>
+<div style="padding: 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span class="small" style="color: var(--muted); font-weight: 600">Your details</span>
+<span style="font-weight: 600; overflow-wrap: anywhere">{{name}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">{{phone}} · {{email}}</span>
+<span class="small" style="color: var(--ink-2); overflow-wrap: anywhere">Dogs: {{dogsDetail}}</span>
+</div>
+<button type="button" class="linkbtn small" onClick="{{edit3}}" style="padding: 4px 0; align-self: flex-start">Edit</button>
+</div>
+</div>
+
+<div style="background: var(--paper-2); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">{{petHeadLabel}}</span><span style="font-weight: 600">${{petVisit}}</span></div>
+<sc-if value="{{petHasInitial}}" hint-placeholder-val="{{true}}"><div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: var(--ink-2)">First-visit cleanup ({{petCondLabel}})</span><span style="font-weight: 600">${{petInitial}}</span></div></sc-if>
+<div style="border-top: 1px solid var(--line); padding-top: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+<span style="font-weight: 600">First visit</span>
+<span class="display" style="font-size: 32px; line-height: 1">${{petFirstTotal}}</span>
+</div>
+<span class="small" style="color: var(--muted)">{{petAfterLine}} Nothing is charged today.</span>
+<sc-if value="{{petHasInitial}}" hint-placeholder-val="{{true}}"><span class="small" style="color: var(--muted)">If your first visit needs more cleanup than you picked, we’ll text you before charging the higher rate.</span></sc-if>
+</div>
+
+<p class="small" style="margin: 0; display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>You pay Fernhouse online after each visit — never anyone directly.</p>
+
+<div class="field">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<input id="pagree" class="check" type="checkbox" checked="{{agree}}" onChange="{{toggleAgree}}" disabled="{{submitting}}" aria-invalid="{{agreeErr}}">
+<label for="pagree" class="small" style="color: var(--ink); cursor: pointer">I agree to the <a class="link" href="Terms.dc.html">Terms of Service</a>, including the 24-hour re-scoop guarantee and free changes until 24 hours before a visit.</label>
+</div>
+<sc-if value="{{agreeErr}}" hint-placeholder-val="{{false}}"><p class="err" role="alert">Please accept the Terms to continue.</p></sc-if>
+</div>
+
+<div class="actions">
+<button type="button" class="btn btn-secondary" onClick="{{back4}}" disabled="{{submitting}}">Back</button>
+<sc-if value="{{submitting}}" hint-placeholder-val="{{false}}">
+<button type="button" class="btn btn-primary btn-busy" disabled="{{true}}" aria-busy="true" style="min-width: 240px"><span class="spinner" aria-hidden="true"></span>Booking…</button>
+</sc-if>
+<sc-if value="{{notSubmitting}}" hint-placeholder-val="{{true}}">
+<button type="button" class="btn btn-primary" onClick="{{pay}}" style="min-width: 240px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg>Confirm &amp; save card</button>
+</sc-if>
+</div>
+<p class="small pay-note">Card saved securely with Stripe</p>
+</section>
+</sc-if>
+
+</div>
+
+<!-- Desktop: sticky price summary -->
+<aside class="summary-side" aria-label="Booking summary">
+<div class="card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="display" style="font-size: 18px; line-height: 24px">Your booking</h2>
+<sc-if value="{{loading}}" hint-placeholder-val="{{false}}">
+<div aria-busy="true" style="display: flex; flex-direction: column; gap: 12px"><span class="skel" style="height: 18px; width: 80%"></span><span class="skel" style="height: 18px; width: 60%"></span><span class="skel" style="height: 18px; width: 70%"></span><span class="skel" style="height: 36px; width: 50%"></span></div>
+</sc-if>
+<sc-if value="{{showPetSum}}" hint-placeholder-val="{{false}}">
+<dl class="small" style="margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 16px">
+<dt style="color: var(--muted)">Service</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{petServiceFreq}}</dd>
+<dt style="color: var(--muted)">Dogs</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{dogsLabel}}</dd>
+<dt style="color: var(--muted)">Route day</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{routeShort}}</dd>
+<dt style="color: var(--muted)">Where</dt><dd style="margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere">{{whereShort}}</dd>
+</dl>
+<div style="border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 8px">
+<div class="small" style="display: flex; justify-content: space-between"><span style="color: var(--ink-2)">{{petHeadLabel}}</span><span style="font-weight: 600">${{petVisit}}</span></div>
+<sc-if value="{{petHasInitial}}" hint-placeholder-val="{{true}}"><div class="small" style="display: flex; justify-content: space-between"><span style="color: var(--ink-2)">First-visit cleanup</span><span style="font-weight: 600">${{petInitial}}</span></div></sc-if>
+<div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px"><span style="font-weight: 600">First visit</span><span class="display" style="font-size: 30px; line-height: 1">${{petFirstTotal}}</span></div>
+<span class="small" style="color: var(--muted)">{{petAfterLine}}</span>
+</div>
+</sc-if>
+<sc-if value="{{showCleanSum}}" hint-placeholder-val="{{true}}">
+<dl class="small" style="margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 16px">
+<dt style="color: var(--muted)">Clean</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{serviceFreq}}</dd>
+<dt style="color: var(--muted)">Home</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{sizeLabel}}</dd>
+<dt style="color: var(--muted)">When</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{whenShort}}</dd>
+<dt style="color: var(--muted)">Where</dt><dd style="margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere">{{whereShort}}</dd>
+</dl>
+<div style="border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 8px">
+<div class="small" style="display: flex; justify-content: space-between"><span style="color: var(--ink-2)">Base price</span><span style="font-weight: 600">${{base}}</span></div>
+<div class="small" style="display: flex; justify-content: space-between"><span style="color: var(--accent); font-weight: 600">First clean −20%</span><span style="color: var(--accent); font-weight: 600">−${{discount}}</span></div><div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px"><span style="font-weight: 600">Total today</span><span class="display" style="font-size: 30px; line-height: 1">${{total}}</span></div>
+<span class="small" style="color: var(--muted)">{{afterLine}}</span>
+</div>
+</sc-if>
+<div class="small" style="border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 8px; color: var(--ink-2)">
+<span style="display: flex; gap: 8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Vetted, bonded &amp; insured</span>
+<span style="display: flex; gap: 8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M20 11a8 8 0 10-2.3 5.7"></path><path d="M20 5v6h-6"></path></svg>{{guaranteeLine}}</span>
+<span style="display: flex; gap: 8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>No contracts</span>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</sc-if>
+
+<!-- ================= CONFIRMATION (/book/confirmed) ================= -->
+<sc-if value="{{confirmedClean}}" hint-placeholder-val="{{false}}">
+<section class="step-in" aria-labelledby="ok-title" style="max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding-top: 8px">
+<span aria-hidden="true" style="width: 72px; height: 72px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+<h1 id="ok-title" class="display" style="font-size: 36px; line-height: 42px">You’re booked!</h1>
+<p class="body" style="margin: 0; color: var(--ink-2); overflow-wrap: anywhere">We’ve sent your confirmation to <span style="white-space: nowrap">{{phone}}</span> and {{email}}.</p>
+</div>
+
+<div class="card" style="display: flex; flex-direction: column; gap: 0; padding: 0">
+<div style="padding: 16px 20px; display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line)"><span class="small" style="color: var(--muted); font-weight: 600">Booking</span><span class="small" style="font-weight: 600">{{bookingRef}}</span></div>
+<dl class="small" style="margin: 0; padding: 16px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px 16px">
+<dt style="color: var(--muted)">Clean</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{cleanLine}}</dd>
+<dt style="color: var(--muted)">Date</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{dateLong}}</dd>
+<dt style="color: var(--muted)">Arrival</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{windowCap}}</dd>
+<dt style="color: var(--muted)">Address</dt><dd style="margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere">{{addressLine}}, {{cityLine}}</dd>
+<dt style="color: var(--muted)">Paid today</dt><dd style="margin: 0; font-weight: 600; text-align: right">${{total}} <span style="color: var(--accent)">(20% off)</span></dd>
+<sc-if value="{{isRecurring}}" hint-placeholder-val="{{true}}"><dt style="color: var(--muted)">Your plan</dt><dd style="margin: 0; font-weight: 600; text-align: right">${{base}} per visit, {{freqLower}}</dd></sc-if>
+</dl>
+</div>
+
+<sc-if value="{{showUpsell}}" hint-placeholder-val="{{false}}">
+<div style="background: var(--accent-soft); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 class="display h3">Keep it this clean — make it recurring</h2>
+<p class="body" style="margin: 0; color: var(--ink-2)">Switch to biweekly and pay ${{upsellPrice}} per visit instead of ${{base}}. Same standing slot, your preferences saved, no contracts.</p>
+<button type="button" class="btn btn-primary" onClick="{{makeRecurring}}" style="align-self: flex-start">Make it recurring</button>
+</div>
+</sc-if>
+<sc-if value="{{upsold}}" hint-placeholder-val="{{false}}">
+<div role="status" style="background: var(--accent-soft); border-radius: 16px; padding: 20px; display: flex; gap: 12px; align-items: flex-start">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+<p class="body" style="margin: 0"><strong>You’re on a biweekly plan.</strong> Your next visit is two weeks after this one, at ${{upsellPrice}}. Pause or cancel anytime from your confirmation link.</p>
+</div>
+</sc-if>
+
+<div class="card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="display h3">What happens next</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+<li class="body" style="display: flex; gap: 12px"><span class="display" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center">1</span>We’ll text you when your team is confirmed, with their arrival window.</li>
+<li class="body" style="display: flex; gap: 12px"><span class="display" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center">2</span>Your team brings all supplies.</li>
+<li class="body" style="display: flex; gap: 12px"><span class="display" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center">3</span>After your clean, tell us how it went — if anything’s not right, the re-clean guarantee applies.</li>
+</ol>
+</div>
+
+<div class="actions" style="justify-content: center">
+<button type="button" class="btn btn-secondary" onClick="{{addCalendar}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17"></path><path d="M8 3v4"></path><path d="M16 3v4"></path><path d="M12 13v4"></path><path d="M10 15h4"></path></svg>Add to calendar</button>
+<a class="btn btn-secondary" href="Main.dc.html#booking">Book another home</a>
+</div>
+</section>
+</sc-if>
+
+<!-- ============ PET WASTE: CONFIRMATION ============ -->
+<sc-if value="{{confirmedPet}}" hint-placeholder-val="{{false}}">
+<section class="step-in" aria-labelledby="pok-title" style="max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding-top: 8px">
+<span aria-hidden="true" style="width: 72px; height: 72px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+<h1 id="pok-title" class="display" style="font-size: 36px; line-height: 42px">You’re booked!</h1>
+<p class="body" style="margin: 0; color: var(--ink-2); overflow-wrap: anywhere">We’ve sent your confirmation to <span style="white-space: nowrap">{{phone}}</span> and {{email}}.</p>
+</div>
+<div class="card" style="display: flex; flex-direction: column; gap: 0; padding: 0">
+<div style="padding: 16px 20px; display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line)"><span class="small" style="color: var(--muted); font-weight: 600">Booking</span><span class="small" style="font-weight: 600">FH-26-04822</span></div>
+<dl class="small" style="margin: 0; padding: 16px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px 16px">
+<dt style="color: var(--muted)">Service</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{petLine}}</dd>
+<dt style="color: var(--muted)">Route day</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{routeLong}}</dd>
+<dt style="color: var(--muted)">First visit</dt><dd style="margin: 0; font-weight: 600; text-align: right">{{firstVisitDate}}</dd>
+<dt style="color: var(--muted)">Address</dt><dd style="margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere">{{addressLine}}, {{cityLine}}</dd>
+<dt style="color: var(--muted)">{{petHeadLabel}}</dt><dd style="margin: 0; font-weight: 600; text-align: right">${{petVisit}}</dd>
+<sc-if value="{{petHasInitial}}" hint-placeholder-val="{{true}}"><dt style="color: var(--muted)">First-visit cleanup</dt><dd style="margin: 0; font-weight: 600; text-align: right">${{petInitial}}</dd></sc-if>
+<dt style="color: var(--muted)">Charged</dt><dd style="margin: 0; font-weight: 600; text-align: right">After each visit</dd>
+</dl>
+</div>
+<div class="card" style="display: flex; flex-direction: column; gap: 16px">
+<h2 class="display h3">What happens next</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+<li class="body" style="display: flex; gap: 12px"><span class="display" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center">1</span>We’ll text you the evening before your first visit.</li>
+<li class="body" style="display: flex; gap: 12px"><span class="display" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center">2</span>After every visit you get a photo of your latched gate.</li>
+<li class="body" style="display: flex; gap: 12px"><span class="display" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center">3</span>Missed a spot? Tell us within 24 hours and we re-scoop free.</li>
+</ol>
+</div>
+<div style="background: var(--accent-soft); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 class="display h3">Want the inside done too?</h2>
+<p class="body" style="margin: 0; color: var(--ink-2)">Get 20% off your first home clean — vetted, bonded and insured pros, booked in 60 seconds.</p>
+<a class="btn btn-primary" href="Main.dc.html#booking" style="align-self: flex-start">See my cleaning price</a>
+</div>
+<div class="actions" style="justify-content: center">
+<button type="button" class="btn btn-secondary" onClick="{{addCalendar}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 9.5h17"></path><path d="M8 3v4"></path><path d="M16 3v4"></path><path d="M12 13v4"></path><path d="M10 15h4"></path></svg>Add route day to calendar</button>
+<a class="btn btn-secondary" href="Main.dc.html">Back to home</a>
+</div>
+</section>
+</sc-if>
+
+</main>
+
+<footer style="border-top: 1px solid var(--line); background: #FFFFFF">
+<div class="wrap small" style="padding-top: 20px; padding-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; color: var(--muted)">
+<span>© 2026 Fernhouse · Serving Atlanta and surrounding suburbs</span>
+<span style="display: flex; gap: 20px"><a href="Legal.dc.html" style="color: var(--muted); padding: 10px 0">Privacy Policy</a><a href="Terms.dc.html" style="color: var(--muted); padding: 10px 0">Terms</a></span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"screen":{"editor":"enum","default":"live","options":["live","step2","pet-step2","pet-step3","pet-step4","pet-confirmed","zip-out","fully-booked","step3","step3-errors","step4","redirect","payment-failed","loading","confirmed","confirmed-onetime"]},"accent":{"editor":"color","default":"#0E7A5F","options":["#0E7A5F","#1F5FBF","#16211F","#9A4A1F"]},"$preview":{"width":1440,"height":1470}}'>
+// ═══════════ Booking flow (/book) — Steps 2–4, every state, and /book/confirmed ═══════════
+// In the real build these constants come from lib/config.ts (same values as the home page).
+//
+// Booking data shape (Part 2 wires Stripe + SMS):
+//   customer { name, phone, email }
+//   home     { zip, address, unit, beds, baths, pets, petNote, accessNotes }
+//   booking  { serviceType, frequency, date, window, priceCents, discountCents, totalCents,
+//              utm { source, medium, campaign, fbclid, gclid }, idempotencyKey }
+//   idempotencyKey: one per booking attempt, so a double-tap on Pay never double-books.
+// TODO (owner CRM choice): capture name/phone/email when Step 3 completes, before payment, for follow-up.
+// Analytics events: booking_started (Step 2 shown), booking_step_completed {step}, booking_completed {value, frequency}.
+//
+// SMS confirmation (sent from Fernhouse's number, never a cleaner's):
+//   "Fernhouse: You're booked! Standard clean on Tue, Oct 27, arrival 8–11 am at 482 Maple Ridge Dr.
+//    We'll text when your team is confirmed. Manage or reschedule: fernhouseclean.com/b/FH-26-04817
+//    Reply STOP to opt out."
+
+var PRICING = {
+  rows: [
+    { bd: 1, ba: 1, standard: 110, deep: 230, move: 250 },
+    { bd: 2, ba: 1, standard: 125, deep: 270, move: 290 },
+    { bd: 2, ba: 2, standard: 140, deep: 300, move: 325 },
+    { bd: 3, ba: 2, standard: 165, deep: 360, move: 390 },
+    { bd: 3, ba: 3, standard: 180, deep: 395, move: 425 },
+    { bd: 4, ba: 3, standard: 200, deep: 440, move: 475 },
+    { bd: 4, ba: 4, standard: 220, deep: 480, move: 520 },
+    { bd: 5, ba: 4, standard: 245, deep: 540, move: 580 }
+  ],
+  FREQUENCY_ADJUSTMENTS: { weekly: -0.10, biweekly: 0, oneTime: 0.15 }
+};
+var OFFER = { firstCleanPct: 20 };
+var HOLD_MINUTES = 15;
+var BOOKING_WINDOW_DAYS = 60;
+// TODO (owner): confirm ZIP coverage. Starter list for the nine service-area cities.
+var SERVICE_ZIPS = {
+  '30303':'Atlanta','30305':'Atlanta','30306':'Atlanta','30307':'Atlanta','30308':'Atlanta','30309':'Atlanta','30310':'Atlanta','30312':'Atlanta','30313':'Atlanta','30314':'Atlanta','30315':'Atlanta','30316':'Atlanta','30317':'Atlanta','30318':'Atlanta','30324':'Atlanta','30326':'Atlanta','30327':'Atlanta','30342':'Atlanta','30363':'Atlanta',
+  '30060':'Marietta','30062':'Marietta','30064':'Marietta','30066':'Marietta','30067':'Marietta','30068':'Marietta',
+  '30328':'Sandy Springs','30350':'Sandy Springs',
+  '30075':'Roswell','30076':'Roswell',
+  '30004':'Alpharetta','30005':'Alpharetta','30009':'Alpharetta','30022':'Alpharetta',
+  '30030':'Decatur','30032':'Decatur','30033':'Decatur',
+  '30319':'Brookhaven',
+  '30024':'Suwanee',
+  '30071':'Norcross','30092':'Norcross','30093':'Norcross'
+};var WINDOWS = [
+  { id: 'morning',   label: 'Morning',   time: '8–11 am',     spoken: 'between 8 and 11 am' },
+  { id: 'midday',    label: 'Midday',    time: '11 am–2 pm',  spoken: 'between 11 am and 2 pm' },
+  { id: 'afternoon', label: 'Afternoon', time: '2–5 pm',      spoken: 'between 2 and 5 pm' }
+];
+var SERVICE_LABEL = { standard: 'Standard', deep: 'Deep clean', move: 'Move-In/Out' };
+var FREQ_LABEL = { oneTime: 'One-time', weekly: 'Weekly', biweekly: 'Biweekly' };
+var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var STORE_KEY = 'booking-step1';
+var PET_STORE_KEY = 'booking-pet';
+var SERVICE_KEY = 'booking-service'; // 'clean' | 'pet' — set by the home page tab or the pet waste page
+
+// Pet waste removal — same PET_WASTE_PRICING as the home page and /pet-waste-removal.
+var PET_WASTE_PRICING = {
+  weekly1Dog: 24, perExtraDog: 3, biweeklyAdd: 8, twiceWeeklyLess: 4, oneTime: 89,
+  // Initial cleanup is set by yard condition and replaces the first visit's price (see the home page constants)
+  initialCleanup: 75, initialCleanupWithWeekly: 39, maxDogs: 4 // 5+ dogs → quote, never booked here
+};
+var COND_LABEL = { kept: 'kept up weekly', weeks: 'a few weeks behind', month: 'a month or more' };
+var PET_FREQ_LABEL = { weekly: 'Weekly', twice: 'Twice weekly', biweekly: 'Every other week', once: 'One-time cleanup' };
+var ROUTE_DAYS = [
+  { id: 'Mon', day: 1, full: 'Monday' }, { id: 'Tue', day: 2, full: 'Tuesday' }, { id: 'Wed', day: 3, full: 'Wednesday' },
+  { id: 'Thu', day: 4, full: 'Thursday' }, { id: 'Fri', day: 5, full: 'Friday' }
+];
+function petVisit(freq, dogs) {
+  var P = PET_WASTE_PRICING, w = P.weekly1Dog + P.perExtraDog * (Math.min(dogs, P.maxDogs) - 1);
+  return freq === 'once' ? P.oneTime : freq === 'biweekly' ? w + P.biweeklyAdd : freq === 'twice' ? w - P.twiceWeeklyLess : w;
+}
+function petInitial(freq, cond) {
+  var P = PET_WASTE_PRICING;
+  if (freq === 'once' || cond === 'kept') return 0;
+  if (cond === 'month' || freq === 'biweekly') return P.initialCleanup;
+  return P.initialCleanupWithWeekly;
+}
+function dogsText(n) { return n === 1 ? '1 dog' : n + ' dogs'; }
+function routeOf(id) { for (var i = 0; i < ROUTE_DAYS.length; i++) if (ROUTE_DAYS[i].id === id) return ROUTE_DAYS[i]; return null; }
+function firstRouteDate(id) {
+  var r = routeOf(id); if (!r) return null;
+  for (var i = 2; i < 14; i++) { var d = addDays(startOfToday(), i); if (d.getDay() === r.day) return d; }
+  return null;
+}
+
+function startOfToday() { var d = new Date(); d.setHours(0, 0, 0, 0); return d; }
+function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function fromIso(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function offsetOf(d) { return Math.round((d.getTime() - startOfToday().getTime()) / 86400000); }
+function isBookable(d) { var o = offsetOf(d); return o >= 1 && o <= BOOKING_WINDOW_DAYS; }
+// Demo availability. TODO (Part 2): replace with live slot availability from dispatch.
+function isFull(d) { return d.getDay() === 6 || offsetOf(d) === 4; }
+function fmtLong(d) { return DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+function fmtShort(d) { return DAYS[d.getDay()].slice(0, 3) + ', ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getDate(); }
+function nthOpen(n) { var d = startOfToday(), found = 0; for (var i = 1; i <= BOOKING_WINDOW_DAYS; i++) { d = addDays(startOfToday(), i); if (!isFull(d)) { found++; if (found === n) return d; } } return d; }
+function firstFull() { for (var i = 2; i <= BOOKING_WINDOW_DAYS; i++) { var d = addDays(startOfToday(), i); if (isFull(d)) return d; } return addDays(startOfToday(), 2); }
+function openAfter(d, count) { var out = []; for (var i = 1; out.length < count && i <= BOOKING_WINDOW_DAYS; i++) { var x = addDays(d, i); if (!isBookable(x)) break; if (!isFull(x)) out.push(x); } return out; }
+function monthsFromToday(d) { var t = startOfToday(); return (d.getFullYear() - t.getFullYear()) * 12 + d.getMonth() - t.getMonth(); }
+function digits(s) { return String(s || '').replace(/\D/g, ''); }
+function lookup(bd, ba) {
+  var rows = PRICING.rows;
+  for (var i = 0; i < rows.length; i++) if (rows[i].bd === bd && rows[i].ba === ba) return rows[i];
+  for (var j = 0; j < rows.length; j++) if (rows[j].bd >= bd && rows[j].ba >= ba) return rows[j];
+  return rows[rows.length - 1];
+}
+function standardFor(row, freq) { return Math.round(row.standard * (1 + PRICING.FREQUENCY_ADJUSTMENTS[freq]) / 5) * 5; }
+
+function initialState(screen) {
+  var s = {
+    service: 'standard', freq: 'biweekly', beds: 3, baths: 2,
+    zip: '30062', date: iso(nthOpen(2)), window: 'morning', address: '', unit: '',
+    name: '', phone: '', email: '', access: '', pets: false, petNote: '', requests: '', agree: false, smsPromo: false, // marketing texts: separate, unchecked opt-in (10DLC)
+    step: 2, showErrors: false, submitting: false, redirecting: false, payFailed: false, loading: false, confirmed: false,
+    monthOffset: 0, summaryOpen: false, holdSecs: HOLD_MINUTES * 60, waitPhone: '', waitJoined: false, waitErr: false, upsold: false,
+    svc: 'clean', petFreq: 'weekly', dogs: 1, yard: 'std', cond: 'weeks', routeDay: null, gate: '', gateWarned: false, dogNames: '', dogsFriendly: true
+  };
+  function petFill() {
+    fill(); s.svc = 'pet'; s.dogs = 2; s.routeDay = 'Tue';
+    s.gate = 'Side gate code 2580 — please re-latch it.'; s.dogNames = 'Biscuit and Maple'; s.requests = '';
+  }
+  var filled = {
+    address: '482 Maple Ridge Dr', name: 'Jordan Ellis', phone: '(404) 555-0187', email: 'jordan.ellis@example.com',
+    access: 'Garage code 4417. Please close the garage door on the way out.', pets: true,
+    petNote: 'One friendly golden retriever.', requests: 'Extra attention to the guest bathroom, please.'
+  };
+  function fill() { for (var k in filled) s[k] = filled[k]; }
+  switch (screen) {
+    case 'zip-out': s.zip = '30901'; s.date = null; s.window = null; break;
+    case 'fully-booked': s.date = iso(firstFull()); s.window = null; break;
+    case 'step3': fill(); s.step = 3; s.access = ''; s.pets = false; s.petNote = ''; s.requests = ''; break;
+    case 'step3-errors': fill(); s.step = 3; s.name = ''; s.phone = '(404) 555-01'; s.email = 'jordan@'; s.access = ''; s.pets = false; s.requests = ''; s.showErrors = true; break;
+    case 'step4': fill(); s.step = 4; break;
+    case 'redirect': fill(); s.step = 4; s.agree = true; s.redirecting = true; break;
+    case 'payment-failed': fill(); s.step = 4; s.agree = true; s.payFailed = true; s.holdSecs = 14 * 60 + 32; break;
+    case 'loading': s.loading = true; break;
+    case 'confirmed': fill(); s.confirmed = true; break;
+    case 'confirmed-onetime': fill(); s.freq = 'oneTime'; s.confirmed = true; break;
+    case 'pet-step2': s.svc = 'pet'; s.dogs = 2; s.routeDay = 'Tue'; s.address = '482 Maple Ridge Dr'; s.gateWarned = true; break;
+    case 'pet-step3': petFill(); s.step = 3; s.dogNames = ''; break;
+    case 'pet-step4': petFill(); s.step = 4; break;
+    case 'pet-confirmed': petFill(); s.confirmed = true; break;
+  }
+  if (s.date) s.monthOffset = Math.max(0, monthsFromToday(fromIso(s.date)));
+  return s;
+}
+
+function step2Errors(s) {
+  var e = {};
+  if (!/^\d{5}$/.test(s.zip)) e.zip = true;
+  else if (!SERVICE_ZIPS[s.zip]) e.zipOut = true;
+  if (!s.date) e.date = true; else if (isFull(fromIso(s.date))) e.full = true;
+  if (!s.window) e.window = true;
+  if (!String(s.address).trim()) e.address = true;
+  return e;
+}
+function petStep2Errors(s) {
+  var e = {};
+  if (!/^\d{5}$/.test(s.zip)) e.zip = true;
+  else if (!SERVICE_ZIPS[s.zip]) e.zipOut = true;
+  if (!s.routeDay) e.day = true;
+  if (!String(s.address).trim()) e.address = true;
+  return e;
+}
+function step3Errors(s) {
+  var e = {};
+  if (!String(s.name).trim()) e.name = true;
+  if (digits(s.phone).length !== 10) e.phone = true;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s.email).trim())) e.email = true;
+  return e;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = initialState(props.screen || 'live');
+  }
+  componentDidMount() {
+    var self = this;
+    // Only the live flow restores what the visitor picked on the home page or the pet waste page; state frames stay fixed.
+    if (!this.props.screen || this.props.screen === 'live') {
+      try {
+        var saved = JSON.parse(window.localStorage.getItem(STORE_KEY) || 'null');
+        if (saved && saved.service && saved.beds <= 5 && saved.baths <= 4) this.setState({ service: saved.service, freq: saved.freq, beds: saved.beds, baths: saved.baths });
+        if (window.localStorage.getItem(SERVICE_KEY) === 'pet') {
+          var pet = JSON.parse(window.localStorage.getItem(PET_STORE_KEY) || 'null') || {};
+          this.setState({ svc: 'pet', petFreq: pet.petFreq || 'weekly', dogs: Math.min(pet.dogs || 1, PET_WASTE_PRICING.maxDogs), yard: 'std', cond: pet.cond || 'weeks', date: null, window: null });
+        }
+      } catch (e) {}
+      // ?service=pet-waste lands straight in the pet waste flow
+      try { if (new URLSearchParams(window.location.search).get('service') === 'pet-waste') this.setState({ svc: 'pet' }); } catch (e) {}
+    }
+    this.tick = setInterval(function () {
+      if (self.state.payFailed && self.state.holdSecs > 0) self.setState({ holdSecs: self.state.holdSecs - 1 });
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.tick); clearTimeout(this.t1); clearTimeout(this.t2); }
+  go(patch) { this.setState(patch); try { window.scrollTo(0, 0); } catch (e) {} }
+
+  renderVals() {
+    var self = this, s = this.state;
+    var row = lookup(s.beds, s.baths);
+    var base = s.service === 'standard' ? standardFor(row, s.freq) : row[s.service];
+    var discount = Math.round(base * OFFER.firstCleanPct / 100);
+    var total = base - discount;
+    var recurring = s.service === 'standard' && s.freq !== 'oneTime';
+    var freqName = s.service === 'standard' ? FREQ_LABEL[s.freq] : 'One-time';
+    var sizeLabel = s.beds + ' bd / ' + s.baths + ' ba';
+    var dateObj = s.date ? fromIso(s.date) : null;
+    var dateIsFull = !!(dateObj && isFull(dateObj));
+    var win = null; for (var w = 0; w < WINDOWS.length; w++) if (WINDOWS[w].id === s.window) win = WINDOWS[w];
+    var city = SERVICE_ZIPS[s.zip] || '';
+    var zip5 = /^\d{5}$/.test(s.zip);
+    var isPet = s.svc === 'pet';
+    var pv = petVisit(s.petFreq, s.dogs), pInit = petInitial(s.petFreq, s.cond), pOnce = s.petFreq === 'once';
+    var route = routeOf(s.routeDay), frd = firstRouteDate(s.routeDay);
+    var e2 = s.showErrors && s.step === 2 ? (isPet ? petStep2Errors(s) : step2Errors(s)) : {};
+    var e3 = s.showErrors && s.step === 3 ? step3Errors(s) : {};
+    var e3count = Object.keys(e3).length;
+
+    // calendar
+    var today = startOfToday();
+    var first = new Date(today.getFullYear(), today.getMonth() + s.monthOffset, 1);
+    var dim = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+    var maxOffset = monthsFromToday(addDays(today, BOOKING_WINDOW_DAYS));
+    var cells = [];
+    for (var b = 0; b < first.getDay(); b++) cells.push({ blank: true, real: false });
+    function cell(d) {
+      var ok = isBookable(d), full = ok && isFull(d), sel = s.date === iso(d);
+      return {
+        blank: false, real: true, day: d.getDate(), disabled: !ok, pressed: sel, full: full,
+        cls: 'day' + (full ? ' day-full' : ''),
+        label: fmtLong(d) + (full ? ', fully booked' : '') + (!ok ? ', unavailable' : ''),
+        pick: function () { self.setState({ date: iso(d), window: full ? null : s.window }); }
+      };
+    }
+    for (var day = 1; day <= dim; day++) cells.push(cell(new Date(first.getFullYear(), first.getMonth(), day)));
+
+    var alternatives = dateIsFull ? openAfter(dateObj, 3).map(function (d) {
+      return { dow: DAYS[d.getDay()].slice(0, 3), md: MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getDate(),
+        pick: function () { self.setState({ date: iso(d), monthOffset: Math.max(0, monthsFromToday(d)) }); } };
+    }) : [];
+
+    var STEP_NAMES = isPet ? ['', 'Your yard', 'Route day & access', 'Your details', 'Review & confirm']
+      : ['', 'Your clean', 'When & where', 'Your details', 'Review & pay'];
+    var steps = [1, 2, 3, 4].map(function (n) { return { n: n, label: STEP_NAMES[n] }; }).map(function (p) {
+      var cur = !s.loading && p.n === s.step, done = p.n < s.step || (s.loading && p.n === 1);
+      if (s.loading && p.n === 2) cur = true;
+      return { n: p.n, label: p.label, done: done, current: cur,
+        cls: 'pstep' + (done ? ' is-done' : '') + (cur ? ' is-current' : ''),
+        labelCls: cur ? '' : 'pl-other' };
+    });
+
+    var mins = Math.floor(s.holdSecs / 60), secs = s.holdSecs % 60;
+    var setField = function (k) { return function (ev) { var o = {}; o[k] = ev.target.value; self.setState(o); }; };
+
+    return {
+      accent: this.props.accent ?? '#0E7A5F',
+      showFlow: !s.confirmed,
+      confirmed: s.confirmed,
+      loading: s.loading, notLoading: !s.loading,
+      redirecting: s.redirecting,
+      showStep2: !isPet && !s.loading && !s.redirecting && s.step === 2,
+      showStep3: !isPet && !s.loading && !s.redirecting && s.step === 3,
+      showStep4: !isPet && !s.loading && !s.redirecting && s.step === 4,
+      showPetStep2: isPet && !s.loading && !s.redirecting && s.step === 2,
+      showPetStep3: isPet && !s.loading && !s.redirecting && s.step === 3,
+      showPetStep4: isPet && !s.loading && !s.redirecting && s.step === 4,
+      confirmedClean: s.confirmed && !isPet, confirmedPet: s.confirmed && isPet,
+      isPet: isPet, isClean: !isPet,
+      flowTitle: isPet ? 'Book your yard cleanup' : 'Book your clean',
+      showCleanSum: !s.loading && !isPet, showPetSum: !s.loading && isPet,
+      guaranteeLine: isPet ? 'Re-scoop guarantee, 24 hours' : 'Re-clean guarantee, 24 hours',
+
+      // pet waste
+      barLabel: isPet ? 'Pet waste · ' + PET_FREQ_LABEL[s.petFreq] : SERVICE_LABEL[s.service] + ' · ' + (s.service === 'standard' ? FREQ_LABEL[s.freq] : 'One-time'),
+      barPriceLabel: isPet ? (pOnce ? 'Cleanup' : 'Per visit') : 'First clean',
+      barPrice: isPet ? pv : (base - discount),
+      petLine: 'Pet waste removal · ' + PET_FREQ_LABEL[s.petFreq] + ' · ' + dogsText(s.dogs),
+      petServiceFreq: 'Pet waste, ' + PET_FREQ_LABEL[s.petFreq].toLowerCase(),
+      dogsLabel: dogsText(s.dogs),
+      petVisit: pv,
+      petVisitLine: pOnce ? '$' + pv : '$' + pv + ' / visit',
+      petHasInitial: pInit > 0,
+      petInitial: pInit,
+      petHeadLabel: pOnce ? 'One-time yard reset' : 'Per visit',
+      petCondLabel: COND_LABEL[s.cond] || '',
+      petFirstTotal: pOnce ? pv : (pInit || pv),
+      petAfterLine: pOnce ? 'Charged after the visit.' : 'Then $' + pv + ' per visit, ' + PET_FREQ_LABEL[s.petFreq].toLowerCase() + '. Charged after each visit, no contracts.',
+      routeDays: ROUTE_DAYS.map(function (d) {
+        return { short: d.id, full: d.full, pressed: s.routeDay === d.id, pick: function () { self.setState({ routeDay: d.id }); } };
+      }),
+      routeHelp: pOnce ? 'Pick the weekday that suits you for your cleanup.' : 'We scoop on this day every week — it’s your route day.',
+      hasRoute: !!route,
+      routeShort: route ? (pOnce ? route.full : route.full + 's') : 'Pick a day',
+      routeLong: route ? (pOnce ? route.full : 'Every ' + route.full + (s.petFreq === 'biweekly' ? ', every other week' : s.petFreq === 'twice' ? ' + a second weekly visit' : '')) : '',
+      firstVisitLine: frd ? 'First visit: ' + fmtLong(frd) + '.' : '',
+      firstVisitDate: frd ? fmtLong(frd) : '',
+      dayErr: !!e2.day,
+      gate: s.gate, onGate: setField('gate'),
+      gateWarn: s.gateWarned && !String(s.gate).trim(),
+      gateLine: String(s.gate).trim() || 'None given',
+      petContinue2Label: s.gateWarned && !String(s.gate).trim() ? 'Continue without gate access' : 'Continue to your details',
+      continuePet2: function () {
+        var e = petStep2Errors(s);
+        if (Object.keys(e).length) { self.setState({ showErrors: true }); return; }
+        if (!String(s.gate).trim() && !s.gateWarned) { self.setState({ gateWarned: true }); return; }
+        self.go({ step: 3, showErrors: false });
+      },
+      dogNames: s.dogNames, onDogNames: setField('dogNames'),
+      dogsFriendly: !!s.dogsFriendly, dogsInside: !s.dogsFriendly,
+      pickFriendly: function () { self.setState({ dogsFriendly: true }); },
+      pickInside: function () { self.setState({ dogsFriendly: false }); },
+      dogsDetail: (s.dogNames ? s.dogNames + ' — ' : '') + (s.dogsFriendly ? 'friendly, can stay out' : 'kept inside on route day'),
+      steps: steps,
+
+      // summary
+      cleanLine: SERVICE_LABEL[s.service] + ' · ' + freqName + ' · ' + sizeLabel,
+      cleanShort: SERVICE_LABEL[s.service] + ' · ' + freqName,
+      serviceFreq: SERVICE_LABEL[s.service] + ', ' + freqName.toLowerCase(),
+      sizeLabel: sizeLabel,
+      whenShort: dateObj && !dateIsFull ? fmtShort(dateObj) + (win ? ' · ' + win.time : '') : 'Pick a date',
+      whereShort: s.address ? s.address : (city ? city + ', GA' : '—'),
+      base: base, discount: discount, total: total,
+      afterLine: recurring ? 'Then $' + base + ' per visit, ' + FREQ_LABEL[s.freq].toLowerCase() + '. No contracts.' : 'One-time visit.',
+      summaryOpen: s.summaryOpen,
+      toggleSummary: function () { self.setState({ summaryOpen: !s.summaryOpen }); },
+      summaryToggleLabel: s.summaryOpen ? 'Hide' : 'Details',
+      chevCls: s.summaryOpen ? 'chev open' : 'chev',
+
+      // step 2
+      zip: s.zip, zipCity: city,
+      onZip: function (ev) { self.setState({ zip: digits(ev.target.value).slice(0, 5), waitJoined: false }); },
+      zipOk: zip5 && !!city,
+      zipOut: zip5 && !city, zipNotOut: !(zip5 && !city),
+      zipErr: !!e2.zip,
+      zipNeutral: !zip5 && !e2.zip,
+      zipCls: 'input' + (zip5 && city ? ' ok' : ''),
+      waitPhone: s.waitPhone, onWaitPhone: setField('waitPhone'),
+      waitJoined: s.waitJoined, waitNotJoined: !s.waitJoined, waitErr: s.waitErr,
+      joinWait: function () {
+        if (digits(s.waitPhone).length !== 10) { self.setState({ waitErr: true }); return; }
+        // TODO (owner CRM): store waitlist lead { zip, phone, utm }.
+        self.setState({ waitJoined: true, waitErr: false });
+      },
+      clearZip: function () { self.setState({ zip: '', waitJoined: false }); try { document.getElementById('zip').focus(); } catch (e) {} },
+      monthLabel: MONTHS[first.getMonth()] + ' ' + first.getFullYear(),
+      atFirstMonth: s.monthOffset <= 0, atLastMonth: s.monthOffset >= maxOffset,
+      prevMonth: function () { self.setState({ monthOffset: Math.max(0, s.monthOffset - 1) }); },
+      nextMonth: function () { self.setState({ monthOffset: Math.min(maxOffset, s.monthOffset + 1) }); },
+      cells: cells,
+      dateErr: !!e2.date,
+      dateFull: dateIsFull,
+      dateLong: dateObj ? fmtLong(dateObj) : '',
+      dateShort: dateObj ? fmtShort(dateObj) : '',
+      alternatives: alternatives,
+      showWindows: !!dateObj && !dateIsFull,
+      windows: WINDOWS.map(function (x) {
+        return { label: x.label, time: x.time, aria: x.label + ', arrival ' + x.spoken, pressed: s.window === x.id,
+          pick: function () { self.setState({ window: x.id }); } };
+      }),
+      windowErr: !!e2.window && !dateIsFull && !!dateObj,
+      address: s.address, onAddress: setField('address'), addressErr: !!e2.address,
+      unit: s.unit, onUnit: setField('unit'),
+      cityLine: (city || '') + ', GA ' + s.zip,
+      continue2: function () {
+        var e = step2Errors(s);
+        if (Object.keys(e).length) { self.setState({ showErrors: true }); return; }
+        self.go({ step: 3, showErrors: false });
+      },
+
+      // step 3
+      name: s.name, onName: setField('name'), nameErr: !!e3.name,
+      phone: s.phone, onPhone: setField('phone'), phoneErr: !!e3.phone, phoneOkHelp: !e3.phone,
+      email: s.email, onEmail: setField('email'), emailErr: !!e3.email, emailOkHelp: !e3.email,
+      access: s.access, onAccess: setField('access'),
+      pets: s.pets, togglePets: function () { self.setState({ pets: !s.pets }); },
+      petNote: s.petNote, onPetNote: setField('petNote'),
+      requests: s.requests, onRequests: setField('requests'),
+      s3HasErrors: e3count > 0,
+      s3ErrorSummary: e3count === 1 ? 'Please fix 1 field below.' : 'Please fix ' + e3count + ' fields below.',
+      back3: function () { self.go({ step: 2, showErrors: false }); },
+      continue3: function () {
+        var e = step3Errors(s);
+        if (Object.keys(e).length) { self.setState({ showErrors: true }); return; }
+        self.go({ step: 4, showErrors: false });
+      },
+
+      // step 4
+      windowLine: win ? 'Arrival ' + win.spoken : '',
+      windowCap: win ? 'B' + win.spoken.slice(1) : '',
+      stepNum: s.loading ? 2 : s.step,
+      stepName: STEP_NAMES[s.loading ? 2 : s.step],
+      addressLine: s.address + (s.unit ? ', ' + s.unit : ''),
+      accessLine: s.access || 'None given',
+      petsLine: s.pets ? 'Yes' + (s.petNote ? ' — ' + s.petNote : '') : 'None',
+      hasRequests: !!s.requests,
+      edit2: function () { self.go({ step: 2, payFailed: false }); },
+      edit3: function () { self.go({ step: 3, payFailed: false }); },
+      back4: function () { self.go({ step: 3, payFailed: false }); },
+      agree: s.agree,
+      smsPromo: s.smsPromo,
+      toggleSmsPromo: function () { self.setState({ smsPromo: !s.smsPromo }); },
+      toggleAgree: function () { self.setState({ agree: !s.agree }); },
+      agreeErr: s.showErrors && s.step === 4 && !s.agree,
+      payFailed: s.payFailed,
+      holdLabel: mins + ':' + pad(secs),
+      submitting: s.submitting, notSubmitting: !s.submitting,
+      payLabel: s.payFailed ? 'Try payment again' : 'Pay $' + total + ' securely',
+      pay: function () {
+        if (!s.agree) { self.setState({ showErrors: true }); return; }
+        // Part 2: POST booking with idempotencyKey → create Stripe Checkout session → redirect.
+        self.setState({ submitting: true, showErrors: false });
+        self.t1 = setTimeout(function () { self.setState({ submitting: false, redirecting: true, payFailed: false }); }, 900);
+        self.t2 = setTimeout(function () { self.go({ redirecting: false, confirmed: true }); }, 2600);
+      },
+
+      // confirmation
+      bookingRef: 'FH-26-04817',
+      isRecurring: recurring,
+      freqLower: FREQ_LABEL[s.freq].toLowerCase(),
+      showUpsell: !recurring && s.service === 'standard' && !s.upsold,
+      upsold: s.upsold,
+      upsellPrice: standardFor(row, 'biweekly'),
+      makeRecurring: function () { self.setState({ upsold: true }); },
+      addCalendar: function () { /* Part 2: download an .ics file for the visit */ }
+    };
+  }
+}
+</script>
+</body>
+</html>

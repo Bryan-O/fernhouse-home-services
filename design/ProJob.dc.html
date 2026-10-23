@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Your job — Fernhouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.mb{container-type:inline-size;container-name:mb}
+.wrap{max-width:1120px;margin:0 auto;padding-left:32px;padding-right:32px;box-sizing:border-box}
+.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+.h1{font-size:36px;line-height:44px}
+.h3{font-size:20px;line-height:26px;font-weight:700;letter-spacing:-0.01em}
+.body{font-size:17px;line-height:27px}
+.small{font-size:14px;line-height:21px}
+.card{background:#FFFFFF;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:24px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:16px;font-weight:600;line-height:1;text-decoration:none;cursor:pointer;border:0;box-sizing:border-box;white-space:nowrap;transition:transform 120ms ease,background-color 120ms ease,border-color 120ms ease}
+.btn:active{transform:scale(0.98)}
+.btn-sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn-primary{background:var(--accent);color:#FFFFFF}
+.btn-secondary{background:#FFFFFF;color:var(--ink);border:1.5px solid rgba(22,33,31,0.15)}
+.btn-danger{background:var(--error);color:#FFFFFF}
+.btn[disabled]{opacity:0.5;pointer-events:none}
+.linkbtn{background:none;border:0;padding:10px 0;font:inherit;font-weight:600;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.linkbtn-danger{color:var(--error)}
+@media (hover:hover){
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 88%,#000)}
+.btn-secondary:hover{border-color:rgba(22,33,31,0.35)}
+.btn-danger:hover{background:color-mix(in srgb,var(--error) 88%,#000)}
+.opt:hover{border-color:rgba(22,33,31,0.3)}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt{background:#FFFFFF;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer;font-family:inherit;transition:border-color 120ms ease,background-color 120ms ease,transform 120ms ease}
+.opt:active{transform:scale(0.98)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt[disabled]{background:var(--paper-2);color:#A9B4B0;border-style:dashed;pointer-events:none}
+.input{width:100%;min-height:52px;font-family:'Inter',system-ui,sans-serif;font-size:16px;color:var(--ink);padding:0 16px;border:1.5px solid var(--line);border-radius:12px;background:#FFFFFF;box-sizing:border-box}
+.input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.input[aria-invalid="true"]{border-color:var(--error)}
+.err{margin:0;font-size:14px;line-height:21px;color:var(--error);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;line-height:20px;white-space:nowrap}
+.dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 20px;margin:0;font-size:15px;line-height:22px}
+.dl dt{color:var(--muted)}
+.dl dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start}
+.col{display:flex;flex-direction:column;gap:24px;min-width:0}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.wins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.reasons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.narrow{max-width:640px}
+.call-label{display:inline}
+.step-in{animation:stepIn 200ms ease both}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@container mb (max-width:899px){.grid-main{grid-template-columns:minmax(0,1fr)}}
+@container mb (max-width:767px){
+.wrap{padding-left:20px;padding-right:20px}
+.h1{font-size:28px;line-height:34px}
+.card{padding:16px}
+.call-label{display:none}
+.days{grid-template-columns:repeat(3,minmax(0,1fr))}
+.wins,.reasons{grid-template-columns:minmax(0,1fr)}
+.actions .btn{flex:1 1 100%}
+.btn-block-m{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+.photo-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:140px;border:2px dashed #B9C8C2;border-radius:12px;background:var(--paper-2);color:var(--ink-2);font:inherit;cursor:pointer}
+@media (hover:hover){.photo-drop:hover{border-color:var(--accent)}}
+</style>
+
+</helmet>
+<div class="mb" style="--ink: #16211F; --ink-2: #3D4A47; --muted: #5B6764; --paper-2: #F6F8F7; --accent: #0E7A5F; --accent-soft: #E3F2EC; --line: #DCE3E0; --error: #B42318; --warning: #B54708; --shadow-card: 0 1px 2px rgba(22,33,31,0.05), 0 12px 32px -16px rgba(22,33,31,0.22); font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--paper-2); width: 100%; min-width: 0; -webkit-font-smoothing: antialiased">
+<header style="background: #FFFFFF; border-bottom: 1px solid var(--line)">
+<div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; max-width: 640px">
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 17px">Fernhouse <span style="font-weight: 600; color: var(--muted)">Job</span></span>
+<a class="btn btn-secondary btn-sm" href="tel:+16784396213" style="padding: 0 14px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"></path></svg>Call Fernhouse</a>
+</div>
+</header>
+<main class="wrap" style="padding-top: 24px; padding-bottom: 48px; max-width: 640px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="small" style="color: var(--muted); font-weight: 600">{{jobRef}}</span><h1 class="display h1">{{jobTitle}}</h1><span class="body" style="color: var(--ink-2)">{{jobWhen}}</span></div>
+<span class="pill" style="{{statusStyle}}">{{status}}</span>
+</div>
+
+<sc-if value="{{isDone}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; gap: 12px; align-items: flex-start; background: var(--accent-soft); border-radius: 12px; padding: 16px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 600">Marked done at {{doneAt}}</span><span class="small" style="color: var(--ink-2)">The customer has been texted{{doneExtra}}. Thanks — your payout for this job shows in your weekly statement.</span></div></div>
+</sc-if>
+
+<section class="card" aria-labelledby="where-h">
+<h2 class="display h3" id="where-h">Where</h2>
+<sc-if value="{{showAddress}}" hint-placeholder-val="{{true}}">
+<span style="font-weight: 600; font-size: 17px">{{address}}</span>
+<a class="btn btn-secondary btn-sm" href="https://maps.google.com" style="align-self: flex-start">Open in Maps</a>
+</sc-if>
+<sc-if value="{{hideAddress}}" hint-placeholder-val="{{false}}"><span class="body" style="color: var(--ink-2)">{{areaOnly}} — the full address and access details unlock at 6 AM on the day.</span></sc-if>
+</section>
+
+<sc-if value="{{showAddress}}" hint-placeholder-val="{{true}}">
+<section class="card" aria-labelledby="access-h" style="border-color: #F5D3A6">
+<h2 class="display h3" id="access-h">Access</h2>
+<p class="body" style="margin: 0">{{access}}</p>
+<p class="small" style="margin: 0; color: var(--muted)">Don’t write down or share access codes. They disappear from this page after the visit.</p>
+</section>
+</sc-if>
+
+<section class="card" aria-labelledby="job-h">
+<h2 class="display h3" id="job-h">The job</h2>
+<dl class="dl">
+<sc-for list="{{details}}" as="d" hint-placeholder-count="4"><dt>{{d.k}}</dt><dd>{{d.v}}</dd></sc-for>
+</dl>
+<sc-if value="{{isClean}}" hint-placeholder-val="{{true}}"><p class="small" style="margin: 0; color: var(--muted)">Skip anything unsafe — heights beyond a step stool, heavy furniture, bodily fluids, mold or pest waste — and note it below.</p></sc-if>
+</section>
+
+<sc-if value="{{showActions}}" hint-placeholder-val="{{true}}">
+<section class="card" aria-labelledby="do-h">
+<h2 class="display h3" id="do-h">{{actionsTitle}}</h2>
+<sc-if value="{{isUpcoming}}" hint-placeholder-val="{{false}}">
+<p class="small" style="margin: 0; color: var(--ink-2)">Can’t make it? Tell Fernhouse at least 24 hours ahead so a backup can cover the visit.</p>
+<a class="btn btn-secondary" href="sms:+16784396213" style="width: 100%">Text Fernhouse</a>
+</sc-if>
+<sc-if value="{{isToday}}" hint-placeholder-val="{{true}}">
+<sc-if value="{{notOnWay}}" hint-placeholder-val="{{true}}"><button type="button" class="btn btn-secondary" onClick="{{onWay}}" style="width: 100%">I’m on my way</button><span class="small" style="color: var(--muted); text-align: center">Texts the customer your arrival time. Optional.</span></sc-if>
+<sc-if value="{{isPet}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 15px; font-weight: 600">Gate photo <span style="color: var(--error)">(required)</span></span>
+<sc-if value="{{noPhoto}}" hint-placeholder-val="{{true}}"><button type="button" class="photo-drop" onClick="{{addPhoto}}"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"></rect><circle cx="12" cy="13" r="3.5"></circle><path d="M8 6l1.5-2h5L16 6"></path></svg><span style="font-weight: 600">Take a photo of the latched gate</span></button></sc-if>
+<sc-if value="{{hasPhoto}}" hint-placeholder-val="{{false}}"><div role="img" aria-label="Gate photo added" style="aspect-ratio: 4 / 3; border-radius: 12px; background: #DCE6E2; display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box"><span class="pill" style="background: #FFFFFF; color: var(--accent)">Photo added · retake</span></div></sc-if>
+</div>
+<fieldset style="border: 0; margin: 0; padding: 0; min-width: 0">
+<legend style="font-size: 15px; font-weight: 600; padding: 0; margin-bottom: 8px">Yard condition today</legend>
+<div class="reasons">
+<sc-for list="{{conds}}" as="c" hint-placeholder-count="2"><button type="button" class="opt" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}" style="min-height: 52px; padding: 8px 12px; font-size: 15px; font-weight: 600; text-align: left">{{c.label}}</button></sc-for>
+</div>
+<p class="small" style="margin: 8px 0 0; color: var(--muted)">“Worse than booked” texts the customer to approve the higher cleanup price before they’re charged.</p>
+</fieldset>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="job-note" style="font-size: 15px; font-weight: 600">Note for Fernhouse <span style="font-weight: 400; color: var(--muted)">(optional)</span></label>
+<textarea id="job-note" class="input" rows="3" style="min-height: 88px; padding: 12px 14px; line-height: 22px" placeholder="Anything skipped, damaged or unusual"></textarea>
+</div>
+<button type="button" class="btn btn-primary" onClick="{{markDone}}" disabled="{{cantFinish}}" style="width: 100%">Mark job done</button>
+<sc-if value="{{cantFinish}}" hint-placeholder-val="{{false}}"><span class="small" style="color: var(--muted); text-align: center">Add the gate photo to finish.</span></sc-if>
+<span class="small" style="color: var(--muted); text-align: center">Marking done charges the customer. Never take payment directly.</span>
+</sc-if>
+</section>
+</sc-if>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"screen":{"editor":"enum","default":"today","options":["upcoming","today","pet","done"]},"$preview":{"width":390,"height":1400}}'>
+// /job/[token] — the link a pro gets by text when the owner assigns a visit. No login; signed token per visit, expires 24h after the visit.
+// Address + access unlock at 6 AM on the visit day and are removed after "done". Marking done triggers the charge, receipt and guarantee window.
+var CLEAN = { ref: 'Job FH-26-04817 · visit 1', title: 'Standard clean', when: 'Tue, Oct 27 · arrive 8–11 AM',
+  address: '482 Maple Ridge Dr, Marietta, GA 30062', area: 'Marietta 30062',
+  access: 'Lockbox by the side door, code 4417. Please lock up and return the key to the lockbox.',
+  details: [{ k: 'Home', v: '3 bed, 2 bath · about 1,800 sq ft' }, { k: 'Type', v: 'First clean of a biweekly plan' }, { k: 'Pets', v: '1 friendly cat' }, { k: 'Requests', v: 'Skip the office' }] };
+var PET = { ref: 'Job FH-26-05132 · Tuesday route', title: 'Yard service · 2 dogs', when: 'Tue, Oct 27 · any time today',
+  address: '482 Maple Ridge Dr, Marietta, GA 30062', area: 'Marietta 30062',
+  access: 'Side gate on the left, code 2580. Re-latch the gate before you leave.',
+  details: [{ k: 'Dogs', v: 'Biscuit and Maple — friendly, may be in the yard' }, { k: 'Booked as', v: 'A few weeks behind · first visit' }, { k: 'Add-ons', v: 'None' }, { k: 'Haul away', v: 'Bag all waste and take it with you' }] };
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var sc = props.screen || 'today';
+    this.state = { sc: sc, onWay: false, photo: sc === 'done', cond: 0, done: sc === 'done' };
+  }
+  renderVals() {
+    var self = this, s = this.state, pet = s.sc === 'pet' || s.sc === 'done', J = pet ? PET : CLEAN;
+    var upcoming = s.sc === 'upcoming';
+    return {
+      jobRef: J.ref, jobTitle: J.title, jobWhen: J.when,
+      status: s.done ? 'Done' : upcoming ? 'Assigned' : s.onWay ? 'On the way' : 'Today',
+      statusStyle: s.done ? 'background: var(--accent-soft); color: var(--accent)' : upcoming ? 'background: var(--paper-2); color: var(--ink-2)' : 'background: #FFF4E5; color: #B54708',
+      isDone: s.done, doneAt: '11:42 AM', doneExtra: pet ? ' with your gate photo' : '',
+      showAddress: !upcoming && !s.done, hideAddress: upcoming || s.done,
+      areaOnly: s.done ? 'Visit complete' : J.area, address: J.address, access: J.access,
+      details: J.details, isClean: !pet, isPet: pet,
+      showActions: !s.done, isUpcoming: upcoming, isToday: !upcoming,
+      actionsTitle: upcoming ? 'Before the day' : 'Finish the job',
+      notOnWay: !s.onWay && !upcoming,
+      onWay: function () { self.setState({ onWay: true }); },
+      noPhoto: !s.photo, hasPhoto: s.photo,
+      addPhoto: function () { self.setState({ photo: true }); },
+      conds: ['As booked', 'Worse than booked'].map(function (l, i) { return { label: l, pressed: s.cond === i, pick: function () { self.setState({ cond: i }); } }; }),
+      cantFinish: pet && !s.photo,
+      markDone: function () { if (pet && !s.photo) return; self.setState({ done: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

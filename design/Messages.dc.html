@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Customer texts &amp; emails — Fernhouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ms{container-type:inline-size;container-name:ms}
+.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+.small{font-size:14px;line-height:21px}
+.sec{display:flex;flex-direction:column;gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+.tcard{background:#FFFFFF;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.thread{background:#F2F4F3;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.bubble{align-self:flex-start;max-width:92%;background:#FFFFFF;border:1px solid #E1E6E4;border-radius:18px 18px 18px 4px;padding:10px 14px;font-size:15px;line-height:22px;color:var(--ink);white-space:pre-line;overflow-wrap:anywhere}
+.bubble.me{align-self:flex-end;background:#2F7BF6;border-color:#2F7BF6;color:#FFFFFF;border-radius:18px 18px 4px 18px}
+.tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;line-height:18px;white-space:nowrap}
+.email{background:#FFFFFF;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.email-meta{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px;background:#FAFBFA}
+.email-body{padding:28px;display:flex;flex-direction:column;gap:16px;max-width:560px}
+.eb-btn{display:inline-flex;align-self:flex-start;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--accent);color:#FFFFFF;font-weight:600;font-size:15px;text-decoration:none}
+.erow{display:flex;justify-content:space-between;gap:12px;font-size:15px;line-height:22px;padding:6px 0;border-bottom:1px solid #EEF1F0}
+.reg dl{display:grid;grid-template-columns:220px minmax(0,1fr);gap:10px 24px;margin:0;font-size:15px;line-height:23px}
+.reg dt{color:var(--muted);font-weight:600}
+.reg dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+@container ms (max-width:1100px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container ms (max-width:767px){.grid3,.grid2{grid-template-columns:minmax(0,1fr)}.reg dl{grid-template-columns:minmax(0,1fr);gap:2px}.reg dd{margin-bottom:10px}}
+</style>
+</helmet>
+<div class="ms" style="--ink: #16211F; --ink-2: #3D4A47; --muted: #5B6764; --paper-2: #F6F8F7; --accent: #0E7A5F; --accent-soft: #E3F2EC; --line: #DCE3E0; font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--paper-2); width: 100%; min-width: 0; -webkit-font-smoothing: antialiased; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
+
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 820px">
+<h1 class="display" style="font-size: 36px; line-height: 44px">Customer texts &amp; emails</h1>
+<p style="margin: 0; font-size: 17px; line-height: 27px; color: var(--ink-2)">Every message starts with “Fernhouse:” so customers know who’s texting. Links go to the customer’s manage-booking page. All texts come from (678) 439-6213; emails from fernhousehomeservices@gmail.com. Copy lives in <code>lib/messages.ts</code>, with {braces} for filled-in values.</p>
+</div>
+
+<section class="sec" aria-labelledby="sms-clean">
+<h2 class="display" id="sms-clean" style="font-size: 24px; line-height: 30px">Texts · home cleaning</h2>
+<div class="grid3">
+<sc-for list="{{cleanTexts}}" as="t" hint-placeholder-count="6">
+<div class="tcard">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap"><span style="font-weight: 600">{{t.name}}</span><span class="tag" style="background: var(--accent-soft); color: var(--accent)">{{t.when}}</span></div>
+<div class="thread"><div class="bubble">{{t.body}}</div><sc-if value="{{t.hasReply}}" hint-placeholder-val="{{false}}"><div class="bubble me">{{t.reply}}</div><div class="bubble">{{t.answer}}</div></sc-if></div>
+<span class="small" style="color: var(--muted)">{{t.note}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="sms-pet">
+<h2 class="display" id="sms-pet" style="font-size: 24px; line-height: 30px">Texts · pet waste removal</h2>
+<div class="grid3">
+<sc-for list="{{petTexts}}" as="t" hint-placeholder-count="5">
+<div class="tcard">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap"><span style="font-weight: 600">{{t.name}}</span><span class="tag" style="background: var(--accent-soft); color: var(--accent)">{{t.when}}</span></div>
+<div class="thread"><sc-if value="{{t.photo}}" hint-placeholder-val="{{false}}"><div role="img" aria-label="Gate photo attachment" style="align-self: flex-start; width: 180px; height: 120px; border-radius: 14px; background: #DCE6E2; border: 1px dashed #B9C8C2; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--muted)">Gate photo</div></sc-if><div class="bubble">{{t.body}}</div><sc-if value="{{t.hasReply}}" hint-placeholder-val="{{false}}"><div class="bubble me">{{t.reply}}</div><div class="bubble">{{t.answer}}</div></sc-if></div>
+<span class="small" style="color: var(--muted)">{{t.note}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="sms-acct">
+<h2 class="display" id="sms-acct" style="font-size: 24px; line-height: 30px">Texts · account, quotes &amp; required keyword replies</h2>
+<div class="grid3">
+<sc-for list="{{acctTexts}}" as="t" hint-placeholder-count="6">
+<div class="tcard">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap"><span style="font-weight: 600">{{t.name}}</span><span class="tag" style="{{t.tagStyle}}">{{t.when}}</span></div>
+<div class="thread"><sc-if value="{{t.hasMe}}" hint-placeholder-val="{{false}}"><div class="bubble me">{{t.me}}</div></sc-if><div class="bubble">{{t.body}}</div></div>
+<span class="small" style="color: var(--muted)">{{t.note}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="sms-ops">
+<div style="display: flex; flex-direction: column; gap: 6px"><h2 class="display" id="sms-ops" style="font-size: 24px; line-height: 30px">Texts · to you and your pros</h2><p style="margin: 0; font-size: 15px; line-height: 23px; color: var(--ink-2)">Sent from the same number. Owner alerts go to your own mobile; pros get only what they need for one visit.</p></div>
+<div class="grid3">
+<sc-for list="{{opsTexts}}" as="t" hint-placeholder-count="6">
+<div class="tcard">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap"><span style="font-weight: 600">{{t.name}}</span><span class="tag" style="{{t.tagStyle}}">{{t.when}}</span></div>
+<div class="thread"><div class="bubble">{{t.body}}</div></div>
+<span class="small" style="color: var(--muted)">{{t.note}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="em-h">
+<h2 class="display" id="em-h" style="font-size: 24px; line-height: 30px">Emails</h2>
+<div class="grid2">
+<div class="email">
+<div class="email-meta"><span class="small" style="color: var(--muted)">From Fernhouse &lt;fernhousehomeservices@gmail.com&gt; · sent at booking</span><span style="font-weight: 600">You’re booked — Tue, Oct 27, 8–11 AM</span><span class="small" style="color: var(--muted)">Preview: Standard clean at 482 Maple Ridge Dr. Manage or reschedule anytime.</span></div>
+<div class="email-body">
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px; color: var(--accent)">Fernhouse</span>
+<span class="display" style="font-size: 26px; line-height: 32px">You’re booked, Jordan.</span>
+<p style="margin: 0; font-size: 16px; line-height: 25px; color: var(--ink-2)">We’ll text you when your team is confirmed, and again the evening before.</p>
+<div>
+<div class="erow"><span style="color: var(--muted)">When</span><span style="font-weight: 600">Tue, Oct 27 · 8–11 AM arrival</span></div>
+<div class="erow"><span style="color: var(--muted)">Service</span><span style="font-weight: 600">Standard clean · 3 bed, 2 bath</span></div>
+<div class="erow"><span style="color: var(--muted)">Plan</span><span style="font-weight: 600">Biweekly · $165 per visit</span></div>
+<div class="erow"><span style="color: var(--muted)">First clean (20% off)</span><span style="font-weight: 600">$132</span></div>
+<div class="erow"><span style="color: var(--muted)">Address</span><span style="font-weight: 600; text-align: right">482 Maple Ridge Dr, Marietta, GA 30062</span></div>
+</div>
+<a class="eb-btn" href="ManageBooking.dc.html">Manage booking</a>
+<p style="margin: 0; font-size: 14px; line-height: 21px; color: var(--muted)">Free changes until 24 hours before your visit; $50 after that. 24-hour re-clean guarantee. You pay Fernhouse, never anyone directly.</p>
+<p style="margin: 0; font-size: 13px; line-height: 20px; color: var(--muted); border-top: 1px solid #EEF1F0; padding-top: 14px">Fernhouse · Atlanta, GA · (678) 439-6213 · <span style="text-decoration: underline">Privacy</span> · <span style="text-decoration: underline">Terms</span></p>
+</div>
+</div>
+
+<div class="email">
+<div class="email-meta"><span class="small" style="color: var(--muted)">From Fernhouse · sent after each charge</span><span style="font-weight: 600">Receipt — your Oct 27 clean, $165</span><span class="small" style="color: var(--muted)">Preview: Paid with Visa 4242. Not happy with something? Tell us within 24 hours.</span></div>
+<div class="email-body">
+<span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px; color: var(--accent)">Fernhouse</span>
+<span class="display" style="font-size: 26px; line-height: 32px">Thanks — here’s your receipt.</span>
+<div>
+<div class="erow"><span style="color: var(--muted)">Standard clean · Oct 27</span><span style="font-weight: 600">$165.00</span></div>
+<div class="erow"><span style="color: var(--muted)">Tax</span><span style="font-weight: 600">$0.00</span></div>
+<div class="erow" style="border-bottom: 0"><span style="font-weight: 600">Total paid · Visa •••• 4242</span><span style="font-weight: 600">$165.00</span></div>
+</div>
+<div style="background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-size: 15px; line-height: 23px">Something not right? Tell us by <strong>11 AM tomorrow</strong> and we’ll send a team back to re-clean, free.</div>
+<a class="eb-btn" href="ManageBooking.dc.html">Request a re-clean</a>
+<p style="margin: 0; font-size: 13px; line-height: 20px; color: var(--muted); border-top: 1px solid #EEF1F0; padding-top: 14px">Receipt FH-26-04817-03 · Fernhouse · Atlanta, GA · (678) 439-6213</p>
+</div>
+</div>
+</div>
+
+<div class="grid3">
+<sc-for list="{{emails}}" as="e" hint-placeholder-count="6">
+<div class="tcard">
+<span class="tag" style="align-self: flex-start; background: var(--paper-2); color: var(--ink-2)">{{e.when}}</span>
+<span style="font-weight: 600">{{e.subject}}</span>
+<span class="small" style="color: var(--ink-2)">{{e.body}}</span>
+<span class="small" style="color: var(--accent); font-weight: 600">Button: {{e.cta}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec reg" aria-labelledby="reg-h">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 820px">
+<h2 class="display" id="reg-h" style="font-size: 24px; line-height: 30px">Text-message registration (A2P 10DLC)</h2>
+<p style="margin: 0; font-size: 16px; line-height: 25px; color: var(--ink-2)">US carriers require business texting numbers to be registered before messages are delivered. These are the answers to paste into the texting provider’s brand and campaign forms. Approval usually takes 1–3 weeks, so submit it as soon as the site is live at its real domain.</p>
+</div>
+<div class="tcard" style="padding: 28px">
+<dl>
+<sc-for list="{{reg}}" as="r" hint-placeholder-count="12">
+<dt>{{r.k}}</dt><dd>{{r.v}}</dd>
+</sc-for>
+</dl>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":5403}}'>
+var L = 'fernhouseclean.com/b/x7Kq2';
+var CLEAN = [
+  { name: 'Booking confirmed', when: 'At booking', body: 'Fernhouse: You’re booked! Standard clean Tue, Oct 27, 8–11 AM at 482 Maple Ridge Dr. Manage anytime: ' + L + '\nReply HELP for help, STOP to opt out.', note: 'First text to a new number — always carries HELP/STOP.' },
+  { name: 'Team confirmed', when: '2 days before', body: 'Fernhouse: Your team is confirmed for Tue, Oct 27, 8–11 AM. Free changes until Mon 8 AM: ' + L, note: 'Sent once a team accepts the visit.' },
+  { name: 'Evening-before reminder', when: '6 PM day before', body: 'Fernhouse: Reminder — your clean is tomorrow, 8–11 AM. Please secure pets and have access ready. Questions? Just reply.', hasReply: true, reply: 'Can they skip the office?', answer: 'Fernhouse: Done — we’ve added “skip the office” to your notes.', note: 'Replies land in the shared inbox for a human to answer.' },
+  { name: 'On the way', when: 'Team departs', body: 'Fernhouse: Your team is on the way and should arrive by 9:40 AM.', note: 'Triggered by the team, or skipped if no ETA is available.' },
+  { name: 'Visit done + charge', when: 'Visit complete', body: 'Fernhouse: Your clean is done. $165 was charged to Visa 4242. Something not right? Tell us by 11 AM tomorrow for a free re-clean: ' + L, note: 'Starts the 24-hour re-clean window.' },
+  { name: 'Late cancellation', when: 'Cancel inside 24h', body: 'Fernhouse: Your Oct 27 visit is cancelled. A $50 late fee was charged to Visa 4242. Your plan continues Tue, Nov 10.', note: 'Free cancellations get the same text without the fee line.' }
+];
+var PET = [
+  { name: 'Yard service booked', when: 'At booking', body: 'Fernhouse: Yard service booked! Weekly on Tuesdays, first visit Oct 27. We’ll text a gate photo after every visit. Manage: ' + L + '\nReply HELP for help, STOP to opt out.', note: 'Route day, not an arrival time.' },
+  { name: 'Visit done + gate photo', when: 'Visit complete', photo: true, body: 'Fernhouse: Yard scooped and gate latched (photo above). $27 charged to Visa 4242. Missed a spot? Reply by 11:42 AM tomorrow and we’ll come back free.', hasReply: true, reply: 'Corner by the shed', answer: 'Fernhouse: Sorry about that — we’ll be back today to re-scoop it.', note: 'Sent as MMS with the photo the pro uploads.' },
+  { name: 'Cleanup upgrade', when: 'Before first charge', body: 'Fernhouse: Your yard needed more than “a few weeks behind,” so today’s cleanup is $75 instead of $39. Reply YES to go ahead, or NO to skip this visit with no fee.', note: 'The honor-system check promised on the booking card and in the Terms. Never use CANCEL or STOP as reply words — carriers treat them as opt-outs.' },
+  { name: 'Weather move', when: 'Same morning', body: 'Fernhouse: Storms today — your yard visit moves to Wed, Oct 28. No action needed.', note: 'Only when a route day is moved.' },
+  { name: 'Couldn’t get in', when: 'At the gate', body: 'Fernhouse: We couldn’t get into your yard today (gate locked). Reply with access info and we’ll come back tomorrow.', note: 'Per Terms, a no-access visit counts as a late cancellation.' }
+];
+var KEY = 'background: #FFF4E5; color: #B54708', SYS = 'background: var(--accent-soft); color: var(--accent)';
+var ACCT = [
+  { name: 'Manage-booking link', when: 'On request', tagStyle: SYS, body: 'Fernhouse: Here’s your link to manage your booking: ' + L + ' It expires in 7 days.', note: 'From the “Find my booking” page.' },
+  { name: 'Quote request received', when: 'Quote form', tagStyle: SYS, body: 'Fernhouse: Thanks — we got your quote request. We’ll text your price within 2 business hours. Reply STOP to opt out.', note: '5+ dogs or a yard over ½ acre. The price itself is sent by a person.' },
+  { name: 'Payment failed', when: 'Charge declined', tagStyle: SYS, body: 'Fernhouse: We couldn’t charge Visa 4242 for your Oct 27 visit. Please update your card within 48 hours to keep your plan: ' + L, note: 'Followed by one reminder after 24 hours.' },
+  { name: 'STOP', when: 'Keyword reply', tagStyle: KEY, hasMe: true, me: 'STOP', body: 'Fernhouse: You’re unsubscribed and won’t get more texts. Reply START to resubscribe.', note: 'Required. Also triggered by UNSUBSCRIBE, CANCEL, END, QUIT.' },
+  { name: 'HELP', when: 'Keyword reply', tagStyle: KEY, hasMe: true, me: 'HELP', body: 'Fernhouse: For help with your booking call (678) 439-6213 or email fernhousehomeservices@gmail.com. Msg frequency varies. Msg & data rates may apply. Reply STOP to opt out.', note: 'Required. Also triggered by INFO.' },
+  { name: 'START', when: 'Keyword reply', tagStyle: KEY, hasMe: true, me: 'START', body: 'Fernhouse: You’re resubscribed to booking texts. Reply STOP to opt out.', note: 'Re-opt-in after STOP.' },
+  { name: 'Offer (opted-in only)', when: 'Marketing · max 2/mo', tagStyle: 'background: #EEF0FF; color: #3A47B5', body: 'Fernhouse: Add weekly yard service to your home clean — from $24/visit, no contracts: fernhouseclean.com/pet-waste-removal Reply STOP to opt out.', note: 'Only to customers who ticked the optional offers box.' }
+];
+var EMAILS = [
+  { when: 'At booking · yard service', subject: 'Yard service booked — Tuesdays, starting Oct 27', body: 'Route day, dogs, first-visit cleanup price, then per-visit price. Gate photo and re-scoop promise.', cta: 'Manage booking' },
+  { when: 'Change made', subject: 'Your visit moved to Thu, Oct 29, 11 AM–2 PM', body: 'Old and new time, rest of plan unchanged, free-change deadline for the new date.', cta: 'Manage booking' },
+  { when: 'Cancelled', subject: 'Your Oct 27 visit is cancelled', body: 'Whether a $50 late fee applied, next visit date (or that the plan has ended), and a one-tap rebook.', cta: 'Book again' },
+  { when: 'Charge declined', subject: 'Action needed: update your card', body: 'Which visit, amount, and that the plan pauses after 48 hours if the card isn’t updated.', cta: 'Update card' },
+  { when: 'Plan paused or ended', subject: 'Your plan is paused', body: 'No visits until resumed; access codes removed when service ends (per Privacy Policy).', cta: 'Resume plan' },
+  { when: 'Day after first visit', subject: 'How did your first clean go?', body: 'One question, 1–5. Low scores go to the owner to follow up. Kept private — never shown as public reviews.', cta: 'Rate your clean' }
+];
+var OWN = 'background: #EEF0FF; color: #3A47B5', PROT = 'background: var(--paper-2); color: var(--ink-2)';
+var OPS = [
+  { name: 'New booking', when: 'To you · instantly', tagStyle: OWN, body: 'New booking FH-26-04817: Standard clean 3bd/2ba, Tue Oct 27 8–11 AM, Marietta 30062, $132 (first clean). Assign a pro: fernhouseclean.com/admin/b/04817', note: 'Also emailed. Pet bookings show route day and dogs.' },
+  { name: 'Still unassigned', when: 'To you · 12h later', tagStyle: OWN, body: 'Reminder: 2 bookings still need a pro. The next is Tue Oct 27 8–11 AM in Marietta. fernhouseclean.com/admin', note: 'Repeats each morning at 8 until assigned.' },
+  { name: 'Problem alert', when: 'To you · as it happens', tagStyle: OWN, body: 'Card declined: Taylor M., $165 for the Oct 20 clean. Customer has been texted. fernhouseclean.com/admin', note: 'Same pattern for no-access visits, re-clean requests and quote requests.' },
+  { name: 'Job assigned', when: 'To the pro', tagStyle: PROT, body: 'Fernhouse: New job — Standard clean, Tue Oct 27, arrive 8–11 AM, Marietta. Details: fernhouseclean.com/job/k3Pz9 Reply HELP for help, STOP to opt out.', note: 'Sent when you tap “Assign & notify”. Full address unlocks on the day.' },
+  { name: 'Day-of reminder', when: 'To the pro · 6 AM', tagStyle: PROT, body: 'Fernhouse: Today — Standard clean, 8–11 AM, 482 Maple Ridge Dr, Marietta. Access and notes: fernhouseclean.com/job/k3Pz9', note: 'Yard pros get one text listing the day’s route.' },
+  { name: 'Document expiring', when: 'To you + the pro · 30 days before', tagStyle: OWN, body: 'Fernhouse: Andre W.’s insurance certificate expires Nov 14. Upload a new one to keep getting jobs: fernhouseclean.com/job/docs', note: 'Booking is blocked automatically on the expiry date.' }
+];
+var REG = [
+  { k: 'Brand (business) name', v: 'Fernhouse — use your exact legal name. An LLC with an EIN gets a Standard brand (higher limits); without an EIN you register as a Sole Proprietor (1 number, lower limits).' },
+  { k: 'Website', v: 'https://fernhouseclean.com (TODO: final domain; it must be live, showing the Privacy Policy and Terms, before you submit)' },
+  { k: 'Support contact', v: '(678) 439-6213 · fernhousehomeservices@gmail.com' },
+  { k: 'Campaign use case', v: 'Low Volume Mixed — account notifications and customer care, plus marketing sent only to customers who opt in separately.' },
+  { k: 'Campaign description', v: 'Fernhouse sends texts to customers who book house cleaning or pet waste removal, or request a quote, on fernhouseclean.com: booking confirmations, reminders, arrival and visit updates (including gate photos), receipts, payment issues and replies to customer questions. It also texts the service pros who carry out visits about the jobs assigned to them; pros agree to these texts when they sign up. Customers who tick a separate, optional box also receive up to 2 promotional texts a month.' },
+  { k: 'How customers opt in', v: 'Web form. When customers enter their mobile number at booking (Step 3, “Your details”), the quote form or the waitlist, the form shows: “By giving your mobile number, you agree to get booking texts from Fernhouse — confirmations, reminders and visit updates. Message frequency varies. Msg & data rates may apply. Reply HELP for help, STOP to opt out.” plus links to the Privacy Policy and Terms. Promotional texts need a separate, unchecked checkbox. Attach screenshots of these forms.' },
+  { k: 'Opt-in confirmation message', v: 'The “Booking confirmed” text (first message to a new number), which includes HELP and STOP instructions.' },
+  { k: 'Sample messages (5)', v: '1) Booking confirmed · 2) Evening-before reminder · 3) Visit done + charge · 4) Yard visit done + gate photo · 5) Opted-in offer — exact copy as shown on this board.' },
+  { k: 'Opt-out keywords & reply', v: 'STOP, UNSUBSCRIBE, CANCEL, END, QUIT → “Fernhouse: You’re unsubscribed and won’t get more texts. Reply START to resubscribe.”' },
+  { k: 'Help keywords & reply', v: 'HELP, INFO → “Fernhouse: For help with your booking call (678) 439-6213 or email fernhousehomeservices@gmail.com. Msg frequency varies. Msg & data rates may apply. Reply STOP to opt out.”' },
+  { k: 'Message content flags', v: 'Embedded links: yes (own domain only — no link shorteners) · Phone numbers: yes · Age-gated content: no · Lending: no · Affiliate marketing: no' },
+  { k: 'Privacy Policy & Terms', v: 'fernhouseclean.com/privacy (includes “mobile information is never shared with third parties or affiliates for marketing”) · fernhouseclean.com/terms#t-texts' }
+];
+class Component extends DCLogic {
+  renderVals() {
+    var withReply = function (t) { return Object.assign({ hasReply: !!t.reply, photo: !!t.photo, reply: t.reply || '', answer: t.answer || '' }, t); };
+    return {
+      cleanTexts: CLEAN.map(withReply),
+      petTexts: PET.map(withReply),
+      acctTexts: ACCT.map(function (t) { return Object.assign({ hasMe: !!t.me, me: t.me || '' }, t); }),
+      opsTexts: OPS,
+      emails: EMAILS,
+      reg: REG
+    };
+  }
+}
+</script>
+</body>
+</html>
