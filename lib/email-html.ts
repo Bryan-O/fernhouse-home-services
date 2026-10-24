@@ -4,9 +4,9 @@
 
 import type { EmailContent } from './messages';
 
-const C = { ink: '#16211F', ink2: '#3D4A47', muted: '#5B6764', paper2: '#F6F8F7', accent: '#0E7A5F', accentSoft: '#E3F2EC', line: '#DCE3E0', rowLine: '#EEF1F0' };
-const SANS = "Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
-const DISPLAY = "'Plus Jakarta Sans', Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+const C = { ink: '#343631', ink2: '#4A4C46', muted: '#5F625A', paper2: '#F5F1E9', accent: '#243E36', accentSoft: '#E3EAE5', line: '#C9A98A', rowLine: '#EDE6DA', onAccent: '#F5F1E9' };
+const SANS = "'DM Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+const DISPLAY = "Newsreader, Georgia, 'Times New Roman', serif";
 
 // Escapes text for HTML, keeping times like "11 AM" on one line.
 export const esc = (s: string) =>
@@ -32,7 +32,7 @@ export function renderEmail(e: EmailContent, origin: string): { html: string; te
     : '';
 
   const button = e.button
-    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr><td style="border-radius:999px;background:${C.accent}"><a href="${esc(e.button.url)}" style="display:inline-block;padding:13px 22px;border-radius:999px;background:${C.accent};color:#FFFFFF;font-weight:600;font-size:15px;line-height:22px;text-decoration:none;font-family:${SANS}">${esc(e.button.label)}</a></td></tr></table>`
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr><td style="border-radius:999px;background:${C.accent}"><a href="${esc(e.button.url)}" style="display:inline-block;padding:13px 22px;border-radius:999px;background:${C.accent};color:${C.onAccent};font-weight:600;font-size:15px;line-height:22px;text-decoration:none;font-family:${SANS}">${esc(e.button.label)}</a></td></tr></table>`
     : '';
 
   // The rating row: five round number links, with what 1 and 5 mean underneath.
@@ -52,8 +52,8 @@ export function renderEmail(e: EmailContent, origin: string): { html: string; te
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">${esc(e.preview)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.paper2}"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:616px;background:#FFFFFF;border:1px solid ${C.line};border-radius:16px"><tr><td style="padding:28px;font-family:${SANS};color:${C.ink}">
-<div style="font-family:${DISPLAY};font-weight:800;font-size:18px;line-height:24px;color:${C.accent};margin:0 0 16px">Fernhouse</div>
-<h1 style="margin:0 0 16px;font-family:${DISPLAY};font-weight:800;font-size:26px;line-height:32px;letter-spacing:-0.02em;color:${C.ink}">${esc(e.heading)}</h1>
+<div style="font-family:${SANS};font-weight:700;font-size:16px;line-height:24px;letter-spacing:2px;color:${C.accent};margin:0 0 16px">FERNHOUSE</div>
+<h1 style="margin:0 0 16px;font-family:${DISPLAY};font-weight:600;font-size:26px;line-height:32px;color:${C.ink}">${esc(e.heading)}</h1>
 ${e.intro ? p(esc(e.intro)) : ''}${rows}${callout}${button}${scale}${e.note ? p(esc(e.note), 14, 21, C.muted) : ''}
 <p style="margin:0;font-size:13px;line-height:20px;color:${C.muted};border-top:1px solid ${C.rowLine};padding-top:14px">${esc(e.footer)}${legal}</p>
 </td></tr></table>

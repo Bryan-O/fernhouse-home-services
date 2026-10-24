@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BrandMark } from './BrandMark';
 import { BRAND } from '@/lib/config';
 
 type Variant = 'home' | 'pet' | 'legal' | 'minimal';
@@ -36,7 +37,7 @@ export function SiteFooter({ variant }: { variant: Variant }) {
     <footer className="on-dark" style={{ background: 'var(--ink)', color: 'var(--footer-ink)' }}>
       <div className="wrap" style={{ paddingTop: variant === 'legal' ? 40 : 48, paddingBottom: 24, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: variant === 'legal' ? 24 : 32 }}>
         <div className={variant === 'legal' ? 'footer-id footer-id-tight' : 'footer-id'}>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 18, color: '#FFFFFF' }}>{BRAND.name}</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}><BrandMark light /></span>
           <span className="small">Serving {BRAND.areaLine}</span>
           <a href={BRAND.phoneHref} className="small footer-contact">{BRAND.phone}</a>
           <a href={`mailto:${BRAND.email}`} className="small footer-contact">{BRAND.email}</a>

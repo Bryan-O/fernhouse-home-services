@@ -1,3 +1,4 @@
+import { BrandMark } from '../BrandMark';
 import { PhoneIcon } from '../Icons';
 import { BRAND } from '@/lib/config';
 
@@ -7,9 +8,7 @@ export function JobChrome({ children }: { children: React.ReactNode }) {
     <div style={{ background: 'var(--paper-2)', minHeight: '100vh' }}>
       <header style={{ background: '#FFFFFF', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, minHeight: 60, maxWidth: 640 }}>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 17 }}>
-            {BRAND.name} <span style={{ fontWeight: 600, color: 'var(--muted)' }}>Job</span>
-          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}><BrandMark sub="Job" /></span>
           <a className="btn btn-secondary btn-sm" href={BRAND.phoneHref} style={{ padding: '0 14px' }}>
             <PhoneIcon size={18} />Call {BRAND.name}
           </a>

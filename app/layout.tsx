@@ -4,21 +4,20 @@ import { BRAND, SITE_URL } from '@/lib/config';
 import { Analytics } from '@/components/Analytics';
 import './globals.css';
 
-// Self-hosted (Fontsource), so pages never call Google Fonts.
-const inter = localFont({
+// Self-hosted (Fontsource), so pages never call Google Fonts. Brand system: Newsreader for
+// headings, DM Sans for text and the wordmark.
+const dmSans = localFont({
   src: [
-    { path: '../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2', weight: '400' },
-    { path: '../node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2', weight: '600' },
+    { path: '../node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2', weight: '400' },
+    { path: '../node_modules/@fontsource/dm-sans/files/dm-sans-latin-600-normal.woff2', weight: '600' },
+    { path: '../node_modules/@fontsource/dm-sans/files/dm-sans-latin-700-normal.woff2', weight: '700' },
   ],
-  variable: '--font-inter',
+  variable: '--font-dm-sans',
   display: 'swap',
 });
-const jakarta = localFont({
-  src: [
-    { path: '../node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff2', weight: '700' },
-    { path: '../node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-800-normal.woff2', weight: '800' },
-  ],
-  variable: '--font-jakarta',
+const newsreader = localFont({
+  src: [{ path: '../node_modules/@fontsource/newsreader/files/newsreader-latin-600-normal.woff2', weight: '600' }],
+  variable: '--font-newsreader',
   display: 'swap',
 });
 
@@ -31,12 +30,12 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0E7A5F',
+  themeColor: '#243E36',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${newsreader.variable}`}>
       <body>
         {children}
         <Analytics />
