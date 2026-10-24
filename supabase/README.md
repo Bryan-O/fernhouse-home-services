@@ -8,13 +8,16 @@ The database schema lives in `migrations/` and runs in filename order. `config.t
 
 1. Create a project at supabase.com (the free tier is enough to start).
 2. Copy **Project URL**, **Publishable key** and **Secret key** from Project Settings → API Keys into `.env.local` (see `.env.example`). Never commit `.env.local`.
-3. Push the schema and auth settings:
+3. Push the schema and auth settings with the CLI:
    ```sh
    npx supabase login
    npx supabase link --project-ref <your-project-ref>
    npx supabase db push
    npx supabase config push
    ```
+   No CLI? Run `scripts/hosted-setup-sql.sh > fernhouse-database-setup.sql`, paste the whole file into
+   SQL Editor → New query and Run it once. Then set the auth settings by hand under Authentication:
+   new sign-ups off; passwords at least 12 characters with lower- and upper-case letters and digits.
 4. Create the owner account: Authentication → Users → **Add user** (email + password, auto-confirm). Then in the SQL editor:
    ```sql
    insert into admin_users (user_id) select id from auth.users where email = 'you@example.com';
