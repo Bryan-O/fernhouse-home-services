@@ -692,7 +692,7 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 }
 
 @media (max-width: 399px) { .tab-body:not(.tab-body-locked) { min-height: 766px; } }
-@media (max-width: 379px) { .tab-body:not(.tab-body-locked) { min-height: 779px; } }
+@media (max-width: 379px) { .tab-body:not(.tab-body-locked) { min-height: 781px; } }
 @media (max-width: 359px) { .tab-body:not(.tab-body-locked) { min-height: 800px; } }
 
 @media (max-width: 479px) {
