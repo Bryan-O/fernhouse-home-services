@@ -886,8 +886,8 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
   .hdr-row { gap: 8px; }
   .hdr-actions { gap: 6px; }
   .hdr-actions .hdr-book { padding: 0 14px; }
-  .hdr-row .wordmark { font-size: 15px; letter-spacing: 0.04em; }
-  .hdr-row .brand-link { gap: 8px; }
+  .brand-link .wordmark { font-size: 15px; letter-spacing: 0.04em; }
+  .brand-link { gap: 8px; }
 }
 
 @media (max-width: 359px) {
