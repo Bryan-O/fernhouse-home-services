@@ -9,7 +9,7 @@ Environment Variables), never into code or chat. `.env.example` lists each one.
 - [ ] Georgia attorney review of the Terms and Privacy Policy (`app/terms`, `app/privacy`; values in `lib/config.ts` → `LEGAL`).
 - [ ] Ask an insurance agent whether Fernhouse itself needs general liability cover.
 - [ ] Confirm the 41 service ZIPs (`lib/config.ts` → `SERVICE_ZIPS`) and the "next size up" pricing rule (`lookupHome`).
-- [ ] Yard photo for the home page's pet card and the pet waste page (two `TODO (owner)` placeholders).
+- [x] Yard photo for the home page’s pet card and the pet waste page (`public/img/yard.webp`, from Unsplash).
 - [ ] Recruit the first pros for each area, and check their insurance, bond and background check (Pros tab).
 
 ## 2. Accounts and domain

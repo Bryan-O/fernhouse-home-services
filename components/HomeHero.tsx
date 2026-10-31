@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { BookingCard } from './booking/BookingCard';
-import { HeroActions, HeroChips, YardPhotoPlaceholder } from './HeroBits';
+import { HeroActions, HeroChips, YardPhoto } from './HeroBits';
 import { MobileBookBar } from './MobileBookBar';
 import {
   DEFAULT_CLEAN,
@@ -82,8 +82,7 @@ export function HomeHero() {
             alt="Gloved hands vacuuming a gray upholstered cushion in a bright living room"
           />
         ) : (
-          // TODO (owner): yard photo — clean fenced backyard or a dog on fresh grass.
-          <YardPhotoPlaceholder label="clean fenced backyard or a dog on fresh grass" icon="paw" />
+          <YardPhoto />
         )}
 
         <BookingCard tab={tab} onTab={setTab} clean={clean} setClean={setClean} pet={pet} setPet={setPet} />

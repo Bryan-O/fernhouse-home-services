@@ -1,5 +1,6 @@
+import Image from 'next/image';
 import { BRAND } from '@/lib/config';
-import { Check, ImageIcon, Paw, PhoneIcon } from './Icons';
+import { Check, PhoneIcon } from './Icons';
 
 export function HeroActions() {
   return (
@@ -26,13 +27,17 @@ export function HeroChips({ items }: { items: string[] }) {
   );
 }
 
-/** Stand-in until the owner supplies a yard photo. Never presented as a Fernhouse pro. */
-export function YardPhotoPlaceholder({ label, icon }: { label: string; icon: 'paw' | 'image' }) {
-  const Icon = icon === 'paw' ? Paw : ImageIcon;
+/** The yard photo for the pet waste hero (home page Pet Waste tab and /pet-waste-removal). */
+export function YardPhoto({ priority = false }: { priority?: boolean }) {
   return (
-    <div className="a-photo photo-placeholder" role="img" aria-label={`Photo placeholder: ${label.toLowerCase()}`}>
-      <Icon size={40} stroke="var(--muted)" />
-      <span className="small" style={{ color: 'var(--muted)', fontWeight: 600, maxWidth: 320 }}>Yard photo — {label}</span>
-    </div>
+    <Image
+      className="a-photo hero-photo"
+      src="/img/yard.webp"
+      width={1600}
+      height={1061}
+      priority={priority}
+      sizes="(max-width: 1023px) 100vw, 560px"
+      alt="A golden retriever sitting on a freshly mowed backyard lawn, with friends relaxing on the grass behind"
+    />
   );
 }

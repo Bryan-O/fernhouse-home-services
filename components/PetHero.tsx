@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { BookingCard } from './booking/BookingCard';
-import { HeroActions, HeroChips, YardPhotoPlaceholder } from './HeroBits';
+import { HeroActions, HeroChips, YardPhoto } from './HeroBits';
 import { MobileBookBar } from './MobileBookBar';
 import { Paw } from './Icons';
 import { DEFAULT_CLEAN, DEFAULT_PET_STEP1, readPet, writePet, writeServiceTab, type PetStep1 } from '@/lib/booking-store';
@@ -38,8 +38,7 @@ export function PetHero() {
           <HeroChips items={['No contracts', 'Background-checked & insured', 'Gate photo every visit', 'Re-scoop guarantee']} />
         </div>
 
-        {/* TODO (owner): yard photo — clean fenced backyard or a latched gate. */}
-        <YardPhotoPlaceholder label="clean fenced backyard with a latched gate" icon="image" />
+        <YardPhoto priority />
 
         <BookingCard tab="pet" clean={DEFAULT_CLEAN} setClean={() => {}} pet={pet} setPet={setPet} locked />
       </div>

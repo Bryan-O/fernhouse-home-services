@@ -518,7 +518,6 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
 .swap > * { grid-area: 1 / 1; }
 .swap > [aria-hidden] { visibility: hidden; }
 .hero-photo { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); }
-.photo-placeholder { aspect-ratio: 3 / 2; border-radius: var(--radius); background: var(--placeholder); border: 1px dashed var(--placeholder-line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; text-align: center; }
 .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-pill); background: var(--accent-soft); font-weight: 600; }
 .kicker { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: var(--radius-pill); background: #FFFFFF; border: 1px solid var(--line); font-weight: 600; }
