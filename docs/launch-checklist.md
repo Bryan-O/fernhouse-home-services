@@ -52,3 +52,9 @@ Environment Variables), never into code or chat. `.env.example` lists each one.
 - Security headers on every page. Manage and job links send no referrer and aren't indexed.
 - Public forms that send texts are rate-limited (`lib/config.ts` → `LIMITS`).
 - Friendly error and 404 pages. Nothing technical is shown to customers.
+
+## Later (not needed for launch)
+
+- [ ] Home-screen install for the owner dashboard and pro job pages: a web app manifest and app icon,
+  so `/admin` and `/job/...` open full-screen from a phone's home screen. No offline mode or push
+  notifications (bookings need a live connection, and texts already do the notifying).
