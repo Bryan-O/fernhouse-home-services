@@ -16,8 +16,8 @@ Design rules that must survive the build: no cleaner names, photos or bios; no f
 | --- | --- |
 | Business | Fernhouse — house cleaning and pet waste removal, Atlanta, GA and suburbs |
 | Phone (calls + texts) | (678) 439-6213 |
-| Email | fernhousehomeservices@gmail.com (customer replies go here) |
-| Domain | fernhouseclean.com — placeholder, not yet bought |
+| Email | fernhouse.services@gmail.com (customer replies go here) |
+| Domain | fernhouseclean.com (bought on Vercel) |
 | Sales tax | None (Georgia doesn’t tax these services) |
 | First-clean offer | 20% off a new customer’s first home clean, once per household |
 | Cancellation | Free until 24 hours before a visit; $50 after |

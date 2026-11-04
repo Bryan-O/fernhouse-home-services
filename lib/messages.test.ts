@@ -9,9 +9,11 @@ import {
   untilText, visitWhen, yardPlanText,
 } from './format';
 import { atlantaTime } from './policy';
+import { BRAND } from './config';
 
-// The sample texts drawn in design/Messages.dc.html, read straight from the design file.
-const src = readFileSync('design/Messages.dc.html', 'utf8');
+// The sample texts drawn in design/Messages.dc.html, read straight from the design file. The design
+// still shows the original business email; the owner changed it since, so compare with the current one.
+const src = readFileSync('design/Messages.dc.html', 'utf8').replaceAll('fernhousehomeservices@gmail.com', BRAND.email);
 const script = src.slice(src.indexOf('var L ='), src.indexOf('class Component'));
 const design = runInNewContext(`${script}; ({ CLEAN, PET, ACCT, OPS, EMAILS, REG })`) as Record<string, { name?: string; body: string; subject?: string }[]>;
 const body = (list: string, name: string) => design[list].find((t) => t.name === name)!.body;
