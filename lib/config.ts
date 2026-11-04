@@ -10,7 +10,6 @@ export const BRAND = {
   phoneHref: 'tel:+16784396213',
   phoneE164: '+16784396213',
   email: 'fernhousehomeservices@gmail.com', // customer replies go here
-  // TODO (owner): placeholder until the domain is bought.
   domain: 'fernhouseclean.com',
   sendFrom: 'bookings@fernhouseclean.com', // Resend sender; reply-to is `email`
   region: 'Atlanta, GA',

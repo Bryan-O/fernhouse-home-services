@@ -14,7 +14,7 @@ Environment Variables), never into code or chat. `.env.example` lists each one.
 
 ## 2. Accounts and domain
 
-- [ ] Buy the domain. If it isn't fernhouseclean.com, change `BRAND.domain` in `lib/config.ts`.
+- [x] Buy the domain: fernhouseclean.com (bought on Vercel, matches `BRAND.domain`).
 - [ ] **Vercel:** import the GitHub repo (the free plan works) and add the domain. The hourly jobs run from a free GitHub Actions schedule: add the `CRON_URL` and `CRON_SECRET` repository secrets (`docs/scheduled-jobs.md`).
 - [ ] **Supabase:** create the project, push the schema and create the owner account (`supabase/README.md`).
 - [ ] **Field encryption:** generate `FIELD_ENCRYPTION_KEY` once and keep a copy somewhere safe. Losing it makes saved access notes unreadable.
