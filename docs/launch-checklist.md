@@ -58,7 +58,20 @@ Environment Variables), never into code or chat. `.env.example` lists each one.
 - [ ] Home-screen install for the owner dashboard and pro job pages: a web app manifest and app icon,
   so `/admin` and `/job/...` open full-screen from a phone's home screen. No offline mode or push
   notifications (bookings need a live connection, and texts already do the notifying).
-- [ ] Expanding to another city or state. Prove Atlanta first; then, for the new city:
+- [ ] Expanding across Georgia (Savannah, Augusta, Macon, Athens, Columbus…). Simpler than another
+  state: the whole state is on Eastern time, Georgia's no-sales-tax rule and the Georgia-law Terms
+  already apply, and pros already pick the cities they cover.
+  - Site: add the new ZIPs and cities (`lib/config.ts` → `SERVICE_AREAS`, `SERVICE_ZIPS`; 41 metro
+    Atlanta ZIPs today) and change the "Atlanta and surrounding suburbs" wording, ideally with a page
+    per city.
+  - Capacity per region: one shared calendar today, so a Savannah booking would use up an Atlanta
+    slot. Give capacity, blocked days and bookings a region, and filter the dashboard by it.
+  - Prices per region only if smaller cities should cost less (one price list today).
+  - Owner side: city or county business licenses in each new area, insurance that covers the whole
+    state, and vetted pros recruited there before opening bookings.
+  - Rough effort: ZIPs and wording about half a day; per-region capacity about 1–2 days; per-region
+    prices about a day more.
+- [ ] Expanding to another state. Prove Atlanta first; then, for each new city:
   - Site: its ZIPs and cities (`lib/config.ts` → `SERVICE_AREAS`, `SERVICE_ZIPS`), its own wording and
     ideally its own page (the pages say "Atlanta" today).
   - Capacity per city: today there is one shared calendar for the whole business, so a second city
