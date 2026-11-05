@@ -58,3 +58,16 @@ Environment Variables), never into code or chat. `.env.example` lists each one.
 - [ ] Home-screen install for the owner dashboard and pro job pages: a web app manifest and app icon,
   so `/admin` and `/job/...` open full-screen from a phone's home screen. No offline mode or push
   notifications (bookings need a live connection, and texts already do the notifying).
+- [ ] Expanding to another city or state. Prove Atlanta first; then, for the new city:
+  - Site: its ZIPs and cities (`lib/config.ts` → `SERVICE_AREAS`, `SERVICE_ZIPS`), its own wording and
+    ideally its own page (the pages say "Atlanta" today).
+  - Capacity per city: today there is one shared calendar for the whole business, so a second city
+    would use up Atlanta's slots.
+  - Time zone per city: dates, arrival windows, the 24-hour rule and the hourly jobs all run on
+    Atlanta (Eastern) time. Eastern-time cities work as is.
+  - Prices per city if they differ (one price list today), and sales tax per state: Georgia doesn't
+    tax these services (`SALES_TAX_PCT = 0`), some states do.
+  - Owner side: register to do business there, local licenses, an attorney review of the Terms and
+    Privacy Policy (they say Georgia law), contractor rules in that state, insurance that covers it.
+  - Rough effort: an Eastern-time city at the same prices is about a day; a different time zone or
+    prices means making the whole system multi-city (several days).
