@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BRAND } from '@/lib/config';
 import { signOut } from '@/app/admin/actions';
+import { ThemeToggle } from '../ThemeToggle';
 
 export type OwnerTab = 'home' | 'capacity' | 'pros';
 const TABS: { id: OwnerTab; label: string; href: string }[] = [
@@ -12,10 +13,10 @@ const TABS: { id: OwnerTab; label: string; href: string }[] = [
 /** Dark owner-dashboard bar from design/Admin.dc.html, with the Today / Capacity / Pros tabs. */
 export function OwnerHeader({ signedIn, current }: { signedIn: boolean; current?: OwnerTab }) {
   return (
-    <header className="on-dark" style={{ background: 'var(--ink)', color: '#FFFFFF' }}>
+    <header className="on-dark" style={{ background: 'var(--inverse)', color: '#FFFFFF' }}>
       <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, minHeight: 60 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span aria-hidden="true" style={{ width: 30, height: 30, borderRadius: 9, background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span aria-hidden="true" style={{ width: 30, height: 30, borderRadius: 9, background: 'var(--accent-fill)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M4 11l8-6.5 8 6.5" />
               <path d="M6 9.5V19h12V9.5" />
@@ -45,9 +46,12 @@ export function OwnerFrame({ current, children }: { current?: OwnerTab; children
       <OwnerHeader signedIn current={current} />
       <main className="wrap" style={{ paddingTop: 28, paddingBottom: 56 }}>
         {children}
-        <form action={signOut} style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
-          <button type="submit" className="linkbtn" style={{ color: 'var(--muted)' }}>Sign out</button>
-        </form>
+        <div style={{ marginTop: 40, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+          <form action={signOut}>
+            <button type="submit" className="linkbtn" style={{ color: 'var(--muted)' }}>Sign out</button>
+          </form>
+          <ThemeToggle />
+        </div>
       </main>
     </div>
   );

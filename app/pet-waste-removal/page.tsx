@@ -83,7 +83,7 @@ export default function PetWastePage() {
             </div>
             <div className="price-cards price-cards-always">
               {DOGS.map((n) => (
-                <div key={n} className="price-card" style={{ background: '#FFFFFF' }}>
+                <div key={n} className="price-card" style={{ background: 'var(--surface)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
                     <span style={{ fontWeight: 600 }}>{dogsText(n)}</span>
                     {n === 1 && <span className="tag-popular">Weekly is most popular</span>}
@@ -139,7 +139,7 @@ export default function PetWastePage() {
         </section>
 
         {/* Why Fernhouse */}
-        <section aria-label="Why Fernhouse" style={{ background: '#FFFFFF' }}>
+        <section aria-label="Why Fernhouse" style={{ background: 'var(--paper)' }}>
           <div className="wrap sec" style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             <h2 className="display h2">Why book with Fernhouse</h2>
             <div className="why-grid">

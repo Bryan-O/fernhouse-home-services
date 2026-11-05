@@ -45,7 +45,7 @@ function download(name: string, ics: string) {
 function Hero({ v }: { v: ConfirmationView }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 12, paddingTop: 8 }}>
-      <span aria-hidden="true" style={{ width: 72, height: 72, borderRadius: '50%', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <span aria-hidden="true" style={{ width: 72, height: 72, borderRadius: '50%', background: 'var(--accent-fill)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Check size={36} width={2.4} stroke="#FFFFFF" />
       </span>
       <h1 id="ok-title" className="display" style={{ fontSize: 36, lineHeight: '42px' }}>You’re booked!</h1>

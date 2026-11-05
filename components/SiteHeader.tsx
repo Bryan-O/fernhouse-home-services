@@ -93,7 +93,7 @@ export function SiteHeader({ variant }: { variant: Variant }) {
   if (variant === 'minimal' || variant === 'legal') {
     const minimal = variant === 'minimal';
     return (
-      <header style={{ position: minimal ? 'static' : 'sticky', top: 0, zIndex: 20, background: minimal ? '#FFFFFF' : 'rgba(255,255,255,0.96)', borderBottom: '1px solid var(--line)' }}>
+      <header style={{ position: minimal ? 'static' : 'sticky', top: 0, zIndex: 20, background: minimal ? 'var(--surface)' : 'var(--header-bg)', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap hdr-row">
           <Link href="/" aria-label={`${BRAND.name} home`} className="brand-link">
             <BrandMark />
@@ -116,7 +116,7 @@ export function SiteHeader({ variant }: { variant: Variant }) {
   }
 
   return (
-    <header ref={hdr} style={{ position: 'sticky', top: 0, zIndex: 20, background: 'rgba(255,255,255,0.96)', borderBottom: '1px solid var(--line)' }}>
+    <header ref={hdr} style={{ position: 'sticky', top: 0, zIndex: 20, background: 'var(--header-bg)', borderBottom: '1px solid var(--line)' }}>
       <div className="wrap hdr-row">
         <Link href={onHome ? '#top' : '/'} aria-label={`${BRAND.name} home`} className="brand-link">
           <BrandMark />

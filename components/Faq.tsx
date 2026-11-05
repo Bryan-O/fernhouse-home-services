@@ -7,7 +7,7 @@ import { ChevronDown } from './Icons';
 export function Faq({ title, items }: { title: string; items: readonly (readonly [string, string])[] }) {
   const [open, setOpen] = useState(-1);
   return (
-    <section id="faq" aria-label={title} style={{ background: '#FFFFFF' }}>
+    <section id="faq" aria-label={title} style={{ background: 'var(--paper)' }}>
       <div className="wrap sec" style={{ maxWidth: 820, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <h2 className="display h2">{title}</h2>
         <div style={{ borderTop: '1px solid var(--line)' }}>

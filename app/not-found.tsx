@@ -37,14 +37,14 @@ export default function NotFound() {
 
           <div className="nf-art" aria-hidden="true">
             <svg viewBox="0 0 320 280" width="100%" fill="none" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="160" cy="150" r="118" fill="#E3F2EC" />
-              <path d="M78 150l82-64 82 64" stroke="#16211F" strokeWidth="6" />
-              <path d="M98 136v86h124v-86" stroke="#16211F" strokeWidth="6" />
-              <rect x="142" y="170" width="36" height="52" rx="4" stroke="#16211F" strokeWidth="6" />
-              <path d="M160 104l5 13 13 5-13 5-5 13-5-13-13-5 13-5z" fill="#C99A2C" stroke="#C99A2C" strokeWidth="2" />
-              <path d="M232 64l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#0E7A5F" stroke="#0E7A5F" strokeWidth="2" />
-              <path d="M70 92l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z" fill="#0E7A5F" stroke="#0E7A5F" strokeWidth="2" />
-              <path d="M40 238h240" stroke="#16211F" strokeWidth="6" />
+              <circle cx="160" cy="150" r="118" style={{ fill: 'var(--accent-soft)' }} />
+              <path d="M78 150l82-64 82 64" style={{ stroke: 'var(--ink)' }} strokeWidth="6" />
+              <path d="M98 136v86h124v-86" style={{ stroke: 'var(--ink)' }} strokeWidth="6" />
+              <rect x="142" y="170" width="36" height="52" rx="4" style={{ stroke: 'var(--ink)' }} strokeWidth="6" />
+              <path d="M160 104l5 13 13 5-13 5-5 13-5-13-13-5 13-5z" style={{ fill: 'var(--gold)', stroke: 'var(--gold)' }} strokeWidth="2" />
+              <path d="M232 64l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" style={{ fill: 'var(--accent)', stroke: 'var(--accent)' }} strokeWidth="2" />
+              <path d="M70 92l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z" style={{ fill: 'var(--accent)', stroke: 'var(--accent)' }} strokeWidth="2" />
+              <path d="M40 238h240" style={{ stroke: 'var(--ink)' }} strokeWidth="6" />
             </svg>
           </div>
         </div>

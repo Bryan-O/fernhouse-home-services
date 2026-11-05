@@ -9,7 +9,7 @@ export function LegalPage({ title, updated, toc, children }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="page" style={{ background: '#FFFFFF' }}>
+    <div className="page" style={{ background: 'var(--paper)' }}>
       <a className="skip-link" href="#doc">Skip to content</a>
       <SiteHeader variant="legal" />
       {/* TODO (owner): have a Georgia attorney review both documents before launch. */}

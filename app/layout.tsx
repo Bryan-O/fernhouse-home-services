@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { BRAND, SITE_URL } from '@/lib/config';
 import { Analytics } from '@/components/Analytics';
+import { THEME_KEY } from '@/lib/theme';
 import './globals.css';
 
 // Self-hosted (Fontsource), so pages never call Google Fonts.
@@ -31,12 +32,22 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0E7A5F',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#0E7A5F' },
+    { media: '(prefers-color-scheme: dark)', color: '#0E1514' },
+  ],
 };
+
+// Apply a saved Light / Dark choice before the page paints (components/ThemeToggle.tsx).
+const THEME_SCRIPT = `try{var t=localStorage.getItem('${THEME_KEY}');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+    // suppressHydrationWarning: the script above may set data-theme before React loads.
+    <html lang="en" className={`${inter.variable} ${jakarta.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         {children}
         <Analytics />

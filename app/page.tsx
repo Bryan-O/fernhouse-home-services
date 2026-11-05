@@ -69,7 +69,7 @@ export default function HomePage() {
         <TrustStrip guarantee="Re-clean guarantee" />
 
         {/* Services */}
-        <section id="services" aria-label="Services" style={{ background: '#FFFFFF' }}>
+        <section id="services" aria-label="Services" style={{ background: 'var(--paper)' }}>
           <div className="wrap sec" style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             <div className="sec-intro">
               <h2 className="display h2">Three ways to a clean home</h2>
@@ -101,7 +101,7 @@ export default function HomePage() {
         </section>
 
         {/* First-clean offer — the one canonical offer on the page */}
-        <section aria-label="First-clean offer" style={{ background: '#FFFFFF' }}>
+        <section aria-label="First-clean offer" style={{ background: 'var(--paper)' }}>
           <div className="wrap" style={{ paddingBottom: 24 }}>
             <div className="offer-band">
               <div style={{ flex: '1 1 420px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -158,7 +158,7 @@ export default function HomePage() {
         </section>
 
         {/* Pricing */}
-        <section id="pricing" aria-label="Pricing" style={{ background: '#FFFFFF' }}>
+        <section id="pricing" aria-label="Pricing" style={{ background: 'var(--paper)' }}>
           <div className="wrap sec" style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             <div className="sec-intro">
               <h2 className="display h2">Clear pricing. No quotes, no surprises.</h2>
@@ -171,7 +171,7 @@ export default function HomePage() {
         </section>
 
         {/* Slim pet waste band — the home page's only pet waste section outside the hero */}
-        <section aria-label="Pet waste removal" style={{ background: '#FFFFFF' }}>
+        <section aria-label="Pet waste removal" style={{ background: 'var(--paper)' }}>
           <div className="wrap" style={{ paddingBottom: 48 }}>
             <div className="pet-band">
               <p className="body" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: 12, flex: '1 1 360px', minWidth: 0 }}>

@@ -26,7 +26,7 @@ export default async function ConfirmedPage({ searchParams }: { searchParams: Pr
 
   return (
     <div style={{ background: 'var(--paper-2)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ background: '#FFFFFF', borderBottom: '1px solid var(--line)' }}>
+      <header style={{ background: 'var(--surface)', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap bk-main" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, minHeight: 64 }}>
           <Link href="/" aria-label={`${BRAND.name} home`} className="brand-link"><BrandMark /></Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>

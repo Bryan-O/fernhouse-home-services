@@ -269,7 +269,7 @@ export function BookingFlow() {
   const quoteMissing = isPet ? !pet : !clean;
 
   const notice = payFailed && countdown ? (
-    <div role="alert" style={{ background: '#FEF3F2', border: '1px solid #FDA29B', borderRadius: 16, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div role="alert" style={{ background: 'var(--error-panel)', border: '1px solid var(--error-panel-line)', borderRadius: 16, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', gap: 12 }}>
         <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--error)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flex: 'none' }}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M15 15l4-4" /><path d="M19 15l-4-4" /></svg>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>

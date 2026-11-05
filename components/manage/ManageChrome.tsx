@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BrandMark } from '../BrandMark';
+import { ThemeToggle } from '../ThemeToggle';
 import { PhoneIcon } from '../Icons';
 import { BRAND } from '@/lib/config';
 
@@ -8,7 +9,7 @@ export function ManageChrome({ children }: { children: React.ReactNode }) {
   const sms = BRAND.phoneHref.replace('tel:', 'sms:');
   return (
     <div style={{ background: 'var(--paper-2)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ background: '#FFFFFF', borderBottom: '1px solid var(--line)' }}>
+      <header style={{ background: 'var(--surface)', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, minHeight: 68 }}>
           <Link href="/" aria-label={`${BRAND.name} home`} className="brand-link"><BrandMark /></Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -24,10 +25,10 @@ export function ManageChrome({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <main className="wrap" style={{ paddingTop: 40, paddingBottom: 64, flex: 1, width: '100%' }}>{children}</main>
-      <footer className="on-dark mg-footer" style={{ background: 'var(--ink)', color: 'var(--footer-ink)' }}>
+      <footer className="on-dark mg-footer" style={{ background: 'var(--inverse)', color: 'var(--footer-ink)' }}>
         <div className="wrap" style={{ paddingTop: 24, paddingBottom: 24, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12, fontSize: 14 }}>
           <span>© {BRAND.copyrightYear} {BRAND.name} · Serving {BRAND.areaLine}</span>
-          <span style={{ display: 'flex', gap: 20 }}><Link href="/privacy">Privacy Policy</Link><Link href="/terms">Terms</Link></span>
+          <span style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 20px' }}><Link href="/privacy">Privacy Policy</Link><Link href="/terms">Terms</Link><ThemeToggle onDark /></span>
         </div>
       </footer>
     </div>

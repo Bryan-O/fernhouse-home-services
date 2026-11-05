@@ -106,7 +106,7 @@ export function JobApp({ token, job }: { token: string; job: JobView }) {
       </section>
 
       {job.unlocked && !isDone && (
-        <section className="mg-card" aria-labelledby="access-h" style={{ borderColor: '#F5D3A6' }}>
+        <section className="mg-card" aria-labelledby="access-h" style={{ borderColor: 'var(--warning-line)' }}>
           <h2 className="display h3" id="access-h">Access</h2>
           <p className="body" style={{ margin: 0 }}>{job.access}</p>
           <p className="small" style={{ margin: 0, color: 'var(--muted)' }}>Don’t write down or share access codes. They disappear from this page after the visit.</p>
@@ -145,7 +145,7 @@ export function JobApp({ token, job }: { token: string; job: JobView }) {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img className="photo-img" src={photo} alt="Gate photo added" />
                         <button type="button" className="pill" onClick={() => fileRef.current?.click()} disabled={uploading}
-                          style={{ position: 'absolute', left: 10, bottom: 10, background: '#FFFFFF', color: 'var(--accent)', border: 0, cursor: 'pointer', minHeight: 32 }}>
+                          style={{ position: 'absolute', left: 10, bottom: 10, background: 'var(--surface)', color: 'var(--accent)', border: 0, cursor: 'pointer', minHeight: 32 }}>
                           {uploading ? 'Uploading…' : 'Photo added · retake'}
                         </button>
                       </div>

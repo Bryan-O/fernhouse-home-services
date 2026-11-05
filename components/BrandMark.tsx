@@ -10,7 +10,7 @@ export function BrandMark() {
           width: 32,
           height: 32,
           borderRadius: 10,
-          background: 'var(--accent)',
+          background: 'var(--accent-fill)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

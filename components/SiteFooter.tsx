@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ThemeToggle } from './ThemeToggle';
 import { BRAND } from '@/lib/config';
 
 type Variant = 'home' | 'pet' | 'legal' | 'minimal';
@@ -7,12 +8,13 @@ type Variant = 'home' | 'pet' | 'legal' | 'minimal';
 export function SiteFooter({ variant }: { variant: Variant }) {
   if (variant === 'minimal') {
     return (
-      <footer style={{ background: '#FFFFFF', borderTop: '1px solid var(--line)' }}>
+      <footer style={{ background: 'var(--surface)', borderTop: '1px solid var(--line)' }}>
         <div className="wrap" style={{ paddingTop: 12, paddingBottom: 12, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0 24px', fontSize: 14, color: 'var(--muted)' }}>
           <span>© {BRAND.copyrightYear} {BRAND.name} · Serving {BRAND.areaLine}</span>
-          <span style={{ display: 'flex', gap: 20 }}>
+          <span style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 20px' }}>
             <Link href="/privacy" className="tap-link" style={{ color: 'var(--muted)' }}>Privacy Policy</Link>
             <Link href="/terms" className="tap-link" style={{ color: 'var(--muted)' }}>Terms</Link>
+            <ThemeToggle />
           </span>
         </div>
       </footer>
@@ -33,7 +35,7 @@ export function SiteFooter({ variant }: { variant: Variant }) {
         ];
 
   return (
-    <footer className="on-dark" style={{ background: 'var(--ink)', color: 'var(--footer-ink)' }}>
+    <footer className="on-dark" style={{ background: 'var(--inverse)', color: 'var(--footer-ink)' }}>
       <div className="wrap" style={{ paddingTop: variant === 'legal' ? 40 : 48, paddingBottom: 24, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: variant === 'legal' ? 24 : 32 }}>
         <div className={variant === 'legal' ? 'footer-id footer-id-tight' : 'footer-id'}>
           <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 18, color: '#FFFFFF' }}>{BRAND.name}</span>
@@ -51,8 +53,9 @@ export function SiteFooter({ variant }: { variant: Variant }) {
           )}
         </nav>
       </div>
-      <div className="wrap small" style={{ paddingBottom: 32, color: 'var(--footer-muted)' }}>
-        © {BRAND.copyrightYear} {BRAND.name}. All rights reserved.
+      <div className="wrap small" style={{ paddingBottom: 32, color: 'var(--footer-muted)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <span>© {BRAND.copyrightYear} {BRAND.name}. All rights reserved.</span>
+        <ThemeToggle onDark />
       </div>
     </footer>
   );
