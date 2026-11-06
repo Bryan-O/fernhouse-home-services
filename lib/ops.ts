@@ -201,6 +201,8 @@ export interface AssignView {
   customerFirst: string;
   /** An open visit due today (or overdue): where "Couldn't get in" applies. */
   dueVisit: { id: string; isPet: boolean; label: string } | null;
+  /** Upcoming visits that have a pro: each gets a "Copy job link" button. */
+  jobVisits: { id: string; label: string; pro: string }[];
 }
 
 export async function loadAssign(refNumber: string, now = new Date()): Promise<AssignView | null> {
@@ -270,6 +272,10 @@ export async function loadAssign(refNumber: string, now = new Date()): Promise<A
     pros: open.length ? list : [],
     assigned: !open.length && assignedPros.length ? { pro: shortName(assignedPros[0].pro!.name), count: assignedPros.length } : null,
     customerFirst: p.customer.name.trim().split(/\s+/)[0],
+    jobVisits: visits
+      .filter((v) => v.pro && v.date >= today && ['scheduled', 'confirmed'].includes(v.status))
+      .slice(0, 6)
+      .map((v) => ({ id: v.id, label: pet ? dayDate(v.date) : `${dayDate(v.date)} · ${windowShort(v.window)}`, pro: shortName(v.pro!.name) })),
     dueVisit: (() => {
       const d = visits.find((v) => v.date <= today && ['scheduled', 'confirmed'].includes(v.status) && v.pro_id);
       return d ? { id: d.id, isPet: pet, label: pet ? dayDate(d.date) : `${dayDate(d.date)} · ${windowShort(d.window)}` } : null;

@@ -474,6 +474,7 @@ textarea.input { min-height: 96px; padding: 14px 16px; line-height: 24px; resize
   flex: none;
 }
 
+.spinner-dark { border-color: var(--line); border-top-color: var(--accent); } /* on white buttons */
 .spinner-lg { width: 44px; height: 44px; border-width: 3px; border-color: var(--accent-soft); border-top-color: var(--accent); }
 
 .skel {

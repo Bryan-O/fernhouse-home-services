@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { ActionButton } from '@/components/admin/OwnerBits';
+import { ActionButton, CopyLinkButton } from '@/components/admin/OwnerBits';
 import { uploadSigned } from '@/components/job/upload';
-import { deleteDoc, saveOwnerDoc, sendDocsLink, startOwnerDocUpload, verifyDoc } from '@/app/admin/ops-actions';
+import { deleteDoc, docsLink, saveOwnerDoc, sendDocsLink, startOwnerDocUpload, verifyDoc } from '@/app/admin/ops-actions';
 import type { ProDetail } from '@/lib/ops';
 import { fmtShort } from '@/lib/booking';
 import { PRO_REQUIRED_DOCUMENTS } from '@/lib/config';
@@ -38,6 +38,7 @@ export function ProDocs({ pro }: { pro: ProDetail }) {
         <h2 className="display h3" id="docs-h">Documents</h2>
         <ActionButton action={sendDocsLink.bind(null, pro.id)} label="Text upload link" className="linkbtn" />
       </div>
+      <CopyLinkButton action={docsLink.bind(null, pro.id)} label="Copy upload link" sentTo={pro.name.trim().split(/\s+/)[0]} />
       {pro.docs.length ? (
         <ul className="block-list">
           {pro.docs.map((d) => (

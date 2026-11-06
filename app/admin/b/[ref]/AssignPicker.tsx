@@ -17,7 +17,8 @@ export function AssignPicker({ planId, legend, pros, customerFirst }: { planId: 
     const r = await assignPro(planId, pick).catch(() => ({ ok: false as const, error: 'Something went wrong. Please try again.' }));
     if (!r.ok) return setError(r.error);
     const q = new URLSearchParams({ assigned: chosen!.name, customer: customerFirst, ...(r.message !== 'assigned' ? { note: r.message } : {}) });
-    router.push(`/admin?${q}`);
+    router.push(`${window.location.pathname}?${q}`);
+    router.refresh();
   });
 
   return (

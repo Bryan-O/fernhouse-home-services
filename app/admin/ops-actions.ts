@@ -156,6 +156,30 @@ export async function sendDocsLink(proId: string): Promise<OwnerResult> {
   return { ok: false, error: r.reason === 'no_consent' || r.reason === 'opted_out' ? 'They haven’t agreed to job texts (or texted STOP).' : r.reason === 'not_configured' ? `Texts aren’t connected yet. The link: ${link}` : 'The text didn’t send. Please try again.' };
 }
 
+export type LinkResult = { ok: true; url: string } | { ok: false; error: string };
+
+/**
+ * A fresh job link for an assigned visit, for the owner to send by hand (for example while
+ * texts aren't connected). Links are stored only as hashes, so each call makes a new one;
+ * earlier links keep working until they expire.
+ */
+export async function jobLink(visitId: string): Promise<LinkResult> {
+  await requireOwner();
+  if (!uuid(visitId)) return { ok: false, error: 'Not found.' };
+  const { data: v } = await createServiceClient().from('visits').select('id, pro_id, status').eq('id', visitId).maybeSingle();
+  if (!v?.pro_id || !['scheduled', 'confirmed'].includes(v.status)) return { ok: false, error: 'That visit has no pro assigned any more.' };
+  return { ok: true, url: `${publicOrigin()}/job/${await createProLink('visit', v.pro_id, { visitId: v.id })}` };
+}
+
+/** A fresh documents upload link for a pro, to send by hand. */
+export async function docsLink(proId: string): Promise<LinkResult> {
+  await requireOwner();
+  if (!uuid(proId)) return { ok: false, error: 'Not found.' };
+  const { data: p } = await createServiceClient().from('pros').select('id, active').eq('id', proId).maybeSingle();
+  if (!p?.active) return { ok: false, error: 'That pro isn’t active.' };
+  return { ok: true, url: `${publicOrigin()}/job/${await createProLink('docs', p.id)}` };
+}
+
 /** The owner uploads a document for a pro (already checked, so it's verified at once). */
 export async function startOwnerDocUpload(proId: string, kind: string, ext: string): Promise<{ ok: true; path: string; uploadToken: string } | { ok: false; error: string }> {
   await requireOwner();
