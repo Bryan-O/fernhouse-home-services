@@ -32,14 +32,12 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#0E7A5F' },
-    { media: '(prefers-color-scheme: dark)', color: '#0E1514' },
-  ],
+  themeColor: '#0E7A5F',
 };
 
-// Apply a saved Light / Dark choice before the page paints (components/ThemeToggle.tsx).
-const THEME_SCRIPT = `try{var t=localStorage.getItem('${THEME_KEY}');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+// Apply a saved Dark / Auto choice before the page paints; no choice means Light
+// (components/ThemeToggle.tsx).
+const THEME_SCRIPT = `try{var t=localStorage.getItem('${THEME_KEY}');if(t==='dark'||t==='auto')document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

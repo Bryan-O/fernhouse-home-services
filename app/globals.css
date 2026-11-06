@@ -57,10 +57,11 @@
   color-scheme: light;
 }
 
-/* Dark mode: follows the device unless the visitor picked Light or Dark (data-theme on <html>,
-   set before first paint by the script in app/layout.tsx). The two blocks below are identical. */
+/* Light is the default. Dark applies when the visitor picks Dark, or Auto on a device set to dark
+   (data-theme on <html>, set before first paint by the script in app/layout.tsx).
+   The two blocks below are identical. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
+  :root[data-theme='auto'] {
     --ink: #E8EEEC; --ink-2: #C3CDCA; --muted: #9CA8A5;
     --paper: #0E1514; --paper-2: #141D1C; --surface: #1A2423; --surface-hover: #22302E;
     --header-bg: rgba(14, 21, 20, 0.94); --inverse: #080D0C;
