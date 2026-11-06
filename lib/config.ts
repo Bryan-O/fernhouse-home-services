@@ -40,7 +40,7 @@ export interface HomeSize {
 // Starting prices per visit, homes in normal condition. Standard = biweekly recurring.
 export const PRICING = {
   rows: [
-    { bd: 1, ba: 1, standard: 110, deep: 230, move: 250 },
+    { bd: 1, ba: 1, standard: 5, deep: 230, move: 250 }, // TEMPORARY for the owner's live-card test: restore standard: 110
     { bd: 2, ba: 1, standard: 125, deep: 270, move: 290 },
     { bd: 2, ba: 2, standard: 140, deep: 300, move: 325 },
     { bd: 3, ba: 2, standard: 165, deep: 360, move: 390, popular: true },
