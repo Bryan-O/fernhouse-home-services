@@ -1,6 +1,7 @@
 import 'server-only';
 import { createServiceClient } from './supabase/admin';
 import { docStatus } from './job';
+import { payWeekStart, proPayCents, type PayableVisit } from './pay';
 import { addDays, fmtLong, formatPhone, todayIso, weekday } from './booking';
 import {
   atlantaParts, cleanServiceText, dayDate, money, monthDay, petFreqLabel, routeFull, shortName, untilText, windowShort,
@@ -321,6 +322,8 @@ export async function loadCapacity(): Promise<CapacityView> {
 
 export interface ProRow {
   id: string; name: string; services: string; areas: string; active: boolean;
+  /** Owed for visits done this pay week (Monday–Sunday). */
+  payThisWeek: string;
   docs: Record<(typeof PRO_REQUIRED_DOCUMENTS)[number], { label: string; tone: Tone }>;
 }
 
@@ -341,9 +344,25 @@ export function docCell(s: ReturnType<typeof docStatus>, background: boolean): {
   return { label: `Verified · ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m - 1]} ${y}`, tone: 'ok' };
 }
 
+type DoneVisit = PayableVisit & { id: string; date: string; pro_id: string; plan: { ref: string; service: string; address: { city: string } } };
+
+/** Completed visits in [from, to] (visit dates), optionally for one pro. */
+async function doneVisits(from: string, to: string, proId?: string): Promise<DoneVisit[]> {
+  let q = createServiceClient().from('visits')
+    .select('id, date, pro_id, price_cents, upgrade_cents, upgrade_status, plan:plans!inner(ref, service, address:addresses(city))')
+    .eq('status', 'done').not('pro_id', 'is', null).gte('date', from).lte('date', to).order('date');
+  if (proId) q = q.eq('pro_id', proId);
+  const { data } = await q.returns<DoneVisit[]>();
+  return data ?? [];
+}
+
 export async function loadPros(): Promise<ProRow[]> {
   const { data } = await createServiceClient().from('pros').select('id, name, service_types, zips, active, pro_documents(kind, expires_on, verified_at)').order('active', { ascending: false }).order('name');
+  const week = payWeekStart(todayIso());
+  const owed = new Map<string, number>();
+  for (const v of await doneVisits(week, addDays(week, 6))) owed.set(v.pro_id, (owed.get(v.pro_id) ?? 0) + proPayCents(v));
   return (data ?? []).map((p) => ({
+    payThisWeek: owed.has(p.id) ? money(owed.get(p.id)!) : '—',
     id: p.id,
     name: shortName(p.name),
     services: (p.service_types as string[]).map((t) => (t === 'pet' ? 'yard' : 'cleaning')).join(', ').replace(/^./, (c) => c.toUpperCase()),
@@ -371,3 +390,35 @@ export async function loadPro(id: string): Promise<ProDetail | null> {
   return { id: p.id, name: p.name, mobile: p.mobile, services: p.service_types, zips: p.zips ?? [], offWeekdays: p.off_weekdays ?? [], active: p.active, consent: !!consent, docs };
 }
 
+
+export interface PayWeek {
+  label: string; // "This week · Nov 16–22"
+  total: string;
+  visits: { id: string; when: string; what: string; pay: string }[];
+}
+
+/** "Nov 9–15", or "Oct 26–Nov 1" across a month end. */
+function weekRange(start: string): string {
+  const [from, to] = [monthDay(start), monthDay(addDays(start, 6))];
+  return from.split(' ')[0] === to.split(' ')[0] ? `${from}–${to.split(' ')[1]}` : `${from}–${to}`;
+}
+
+/** A pro's pay for this week and last week, visit by visit. */
+export async function loadProPay(proId: string): Promise<PayWeek[]> {
+  const thisWeek = payWeekStart(todayIso());
+  const lastWeek = addDays(thisWeek, -7);
+  const visits = await doneVisits(lastWeek, addDays(thisWeek, 6), proId);
+  return [['This week', thisWeek], ['Last week', lastWeek]].map(([name, start]) => {
+    const inWeek = visits.filter((v) => payWeekStart(v.date) === start);
+    return {
+      label: `${name} · ${weekRange(start)}`,
+      total: money(inWeek.reduce((sum, v) => sum + proPayCents(v), 0)),
+      visits: inWeek.map((v) => ({
+        id: v.id,
+        when: dayDate(v.date),
+        what: `${v.plan.service === 'pet' ? 'Yard visit' : cleanServiceText(v.plan.service)} · ${v.plan.address.city} · ${v.plan.ref}`,
+        pay: money(proPayCents(v)),
+      })),
+    };
+  });
+}

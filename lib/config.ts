@@ -293,6 +293,15 @@ export const CAPACITY_DEFAULTS = {
   yardsPerRouteDay: { Mon: 12, Tue: 12, Wed: 10, Thu: 12, Fri: 8 } as Record<RouteDayId, number>,
 } as const;
 
+// ───────── Paying pros ─────────
+
+// A pro earns this share of each visit they complete, worked out on the visit's full price
+// (before the first-clean discount, which Fernhouse covers). An approved yard cleanup upgrade
+// counts at its upgraded price. Pay weeks run Monday to Sunday, by visit date.
+export const PRO_PAY = {
+  pctOfVisit: 60,
+} as const;
+
 // ───────── Links, reminders and automations ─────────
 
 export const LINKS = {

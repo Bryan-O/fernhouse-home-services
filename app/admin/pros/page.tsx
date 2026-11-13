@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { OwnerFrame } from '@/components/admin/OwnerHeader';
 import { requireOwner } from '@/lib/auth';
 import { loadPros } from '@/lib/ops';
+import { PRO_PAY } from '@/lib/config';
 
 export const metadata: Metadata = { title: 'Pros', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ export default async function ProsPage() {
           {pros.length ? (
             <div className="tbl-wrap">
               <table className="tbl stack">
-                <thead><tr><th scope="col">Pro</th><th scope="col">Services</th><th scope="col">Areas</th><th scope="col">Insurance</th><th scope="col">Bond</th><th scope="col">Background check</th></tr></thead>
+                <thead><tr><th scope="col">Pro</th><th scope="col">Services</th><th scope="col">Areas</th><th scope="col">Insurance</th><th scope="col">Bond</th><th scope="col">Background check</th><th scope="col">Pay this week</th></tr></thead>
                 <tbody>
                   {pros.map((p) => (
                     <tr key={p.id}>
@@ -32,13 +33,14 @@ export default async function ProsPage() {
                       <td data-l="Insurance"><span className={`pill pill-${p.docs.insurance.tone}`}>{p.docs.insurance.label}</span></td>
                       <td data-l="Bond"><span className={`pill pill-${p.docs.bond.tone}`}>{p.docs.bond.label}</span></td>
                       <td data-l="Background check"><span className={`pill pill-${p.docs.background_check.tone}`}>{p.docs.background_check.label}</span></td>
+                      <td data-l="Pay this week" style={{ fontWeight: 600 }}>{p.payThisWeek}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           ) : <p className="body" style={{ margin: 0, color: 'var(--ink-2)' }}>No pros yet. Add your first one to start assigning visits.</p>}
-          <p className="small" style={{ margin: 0, color: 'var(--muted)' }}>A pro with any missing, unverified or expired document can’t be assigned. Pros’ names are never shown to customers.</p>
+          <p className="small" style={{ margin: 0, color: 'var(--muted)' }}>A pro with any missing, unverified or expired document can’t be assigned. Pros’ names are never shown to customers. Pay this week: {PRO_PAY.pctOfVisit}% of each visit they’ve completed since Monday, on the full price.</p>
         </section>
       </div>
     </OwnerFrame>
